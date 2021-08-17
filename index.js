@@ -1,20 +1,30 @@
 let vitesseVaisseau = 120;
 let intervalId = null;
-let vaisseau = document.getElementById("vitesse-vaiseaux");
-let oxygen = document.getElementById('barre-oxygen');
+let vitesseWater = 9000;
+let vitesseFood = 16000;
+let xVaisseau = 0;
+let yVaisseau = 0;
+let zVaisseau = 12000;
 initGame();
 
 function initGame() {
+    let vaisseau = document.getElementById("vitesse-vaiseaux");
     vaisseau.innerText = vitesseVaisseau;
-    setInterval("oxygenDesc()", 3000);
-    setInterval("waterDesc()", 3000);
+    setInterval(oxygen, 3000);
+    setInterval(waterDesc, vitesseWater);
+    setInterval(foodDesc, vitesseFood);
+    initPDA();
 }
 
-function start() {
-    let e = document.getElementById("vaisseau-view");
-    e.style.opacity = '1';
-    if(vaisseau.innerText === '0') alert("Les moteurs sont coupés !")
+function deceleration(){
+    let vaisseau = document.getElementById("vitesse-vaiseaux");
+    if(vaisseau.innerText === 0) alert("Les moteurs sont coupés !");
     else vaisseau.innerText = vitesseVaisseau--;
+}
+function acceleration(){
+    let vaisseau = document.getElementById("vitesse-vaiseaux");
+    if(vaisseau.innerText === 500) alert("Vitesse maximum !");
+    else vaisseau.innerText = vitesseVaisseau++;
 }
 
 document.addEventListener('keydown', (event) => {
@@ -35,56 +45,58 @@ document.addEventListener('keydown', (event) => {
     }
 }, false);
 
-function stop() {
-    let e = document.getElementById("vaisseau-view");
-    e.style.opacity = '0';
+
+/**
+ * Gestion de l'oxygene 
+ * L'oxygene est decrementer au fur du temps, des que l'oxygen descend a 50
+ * Il devient rouge et le joueur dois remettre de l'oxygen
+ */
+ function oxygen(){
+    let div = document.getElementById('barre-oxygen');
+    let text = document.getElementById('barre-oxygen');
+
+    let size = div.offsetWidth;
+    let oxygen = (size - 10);
+
+    text.innerText = oxygen;
+
+    if(size <= 500/10) div.style.backgroundColor = "red";
+ }
+
+/**
+ * Gestion des informations du joueurs
+ * L'oxygene est decrementer au fur du temps, des que l'oxygen descend a 50
+ * Il devient rouge et le joueur dois remettre de l'oxygen
+ */
+
+function waterDesc(){
+    let water = document.getElementById('jaugeWater');
+    let lastWater = water.offsetHeight;
+    let newWater = (lastWater - 2) + "px";
+    water.style.height = newWater;
+    nombreWater();
 }
 
+function nombreWater(){
+    let water = document.getElementById('jaugeWater');
+    let lastWater = water.offsetHeight;
 
-/** Gestion de l'oxygene
- * 
- * function oxygenDesc(){
-    let oxygen = document.getElementById('barre-oxygen');
-    let lastOxygen = oxygen.offsetWidth;
-    
-    let newOxygen = (lastOxygen - 2) + "px";
-    oxygen.style.width = newOxygen;
-    nombreOxygen();
-
-    
-}
-
-function nombreOxygen(){
-    let oxygen = document.getElementById('barre-oxygen');
-    let lastOxygen = oxygen.offsetWidth;
-
-    let d = document.getElementById('oxygen-nb');
-    d.innerText = lastOxygen
-
-    if(lastOxygen < 50){
-        oxygen.style["background-color"] = "red";
-        d.color = "red"
+    if(lastWater < 50){
+        water.style["background-color"] = "red";
     }
 }
- * 
- * 
- * 
- */
 
 function foodDesc(){
     let food = document.getElementById('jaugeFood');
-    let lastFood = oxygen.offsetWidth;
-    
+    let lastFood = food.offsetHeight;
     let newFood = (lastFood - 2) + "px";
     food.style.height = newFood;
     nombreFood();
-
-    
 }
 
 function nombreFood(){
     let food = document.getElementById('jaugeFood');
-    let lastFood = food.offsetWidth;
+    let lastFood = food.offsetHeight;
 
     if(lastFood < 50){
         food.style["background-color"] = "red";
