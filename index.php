@@ -22,7 +22,7 @@
         <ul>
             <li>Jours de Voyage : 000</li>
             <li>Planetes Rencontrees : 0</li>
-            <li>Nombre de graineq : 0000</li>
+            <li>Nombre de graines : 0000</li>
             <li>Sante : 0</li>
         </ul>
     </div>
@@ -46,7 +46,10 @@
                 <div class="col">
                     <button class="btn btn-primary" onclick="vaisseauBas()" style="width:20%"><i class="fas fa-angle-double-down"></i></button>
                 </div>
-            </div>
+            </div><br>
+            <button id="decoller" onclick="vaisseauElevation()">Decoller</button>
+            <button id="atterir" onclick="vaisseauAtterrissage()">Atterir</button>
+                    <div id="msgPDA2">Z : undefined</div>
         </div>
         <!-- Oxygen -->
         <div class="oxygen">
@@ -64,12 +67,42 @@
         <div class="vie">
             <div class="vaisseaux">
                 <h3>VOTRE VAISSEAU</h3>
-                <div id="haut"></div>
-                <div id="centre"></div>
-                <div id="gauche"></div>
-                <div id="droite"></div>
-                <div id="bas"></div>
-                <div id="bas-bas"></div>
+                <div id="haut">
+                    <div id="barre-vide2"></div>
+                    <div id="barre-vie">
+                        <h6 id="vie-nb1">100</h6>
+                    </div>
+                </div>
+                <div id="centre">
+                    <div id="barre-vide2"></div>
+                    <div id="barre-vie">
+                        <h6 id="vie-nb">100</h6>
+                    </div>
+                </div>
+                <div id="gauche">
+                    <div id="barre-vide2"></div>
+                    <div id="barre-vie">
+                        <h6 id="vie-nb">100</h6>
+                    </div>
+                </div>
+                <div id="droite">
+                    <div id="barre-vide2"></div>
+                    <div id="barre-vie">
+                        <h6 id="vie-nb">100</h6>
+                    </div>
+                </div>
+                <div id="bas">
+                    <div id="barre-vide2"></div>
+                    <div id="barre-vie">
+                        <h6 id="vie-nb">100</h6>
+                    </div>
+                </div>
+                <div id="bas-bas">
+                    <div id="barre-vide2"></div>
+                    <div id="barre-vie">
+                        <h6 id="vie-nb">100</h6>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -106,8 +139,17 @@
             </div>
         </div>
         <div class="carburant">
-                
+            <h3>Carburant</h3>
+            <div class="carburant-vide">
+
+            </div>
+            <div id="carburant-plein">
+
+            </div>
+            <button id="btn-carburant">Remplir</button>
         </div>
+        
+        
     </div>
         
 

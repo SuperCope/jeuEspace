@@ -34,7 +34,7 @@ function miseAJourPDA(distanceRestante) {
     if (yArrivee > yVaisseau && (yArrivee - yVaisseau) > parseInt(vitesseVaisseau) / 3.6) {
         document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n TOUT DROIT SUR "+(yArrivee - yVaisseau)+" METRES  \n PARTIE "+numInstruction+" / "+parseInt(nbInstructions)
     }
-
+    document.getElementById("msgPDA2").innerText = "Z : " + zVaisseau;
 }
 function verifInstruction(){
     let distanceRestante = Math.sqrt(((xVaisseau - xArrivee) * (xVaisseau - xArrivee)) + ((yVaisseau - yArrivee) * (yVaisseau - yArrivee)))
@@ -71,5 +71,16 @@ function vaisseauDroite() {
 function vaisseauGauche() {
     let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
     xVaisseau = xVaisseau + parseInt(vitesseVaisseau / 3.6);
+    verifInstruction();
+}
+function vaisseauElevation() {
+    let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+    zVaisseau = zVaisseau + parseInt(vitesseVaisseau / 3.6);
+    verifInstruction();
+}
+
+function vaisseauAtterrissage() {
+    let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+    zVaisseau = zVaisseau - parseInt(vitesseVaisseau / 3.6);
     verifInstruction();
 }

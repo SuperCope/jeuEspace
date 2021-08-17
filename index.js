@@ -1,6 +1,6 @@
 let intervalId = null;
-let vitesseWater = 9000;
-let vitesseFood = 16000;
+let vitesseWater = 1000;
+let vitesseFood = 1000;
 
 
 initGame();
@@ -18,10 +18,17 @@ function deceleration(){
     if(vaisseau.innerText === 0) alert("Les moteurs sont coupés !");
     else vaisseau.innerText -= 1;
 }
+
 function acceleration(){
     let vaisseau = document.getElementById("vitesse-vaiseaux");
-    if(vaisseau.innerText === 500) alert("Vitesse maximum !");
-    else vaisseau.innerText = parseInt(vaisseau.innerText) + 1;
+    if(vaisseau.innerText === 500){
+        alert("Vitesse maximum !");
+    }else{
+        let decremente = 2;
+        let barre = document.getElementById('carburant-plein');
+        barre.style.width = (barre.offsetWidth - decremente)  + "px";
+        vaisseau.innerText = parseInt(vaisseau.innerText) + 1;
+    } 
 }
 
 document.addEventListener('keydown', (event) => {
@@ -64,10 +71,16 @@ document.addEventListener('keydown', (event) => {
  * Il devient rouge et le joueur dois remettre de l'oxygen
  */
 
+
+
 function waterDesc(){
     let water = document.getElementById('jaugeWater');
     let lastWater = water.offsetHeight;
     let newWater = (lastWater - 2) + "px";
+    let hauteur = (Number((water.style.top).split("px")[0]) + 2) + "px";
+    console.log(hauteur)
+    water.style.top = hauteur;
+    console.log(water.style.height)
     water.style.height = newWater;
     nombreWater();
 }
@@ -85,6 +98,9 @@ function foodDesc(){
     let food = document.getElementById('jaugeFood');
     let lastFood = food.offsetHeight;
     let newFood = (lastFood - 2) + "px";
+    let hauteur = (Number((food.style.top).split("px")[0]) + 2) + "px";
+
+    food.style.top = hauteur;
     food.style.height = newFood;
     nombreFood();
 }
