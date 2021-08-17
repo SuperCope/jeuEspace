@@ -158,8 +158,12 @@ body{
     text-align: center;
 }
 
-.tableaux-bord{
+.control{
     order: 3;
+    display: flex;
+}
+
+.tableaux-bord{
     flex: row;
     justify-content: space-evenly;
     
@@ -214,6 +218,18 @@ body{
     border: solid black 2px;
     padding: 15px;
     background-color: rgb(200, 208, 214);
+}
+
+.carburant-vide{
+    height: 400px;
+    width: 100px;
+    background-color: blanchedalmond;
+}
+
+.carburant-plein{
+    height: 400px;
+    width: 100px;
+    background-color: orange;
 }
 
 

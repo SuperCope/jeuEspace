@@ -9,6 +9,7 @@ let zVaisseau = 12000;
 
 function initPDA() {
     nbInstructions = Math.random() * (5 - 4) + 5;
+    numInstruction = 0;
     nextInstruction();
 }
 function nextInstruction() {
@@ -16,35 +17,36 @@ function nextInstruction() {
     yArrivee = parseInt(Math.random() * (500 - 100) + 100);
     distanceAParcourir = Math.sqrt(((xVaisseau - xArrivee) * (xVaisseau - xArrivee)) + ((yVaisseau - yArrivee) * (yVaisseau - yArrivee)));
     distanceAParcourir = parseInt(distanceAParcourir);
-    distanceAParcourir = Math.ceil(distanceAParcourir/100)*100;
-    miseAJourPDA(distanceAParcourir);
+    distanceAParcourir = Math.ceil(distanceAParcourir/100)*100
+    miseAJourPDA(distanceAParcourir)
 }
 function miseAJourPDA(distanceRestante) {
     let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
     if (xArrivee < xVaisseau && (xVaisseau - xArrivee) > parseInt(vitesseVaisseau) / 3.6) {
-        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n DROITE SUR "+(xVaisseau - xArrivee)+" METRES"
+        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n DROITE SUR "+(xVaisseau - xArrivee)+" METRES \n PARTIE "+numInstruction+" / "+parseInt(nbInstructions)
     }
     if (yArrivee < yVaisseau && (yVaisseau - yArrivee) > parseInt(vitesseVaisseau) / 3.6) {
-        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n EN ARRIERE SUR "+(yVaisseau - yArrivee)+" METRES"
+        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n EN ARRIERE SUR "+(yVaisseau - yArrivee)+" METRES \n PARTIE "+numInstruction+" / "+parseInt(nbInstructions)
     }
     if (xArrivee > xVaisseau && (xArrivee - xVaisseau) > parseInt(vitesseVaisseau) / 3.6) {
-        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n GAUCHE SUR "+(xArrivee - xVaisseau)+" METRES"
+        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n GAUCHE SUR "+(xArrivee - xVaisseau)+" METRES  \n PARTIE "+numInstruction+" / "+parseInt(nbInstructions)
     }
     if (yArrivee > yVaisseau && (yArrivee - yVaisseau) > parseInt(vitesseVaisseau) / 3.6) {
-        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n TOUT DROIT SUR "+(yArrivee - yVaisseau)+" METRES"
+        document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : "+distanceRestante+" METRES \n TOUT DROIT SUR "+(yArrivee - yVaisseau)+" METRES  \n PARTIE "+numInstruction+" / "+parseInt(nbInstructions)
     }
+
 }
 function verifInstruction(){
     let distanceRestante = Math.sqrt(((xVaisseau - xArrivee) * (xVaisseau - xArrivee)) + ((yVaisseau - yArrivee) * (yVaisseau - yArrivee)))
     let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
-    miseAJourPDA(parseInt(distanceRestante));
+    miseAJourPDA(parseInt(distanceRestante))
     if (distanceRestante < parseInt(vitesseVaisseau / 3.6+5)) {
         var audio = new Audio('./audio/bip.mp3');
         audio.play();
         numInstruction++;
         if (numInstruction >= nbInstructions) {
             document.getElementById("msgPDA").style.color = "green";
-            document.getElementById("msgPDA").innerText = "ATTERISSAGE POSSIBLE !!";
+            document.getElementById("msgPDA").innerText = "ATTERISSAGE POSSIBLE !!"
         } else {
             nextInstruction(); 
         }

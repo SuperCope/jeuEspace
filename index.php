@@ -22,7 +22,7 @@
         <ul>
             <li>Jours de Voyage : 000</li>
             <li>Planetes Rencontrees : 0</li>
-            <li>Nombre de graine : 0000</li>
+            <li>Nombre de graineq : 0000</li>
             <li>Sante : 0</li>
         </ul>
     </div>
@@ -75,33 +75,41 @@
 
         <!-- Panneau des vitesses -->
 
+    <div class="control">
         <div class="tableaux-bord">
             <div>
-                <h3>Panneau de Control</h3>
-            </div>
-            <div class="affichage">
-                <div class="vitesse-atterissage">
-                    <p>VITESSE ATTERISSAGE</p>
-                    <h2 id="vitesse-atterisage-vaiseaux">13</h2>
+                <div>
+                    <h3>Panneau de Control</h3>
                 </div>
-                <div class="gravite">
-                    <p>GRAVITE</p>
-                    <h2 id="gravite-vaiseaux">78</h2>
-                </div>
-                <div class="vitesse">
-                    <p>VITESSE EN KM/H</p>
-                    <h2 id="vitesse-vaiseaux">120</h2>
-                </div>
-                <div class="temperature">
-                    <p>TEMPERATURE</p>
-                    <h2 id="temperature-vaiseaux">35</h2>
-                </div>
-                    <div class="pression">
-                    <p>PRESSION</p>
-                    <h2 id="pression-vaiseaux">12</h2>
+                <div class="affichage">
+                    <div class="vitesse-atterissage">
+                        <p>VITESSE ATTERISSAGE</p>
+                        <h2 id="vitesse-atterisage-vaiseaux">13</h2>
+                    </div>
+                    <div class="gravite">
+                        <p>GRAVITE</p>
+                        <h2 id="gravite-vaiseaux">78</h2>
+                    </div>
+                    <div class="vitesse">
+                        <p>VITESSE EN KM/H</p>
+                        <h2 id="vitesse-vaiseaux">120</h2>
+                    </div>
+                    <div class="temperature">
+                        <p>TEMPERATURE</p>
+                        <h2 id="temperature-vaiseaux">35</h2>
+                    </div>
+                        <div class="pression">
+                        <p>PRESSION</p>
+                        <h2 id="pression-vaiseaux">12</h2>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="carburant">
+                
+        </div>
+    </div>
+        
 
             
         <!-- Puissance -->
