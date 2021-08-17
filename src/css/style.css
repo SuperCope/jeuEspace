@@ -147,11 +147,12 @@ body{
     height: 50px;
 }
 #msgPDA{
-    color: red;
+    color: rgb(4, 226, 189);
+    font-size: 24px;
 }
 #pda{
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    height: 400px;
     background-color: black;
     margin: auto;
     text-align: center;

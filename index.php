@@ -54,7 +54,7 @@
             <div class="vide"></div>
             <div id="barre-vide"></div>
             <div id="barre-oxygen">
-                <h3 id="oxygen-nb text-center" style="margin-top:25px">50</h3>
+                <h3 id="oxygen-nb" style="margin-top:25px">100</h3>
             </div>
             <button class="btn btn-oxygen">Recharge (Restant : 1 )</button>
             <button class="btn btn-jardin">Acceder au Jardin</button>
@@ -90,9 +90,9 @@
                 </div>
                 <div class="vitesse">
                     <p>VITESSE EN KM/H</p>
-                    <h2 id="vitesse-vaiseaux"></h2>
+                    <h2 id="vitesse-vaiseaux">120</h2>
                 </div>
-                    <div class="temperature">
+                <div class="temperature">
                     <p>TEMPERATURE</p>
                     <h2 id="temperature-vaiseaux">35</h2>
                 </div>
@@ -109,7 +109,7 @@
             <button id="iconeVaisseau" onmousedown="deceleration()" class="btn-reacteur"></button>
             <button id="iconeVaisseau" onmousedown="acceleration()" class="btn-accelerateur"></button>
 
-            <div id="vaisseau-view">
+            <div id="vaisseau-view" hidden>
                 <div class="fire0">
                     <div class="flames0">
                         <div class="flame0"></div>

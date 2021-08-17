@@ -1,46 +1,41 @@
-let vitesseVaisseau = 120;
 let intervalId = null;
 let vitesseWater = 9000;
 let vitesseFood = 16000;
-let xVaisseau = 0;
-let yVaisseau = 0;
-let zVaisseau = 12000;
+
+
 initGame();
 
 function initGame() {
-    let vaisseau = document.getElementById("vitesse-vaiseaux");
-    vaisseau.innerText = vitesseVaisseau;
-    setInterval(oxygen, 3000);
+    setInterval(oxygen, 9000);
     setInterval(waterDesc, vitesseWater);
     setInterval(foodDesc, vitesseFood);
+
     initPDA();
 }
 
 function deceleration(){
     let vaisseau = document.getElementById("vitesse-vaiseaux");
     if(vaisseau.innerText === 0) alert("Les moteurs sont coupés !");
-    else vaisseau.innerText = vitesseVaisseau--;
+    else vaisseau.innerText -= 1;
 }
 function acceleration(){
     let vaisseau = document.getElementById("vitesse-vaiseaux");
     if(vaisseau.innerText === 500) alert("Vitesse maximum !");
-    else vaisseau.innerText = vitesseVaisseau++;
+    else vaisseau.innerText = parseInt(vaisseau.innerText) + 1;
 }
 
 document.addEventListener('keydown', (event) => {
-    const nomTouche = event.key;
-    // Dès que l'utilisateur relâche la touche Ctrl, la touche n'est plus active.
-    // Aussi event.ctrlKey est false.
-    if (nomTouche === 'ArrowLeft') {
+    const key = event.key;
+    if (key === 'ArrowLeft') {
         document.getElementById('divmap').scrollLeft -= 10;
     }
-    if (nomTouche === 'ArrowRight') {
+    if (key === 'ArrowRight') {
         document.getElementById('divmap').scrollLeft += 10;
     }
-    if (nomTouche === 'ArrowUp') {
+    if (key === 'ArrowUp') {
         document.getElementById('divmap').scrollTop -= 10;
     }
-    if (nomTouche === 'ArrowDown') {
+    if (key === 'ArrowDown') {
         document.getElementById('divmap').scrollTop += 10;
     }
 }, false);
@@ -52,15 +47,15 @@ document.addEventListener('keydown', (event) => {
  * Il devient rouge et le joueur dois remettre de l'oxygen
  */
  function oxygen(){
-    let div = document.getElementById('barre-oxygen');
-    let text = document.getElementById('barre-oxygen');
-
-    let size = div.offsetWidth;
-    let oxygen = (size - 10);
-
-    text.innerText = oxygen;
-
-    if(size <= 500/10) div.style.backgroundColor = "red";
+    let decremente = 2;
+    let barre = document.getElementById('barre-oxygen');
+    let oxygen = document.getElementById('oxygen-nb');
+    if(oxygen.innerText !== "0") {
+        oxygen.innerText -= decremente;
+        barre.style.width = ((barre.offsetWidth) - (decremente*5)) + "px";
+        if(oxygen.innerText < 30) barre.style.backgroundColor = "red";
+        else if(oxygen.innerText <= 60) barre.style.backgroundColor = "orange";
+    }
  }
 
 /**
