@@ -31,6 +31,13 @@ function acceleration(){
     } 
 }
 
+function remplir()
+{
+    let carburant = 50;
+    let barre = document.getElementById('carburant-plein');
+    barre.style.width = (barre.offsetWidth + carburant)  + "px";
+}
+
 document.addEventListener('keydown', (event) => {
     const key = event.key;
     if (key === 'ArrowLeft') {
