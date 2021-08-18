@@ -9,6 +9,8 @@ function initGame() {
     setInterval(oxygen, 9000);
     setInterval(waterDesc, vitesseWater);
     setInterval(foodDesc, vitesseFood);
+    setInterval(bougeVaisseau, 1000);
+
 
     initPDA();
 }
@@ -23,10 +25,7 @@ function acceleration(){
     let vaisseau = document.getElementById("vitesse-vaiseaux");
     if(vaisseau.innerText === 500){
         alert("Vitesse maximum !");
-    }else{
-        let decremente = 2;
-        let barre = document.getElementById('carburant-plein');
-        barre.style.width = (barre.offsetWidth - decremente)  + "px";
+    }else{;
         vaisseau.innerText = parseInt(vaisseau.innerText) + 1;
     } 
 }
@@ -35,7 +34,12 @@ function remplir()
 {
     let carburant = 50;
     let barre = document.getElementById('carburant-plein');
-    barre.style.width = (barre.offsetWidth + carburant)  + "px";
+    if ((barre.offsetWidth + carburant) < document.getElementsByClassName('carburant-vide')[0].offsetWidth) {
+        barre.style.width = (barre.offsetWidth + carburant)  + "px";
+    } else {
+        barre.style.width = document.getElementsByClassName('carburant-vide')[0].offsetWidth + "px";
+    }
+
 }
 
 document.addEventListener('keydown', (event) => {
@@ -83,13 +87,19 @@ document.addEventListener('keydown', (event) => {
 function waterDesc(){
     let water = document.getElementById('jaugeWater');
     let lastWater = water.offsetHeight;
-    let newWater = (lastWater - 2) + "px";
-    let hauteur = (Number((water.style.top).split("px")[0]) + 2) + "px";
-    console.log(hauteur)
-    water.style.top = hauteur;
-    console.log(water.style.height)
-    water.style.height = newWater;
-    nombreWater();
+    
+    if (lastWater > 2) {
+        let newWater = (lastWater - 2) + "px";
+        let hauteur = (Number((water.style.top).split("px")[0]) + 2) + "px";
+        console.log(hauteur)
+        water.style.top = hauteur;
+        console.log(water.style.height)
+        water.style.height = newWater;
+        nombreWater();
+    } else {
+        document.getElementById('jaugeWater').style.visibility = "hidden";
+    }
+
 }
 
 function nombreWater(){
@@ -120,5 +130,4 @@ function nombreFood(){
         food.style["background-color"] = "red";
     }
 }
-
 

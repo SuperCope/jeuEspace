@@ -22,6 +22,27 @@ body{
     flex-direction: column;
 }
 
+
+#msgPDA{
+    color: rgb(4, 226, 189);
+    font-size: 24px;
+}
+#msgPDA2{
+    color: rgb(158, 173, 17);
+    font-size: 24px;
+}
+#msgPDA3{
+    color: green;
+    font-size: 24px;
+}
+#pda{
+    width: 400px;
+    height: 400px;
+    background-color: black;
+    margin: auto;
+    text-align: center;
+}
+
 .oxygen{
     order: 1;
     padding: 40px;
@@ -166,21 +187,7 @@ body{
     width: 60px;
     height: 50px;
 }
-#msgPDA{
-    color: rgb(4, 226, 189);
-    font-size: 24px;
-}
-#msgPDA2{
-    color: rgb(158, 173, 17);
-    font-size: 24px;
-}
-#pda{
-    width: 400px;
-    height: 400px;
-    background-color: black;
-    margin: auto;
-    text-align: center;
-}
+
 
 .control{
     order: 3;
@@ -278,6 +285,11 @@ body{
     border: 2px solid black;
     border-radius: 10px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.jerrycan{
+    width: 50px;;
+    height: 30px;
 }
 
 

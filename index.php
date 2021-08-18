@@ -38,7 +38,7 @@
             <div class="row">
                 <div class="col">
                     <button class="btn btn-primary" onclick="vaisseauGauche()" style="width:20%"><i class="fas fa-angle-double-left"></i></button>
-                    <button class="btn btn-primary" style="width:20%;opacity:0"></button>
+                    <button class="btn btn-danger" onclick="stop()" style="width:20%"><i class="fas fa-ban"></i></button>
                     <button class="btn btn-primary" onclick="vaisseauDroite()" style="width:20%"><i class="fas fa-angle-double-right"></i></button>
                 </div>
             </div> 
@@ -49,7 +49,8 @@
             </div><br>
             <button id="decoller" onclick="vaisseauElevation()">Decoller</button>
             <button id="atterir" onclick="vaisseauAtterrissage()">Atterir</button>
-                    <div id="msgPDA2">Z : undefined</div>
+            <div id="msgPDA2">Z : undefined</div>
+            <div id="msgPDA3">Pas de champ d'asteroide detecte</div>
         </div>
         <!-- Oxygen -->
         <div class="oxygen">
@@ -147,6 +148,9 @@
 
             </div>
             <button id="btn-carburant" onmousedown="remplir()">Remplir</button>
+            <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">
+            <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">
+            <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant"> 
         </div>
         
         
