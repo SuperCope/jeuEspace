@@ -148,9 +148,13 @@
 
             </div>
             <button id="btn-carburant" onmousedown="remplir()">Remplir</button>
-            <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">
-            <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">
-            <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant"> 
+            <?php for($i=0; $i < 3 ; $i++){
+                <<<HTML
+                    $html = <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">
+HTML;
+            }
+            echo $html;
+            ?>
         </div>
         
         

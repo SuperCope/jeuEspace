@@ -163,33 +163,49 @@ function genereAsteroide() {
         xAsteroide = parseInt(Math.random() * ((xVaisseau + 800) - (xVaisseau - 800)) + (xVaisseau - 800));
         yAsteroide = parseInt(Math.random() * ((yVaisseau + 800) - (yVaisseau - 800)) + (yVaisseau - 800));   
         numAsteroide++;
-        console.log("GENERATION")
+    } else {
+        champAsteroide = false;
     }
 }
 
 function verifAsteroide() {
     console.log("OK")
     if (Math.abs(xVaisseau - xAsteroide) < tailleVaisseau && Math.abs(yVaisseau - yAsteroide) < tailleVaisseau) {
-        document.getElementById("msgPDA3").style.color = "red";
-        document.getElementById("msgPDA3").innerText = "TOUCHE !";
+
+        setTimeout(function () {
+            document.getElementById("msgPDA3").style.color = "red";
+            document.getElementById("msgPDA3").innerText = "TOUCHE !";
+        }, 3000);
+
+        genereAsteroide()
     } else {
-        document.getElementById("msgPDA3").style.color = "orange";
-        document.getElementById("msgPDA3").innerText = "RECHERCHE D'ASTEROIDESS...";
-        if (xAsteroide < xVaisseau && Math.abs(yVaisseau - yAsteroide) < tailleVaisseau){
-            document.getElementById("msgPDA3").style.color = "orange";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE A GAUCHE A "+(Math.abs(xVaisseau - xAsteroide))+" METRES !!";
+        let distanceRestanteAsteroide = Math.sqrt(((xVaisseau - xAsteroide) * (xVaisseau - xAsteroide)) + ((yVaisseau - yAsteroide) * (yVaisseau - yAsteroide)))  
+        if (distanceRestanteAsteroide < 1500) {
+            document.getElementById("msgPDA3").style.color = "yellow";
+            document.getElementById("msgPDA3").innerText = "ASTEROIDE A "+parseInt(distanceRestanteAsteroide)+" METRES "+numAsteroide+" / "+nbAsteroides;
+            console.log(""+xAsteroide+","+yAsteroide+" ET "+xVaisseau+","+yVaisseau )
+            if (xAsteroide < xVaisseau && Math.abs(yVaisseau - yAsteroide) < tailleVaisseau){
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE A DROITE A "+(Math.abs(xVaisseau - xAsteroide))+" METRES !!";
+            }
+            if (xVaisseau < xAsteroide && Math.abs(yVaisseau - yAsteroide) < tailleVaisseau){
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE A GAUCHE A "+(Math.abs(xAsteroide - xVaisseau))+" METRES !!";
+            }
+            if (yVaisseau < yAsteroide && Math.abs(xVaisseau - xAsteroide) < tailleVaisseau){
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE EN HAUT A "+(Math.abs(yVaisseau - yAsteroide))+" METRES !!";
+            }
+            if (yAsteroide < yVaisseau && Math.abs(xVaisseau - xAsteroide) < tailleVaisseau){
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE EN ARRIERE A "+(Math.abs(yAsteroide - yVaisseau))+" METRES !!";
+            }
+        } else {
+            document.getElementById("msgPDA3").style.color = "green";
+            document.getElementById("msgPDA3").innerText = "ASTEROIDE EVITE !";
+
+            genereAsteroide()
         }
-        if (xVaisseau < xAsteroide && Math.abs(yVaisseau - yAsteroide) < tailleVaisseau){
-            document.getElementById("msgPDA3").style.color = "orange";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE A DROITE A "+(Math.abs(xAsteroide - xVaisseau))+" METRES !!";
-        }
-        if (yVaisseau < yAsteroide && Math.abs(xVaisseau - xAsteroide) < tailleVaisseau){
-            document.getElementById("msgPDA3").style.color = "orange";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE EN HAUT A "+(Math.abs(yVaisseau - yAsteroide))+" METRES !!";
-        }
-        if (yAsteroide < yVaisseau && Math.abs(xVaisseau - xAsteroide) < tailleVaisseau){
-            document.getElementById("msgPDA3").style.color = "orange";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE EN ARRIERE A "+(Math.abs(yAsteroide - yVaisseau))+" METRES !!";
-        }
+
     }
 }

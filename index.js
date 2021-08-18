@@ -6,6 +6,7 @@ let vitesseFood = 1000;
 initGame();
 
 function initGame() {
+  
     setInterval(oxygen, 9000);
     setInterval(waterDesc, vitesseWater);
     setInterval(foodDesc, vitesseFood);
@@ -41,6 +42,8 @@ function remplir()
     }
 
 }
+
+
 
 document.addEventListener('keydown', (event) => {
     const key = event.key;
