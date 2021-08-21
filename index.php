@@ -29,7 +29,13 @@
 
     <div class="main">
         <div id="pda">
-            <div id="msgPDA">Loading data...</div>
+            <div id="imgPDA">
+                <div id="msgPDA">Loading data...</div>
+                <img id="imgPDA2" width="250px" height="150px" src="img/loading.gif" >
+            </div>
+            <div id="msgPDA2">HAUTEUR : ANALYSE EN COURS...</div>
+            <div id="mapAsteroide"></div>
+            <div id="msgPDA3">Pas de champ d'asteroide detecte</div>
             <div class="row">
                 <div class="col">
                     <button class="btn btn-primary" onclick="vaisseauHaut()" style="width:20%"><i class="fas fa-angle-double-up"></i></button>
@@ -49,8 +55,6 @@
             </div><br>
             <button id="decoller" onclick="vaisseauElevation()">Decoller</button>
             <button id="atterir" onclick="vaisseauAtterrissage()">Atterir</button>
-            <div id="msgPDA2">Z : undefined</div>
-            <div id="msgPDA3">Pas de champ d'asteroide detecte</div>
         </div>
         <!-- Oxygen -->
         <div class="oxygen">
@@ -148,10 +152,9 @@
 
             </div>
             <button id="btn-carburant" onmousedown="remplir()">Remplir</button>
-            <?php for($i=0; $i < 3 ; $i++){
-                <<<HTML
-                    $html = <img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">
-HTML;
+            <?php 
+            for($i=0; $i < 3 ; $i++){
+                $html = '<img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">';
             }
             echo $html;
             ?>
