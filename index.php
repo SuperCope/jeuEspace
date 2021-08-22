@@ -130,7 +130,7 @@
                     </div>
                     <div class="vitesse">
                         <p>VITESSE EN KM/H</p>
-                        <h2 id="vitesse-vaiseaux">120</h2>
+                        <div id="vitesse-vaiseaux">120</div>
                     </div>
                     <div class="temperature">
                         <p>TEMPERATURE</p>
@@ -227,5 +227,6 @@
 
 <script src="pda.js"></script>
 <script src="index.js"></script>
+
 
 </html>

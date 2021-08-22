@@ -3,10 +3,13 @@ let nbInstructions;
 let xArrivee;
 let yArrivee;
 let distanceAParcourir;
-let vieVaisseau = 100;
+let vieVaisseauHaut = 100;
+let vieVaisseauBas = 100;
+let vieVaisseauGauche = 100;
+let vieVaisseauDroite = 100;
 let xVaisseau = 0;
 let yVaisseau = 0;
-let zVaisseau = 12000;
+let zVaisseau = 1200;
 let direction = "";
 let champAsteroide = false;
 let tailleVaisseau = 50;
@@ -15,12 +18,13 @@ let nbAsteroides = 0;
 let xAsteroide;
 let yAsteroide;
 let asteroides;
+let vitesseVaisseau = 120;
 let touche = false;
 let asteroidesRestants;
 
 
 function initPDA() {
-    nbInstructions = Math.random() * (5 - 4) + 5;
+    nbInstructions = Math.random() * (2 - 4) + 4;
     numInstruction = 0;
     var vaisseauMap = document.createElement("div");
     vaisseauMap.setAttribute("id","mapAsteroideVaisseau")
@@ -43,6 +47,8 @@ function nextInstruction() {
 }
 function miseAJourDirections(distanceRestante) {
     let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+    document.getElementById("msgPDA").style.animationName = "none";
+    document.getElementById("msgPDA").style.color = "cyan";
     if (xArrivee < xVaisseau && (xVaisseau - xArrivee) > parseInt(vitesseVaisseau) / 3.6) {
         document.getElementById("imgPDA2").setAttribute("src", "img/right.png");
         document.getElementById("imgPDA2").setAttribute("height", "60px");
@@ -75,6 +81,39 @@ function miseAJourPDA(distanceRestante) {
     miseAJourDirections(distanceRestante)
     document.getElementById("msgPDA2").innerText = "HAUTEUR : " + zVaisseau + " METRES";
     miseAJourMapAsteroide()
+    verifHauteur()
+}
+function verifHauteur() {
+    if (zVaisseau <= 0 && (vitesseVaisseau > 40 || numInstruction < nbInstructions)) {
+        var audio = new Audio('./audio/explode.mp3');
+        audio.play();
+        document.getElementById("msgPDA").style.color = "red";
+        document.getElementById("msgPDA").innerText = "LE VAISSEAU S'EST ECRASE";
+        alert("PERDU")
+        return;
+    } else if(zVaisseau <= 0) {
+        document.getElementById("msgPDA").style.color = "green";
+        document.getElementById("msgPDA").innerText = "LE VAISSEAU EST ATTERI";
+    }
+    if (zVaisseau < 200 && vitesseVaisseau > 40) {
+        var audio = new Audio('./audio/alarme.mp3');
+        audio.play();
+        document.getElementById("msgPDA").style.animationDuration = "1s";
+        document.getElementById("msgPDA").style.animationName = "clignoter";
+        document.getElementById("msgPDA").style.animationIterationCount = "infinite";
+        document.getElementById("msgPDA").style.color = "orange";
+        document.getElementById("msgPDA").innerText = "ATTENTION ! VITESSE TROP ELEVEE ! ("+(vitesseVaisseau - 40)+" KM/H EN TROP)";
+        return;
+    }
+    if (zVaisseau < 200 && numInstruction < nbInstructions) {
+        var audio = new Audio('./audio/alarme.mp3');
+        audio.play();
+        document.getElementById("msgPDA").style.animationDuration = "1s";
+        document.getElementById("msgPDA").style.animationName = "clignoter";
+        document.getElementById("msgPDA").style.animationIterationCount = "infinite";
+        document.getElementById("msgPDA").style.color = "orange";
+        document.getElementById("msgPDA").innerText = "ATTENTION ! VOUS NE VOUS TROUVEZ PAS AU DESSUS D'UN SOL PLAT !";
+    }
 }
 function miseAJourMapAsteroide() {
     if (champAsteroide) {
@@ -106,14 +145,11 @@ function verifInstruction(){
     if (distanceRestante < parseInt(vitesseVaisseau / 3.6+5)) {
         var audio = new Audio('./audio/bip.mp3');
         audio.play();
+        document.getElementById("imgPDA2").setAttribute("src","valider.png");
+        document.getElementById("msgPDA3").style.color = "green";
+        document.getElementById("msgPDA3").innerText = "VOUS POUVEZ ATTERRIR !";
         numInstruction++;
-        if (numInstruction >= nbInstructions) {
-            document.getElementById("imgPDA2").setAttribute("src", "img/top.png");
-            document.getElementById("imgPDA2").setAttribute("width", "100px");
-            document.getElementById("imgPDA2").setAttribute("height", "100px");
-            document.getElementById("msgPDA").style.color = "green";
-            document.getElementById("msgPDA").innerText = "ATTERISSAGE POSSIBLE !!"
-        } else {
+        if (numInstruction < nbInstructions) {
             nextInstruction(); 
         }
     }
@@ -140,7 +176,10 @@ function bougeVaisseau() {
         break;
     }
     verifInstruction();
-    carburantConsommation();
+    if (direction != "") {
+        carburantConsommation();
+    }
+
     if (asteroidesRestants == 0) {
         champAsteroide = false;
         document.getElementById("msgPDA3").style.color = "green";
@@ -202,6 +241,9 @@ function vaisseauElevation() {
 function vaisseauAtterrissage() {
     let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
     zVaisseau = zVaisseau - parseInt(vitesseVaisseau / 3.6);
+    if (zVaisseau < 0) {
+        zVaisseau = 0;
+    }
     direction = "atterrissage";
 }
 
@@ -210,7 +252,7 @@ function stop(){
 }
 function hasAsteroides() {
     let proba = parseInt(Math.random() * (20 - 1) + 1);
-    if (proba == 2 && direction != "" && !touche) {
+    if (proba == 2 && direction != "" && direction!="atterrissage" && direction != "elevation" && !touche) {
         xAsteroide = [];
         yAsteroide = [];
         asteroides = [];
@@ -260,10 +302,32 @@ function verifAsteroide() {
 
         document.getElementById("msgPDA3").style.color = "red";
         document.getElementById("msgPDA3").innerText = "TOUCHE !";
+        var explosion = parseInt(Math.random() * (3 - 1) + 1);
+        if (explosion == 1) {
+            var audio = new Audio('./audio/explode.mp3');
+            audio.play();
+        }
+        if (explosion == 2) {
+            var audio = new Audio('./audio/explosion.mp3');
+            audio.play();
+        }
         asteroidesRestants--;
         touche = true;
         asteroides[index] = false;
-        vieVaisseau = vieVaisseau - 20;
+        switch (direction) {
+            case "haut":
+                vieVaisseauHaut = vieVaisseauHaut - 20;
+            break;
+            case "bas":
+                vieVaisseauBas = vieVaisseauBas - 20;
+            break;
+            case "gauche":
+                vieVaisseauGauche = vieVaisseauGauche - 20;
+            break;
+            case "droite":
+                vieVaisseauDroite = vieVaisseauDroite - 20;
+            break;
+        }
 
     }
     if (distanceRestanteAsteroide > 1500 && champAsteroide) {
@@ -274,22 +338,35 @@ function verifAsteroide() {
     }
 
     if (distanceRestanteAsteroide < 1500 && !touche && distanceRestanteAsteroide != -1) {
-            document.getElementById("msgPDA3").style.color = "yellow";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(distanceRestanteAsteroide) + " METRES " + numAsteroide + " / " + nbAsteroides;
+        document.getElementById("msgPDA3").style.color = "yellow";
+        document.getElementById("msgPDA3").style.animationName = "none";
+            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(distanceRestanteAsteroide) + " METRES " + numAsteroide + " / " + nbAsteroides;  
             if (x < xVaisseau && (Math.abs(yVaisseau - y)) < tailleVaisseau) {
                 document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE A DROITE A " + (Math.abs(xVaisseau - x)) + " METRES !!";
             }
             if (xVaisseau < x && (Math.abs(yVaisseau - y)) < tailleVaisseau) {
                 document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE A GAUCHE A " + (Math.abs(x - xVaisseau)) + " METRES !!";
             }
             if (yVaisseau < y && (Math.abs(xVaisseau - x)) < tailleVaisseau) {
                 document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE EN FACE A " + (Math.abs(yVaisseau - y)) + " METRES !!";
             }
             if (y < yVaisseau && (Math.abs(xVaisseau - x)) < tailleVaisseau) {
                 document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE EN ARRIERE A " + (Math.abs(y - yVaisseau)) + " METRES !!";
             }
         

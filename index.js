@@ -6,6 +6,8 @@ let vitesseFood = 1000;
 initGame();
 
 function initGame() {
+    var audio = new Audio('./audio/lecture.mp3');
+    audio.play();
     setTimeout(function () {
         setInterval(oxygen, 9000);
         setInterval(waterDesc, vitesseWater);
@@ -22,6 +24,7 @@ function deceleration() {
     let vaisseau = document.getElementById("vitesse-vaiseaux");
     if (vaisseau.innerText === 0) alert("Les moteurs sont coupés !");
     else vaisseau.innerText -= 1;
+    vitesseVaisseau--;
 }
 
 function acceleration() {
@@ -32,6 +35,7 @@ function acceleration() {
         ;
         vaisseau.innerText = parseInt(vaisseau.innerText) + 1;
     }
+    vitesseVaisseau++;
 }
 
 function remplir() {
