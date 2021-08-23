@@ -21,16 +21,20 @@ let asteroides;
 let vitesseVaisseau = 120;
 let touche = false;
 let asteroidesRestants;
+let nbBouteillesOxygene = 3;
+let oxy;
+let oxygene = 100;
 
 
 function initPDA() {
-    nbInstructions = Math.random() * (2 - 4) + 4;
+    nbInstructions = Math.random() * (1 - 2) + 2;
     numInstruction = 0;
-    var vaisseauMap = document.createElement("div");
+    let vaisseauMap = document.createElement("div");
     vaisseauMap.setAttribute("id","mapAsteroideVaisseau")
     vaisseauMap.style.width = (8)+"px";
     vaisseauMap.style.height = (8)+"px";
     document.getElementById("mapAsteroide").appendChild(vaisseauMap);
+    document.getElementById("oxygen-nb").innerText = oxygene;
     nextInstruction();
 
 }
@@ -85,7 +89,7 @@ function miseAJourPDA(distanceRestante) {
 }
 function verifHauteur() {
     if (zVaisseau <= 0 && (vitesseVaisseau > 40 || numInstruction < nbInstructions)) {
-        var audio = new Audio('./audio/explode.mp3');
+        let audio = new Audio('./audio/explode.mp3');
         audio.play();
         document.getElementById("msgPDA").style.color = "red";
         document.getElementById("msgPDA").innerText = "LE VAISSEAU S'EST ECRASE";
@@ -95,8 +99,8 @@ function verifHauteur() {
         document.getElementById("msgPDA").style.color = "green";
         document.getElementById("msgPDA").innerText = "LE VAISSEAU EST ATTERI";
     }
-    if (zVaisseau < 200 && vitesseVaisseau > 40) {
-        var audio = new Audio('./audio/alarme.mp3');
+    if (zVaisseau < 600 && vitesseVaisseau > 40 && direction == "atterrissage") {
+        let audio = new Audio('./audio/alarme.mp3');
         audio.play();
         document.getElementById("msgPDA").style.animationDuration = "1s";
         document.getElementById("msgPDA").style.animationName = "clignoter";
@@ -105,8 +109,8 @@ function verifHauteur() {
         document.getElementById("msgPDA").innerText = "ATTENTION ! VITESSE TROP ELEVEE ! ("+(vitesseVaisseau - 40)+" KM/H EN TROP)";
         return;
     }
-    if (zVaisseau < 200 && numInstruction < nbInstructions) {
-        var audio = new Audio('./audio/alarme.mp3');
+    if (zVaisseau < 600 && numInstruction < nbInstructions && direction == "atterrissage") {
+        let audio = new Audio('./audio/alarme.mp3');
         audio.play();
         document.getElementById("msgPDA").style.animationDuration = "1s";
         document.getElementById("msgPDA").style.animationName = "clignoter";
@@ -143,9 +147,8 @@ function verifInstruction(){
     let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
     miseAJourPDA(parseInt(distanceRestante))
     if (distanceRestante < parseInt(vitesseVaisseau / 3.6+5)) {
-        var audio = new Audio('./audio/bip.mp3');
-        audio.play();
-        document.getElementById("imgPDA2").setAttribute("src","valider.png");
+        document.getElementById("imgPDA2").setAttribute("src","img/valider.png");
+        document.getElementById("imgPDA2").setAttribute("width","100px")
         document.getElementById("msgPDA3").style.color = "green";
         document.getElementById("msgPDA3").innerText = "VOUS POUVEZ ATTERRIR !";
         numInstruction++;
@@ -189,7 +192,7 @@ function bougeVaisseau() {
         while (myNode.lastChild) {
             myNode.removeChild(myNode.lastChild);
         }
-        var vaisseauMap = document.createElement("div");
+        let vaisseauMap = document.createElement("div");
         vaisseauMap.setAttribute("id","mapAsteroideVaisseau")
         vaisseauMap.style.width = (8)+"px";
         vaisseauMap.style.height = (8)+"px";
@@ -269,7 +272,7 @@ function hasAsteroides() {
 }
 function genereAsteroide() {
     if (numAsteroide < nbAsteroides) {
-        var asteroide = document.createElement("div");
+        let asteroide = document.createElement("div");
         asteroide.style.width = "1px";
         asteroide.style.height = "1px";
         asteroide.setAttribute("class","asteroide")
@@ -302,13 +305,13 @@ function verifAsteroide() {
 
         document.getElementById("msgPDA3").style.color = "red";
         document.getElementById("msgPDA3").innerText = "TOUCHE !";
-        var explosion = parseInt(Math.random() * (3 - 1) + 1);
+        let explosion = parseInt(Math.random() * (3 - 1) + 1);
         if (explosion == 1) {
-            var audio = new Audio('./audio/explode.mp3');
+            let audio = new Audio('./audio/explode.mp3');
             audio.play();
         }
         if (explosion == 2) {
-            var audio = new Audio('./audio/explosion.mp3');
+            let audio = new Audio('./audio/explosion.mp3');
             audio.play();
         }
         asteroidesRestants--;
@@ -375,4 +378,177 @@ function verifAsteroide() {
     
         
     
+}
+function oxygeneMenu() {
+    let titremenuOxygene = document.getElementById("oxygeneTitre")
+    titremenuOxygene.innerText = "Recharger de \n l'oxygene";
+    let menuOxygene = document.getElementById("items")
+    while (menuOxygene.lastChild) {
+        menuOxygene.removeChild(menuOxygene.lastChild);
+    }
+    let item1 = document.createElement("div");
+    item1.setAttribute("class", "itemClicablePDA")
+    item1.setAttribute("onclick", "rechargerBouteilleOxygeneMenu()")
+    item1.innerText = "Recharger de l'oxygene"
+    menuOxygene.appendChild(item1)
+    
+}
+function rechargerBouteilleOxygeneMenu() {
+    let titremenuOxygene = document.getElementById("oxygeneTitre")
+    titremenuOxygene.innerText = "Recharger de \n l'oxygene";
+    let menuOxygene = document.getElementById("items")
+    while (menuOxygene.lastChild) {
+        menuOxygene.removeChild(menuOxygene.lastChild);
+    }
+    let item1 = document.createElement("div");
+    item1.setAttribute("class", "itemClicablePDA")
+    item1.setAttribute("onclick", "insererBouteilleOxygeneMenu()")
+    item1.innerText = "Inserer une bouteille d'oxygene"
+    let item2 = document.createElement("div");
+    item2.setAttribute("class", "itemClicablePDA")
+    item2.setAttribute("onclick", "chargerBouteilleOxygeneMenu()")
+    item2.innerText = "Charger une bouteille d'oxygene"
+    let boutonRetour = document.createElement("div");
+    boutonRetour.setAttribute("id", "retour")
+    boutonRetour.setAttribute("onclick", "oxygeneMenu()")
+    boutonRetour.innerText = "Retour"
+    menuOxygene.appendChild(item1)
+    menuOxygene.append("<br>")
+    menuOxygene.appendChild(item2)
+    menuOxygene.appendChild(boutonRetour)
+}
+function chargerBouteilleOxygeneMenu() {
+    let titremenuOxygene = document.getElementById("oxygeneTitre")
+    titremenuOxygene.innerText = "Charger une bouteille \n d'oxygene";
+    let menuOxygene = document.getElementById("items")
+    while (menuOxygene.lastChild) {
+        menuOxygene.removeChild(menuOxygene.lastChild);
+    }
+    let msgLoading = document.createElement("div");
+    msgLoading.setAttribute("id", "msgChargementOxygene")
+    msgLoading.innerText = "Choisissez une bouteille a charger";
+    menuOxygene.appendChild(msgLoading)
+    let qteOxygene = document.createElement("div");
+    qteOxygene.setAttribute("id", "qteOxygene")
+    qteOxygene.innerText = oxygene;
+    menuOxygene.appendChild(msgLoading)
+    for (let i = 0; i < nbBouteillesOxygene; i++){
+        let bouteille = document.createElement("img");
+        bouteille.setAttribute("src", "img/oxy9.png");
+        bouteille.setAttribute("width", "50px");
+        bouteille.setAttribute("height", "100px");
+        bouteille.setAttribute("onclick", "chargerBouteilleOxygene(event)");
+        menuOxygene.appendChild(bouteille)
+    }
+    menuOxygene.appendChild(qteOxygene)
+    let boutonRetour = document.createElement("div");
+    boutonRetour.setAttribute("id", "retour")
+    boutonRetour.setAttribute("onclick", "rechargerBouteilleOxygeneMenu()")
+    boutonRetour.innerText = "Retour"
+    menuOxygene.appendChild(boutonRetour)
+}
+function chargerBouteilleOxygene(event) {
+    let msgLoading = document.getElementById("msgChargementOxygene");
+    msgLoading.color = "orange";
+    msgLoading.style.animationName = "clignoter"
+    msgLoading.innerText = "Vidage du contenu de la bouteille dans le reservoir";
+    event.target.setAttribute("id","bouteille");
+    oxy = 8;    
+
+}
+
+function insererBouteilleOxygeneMenu(){
+    let titremenuOxygene = document.getElementById("oxygeneTitre")
+    titremenuOxygene.innerText = "Inserer une bouteille d'oxygene";
+    let menuOxygene = document.getElementById("items")
+    while (menuOxygene.lastChild) {
+        menuOxygene.removeChild(menuOxygene.lastChild);
+    }
+    let msgLoading = document.createElement("div");
+    msgLoading.setAttribute("id", "msgLoading")
+    msgLoading.setAttribute("onclick", "bouteilleInseree()")
+    msgLoading.setAttribute("class", "itemClicablePDA")
+    msgLoading.innerText = "\n En attente d'une \n bouteille d'oxygene...";
+    let loadingIcone = document.createElement("div");
+    loadingIcone.setAttribute("id", "loadingIcone")
+    loadingIcone.innerText = "||||||||";
+    menuOxygene.appendChild(msgLoading)
+    menuOxygene.appendChild(loadingIcone)
+    let boutonRetour = document.createElement("div");
+    boutonRetour.setAttribute("id", "retour")
+    boutonRetour.setAttribute("onclick", "rechargerBouteilleOxygeneMenu()")
+    boutonRetour.innerText = "Retour"
+    menuOxygene.appendChild(boutonRetour)
+}
+function bouteilleInseree() {
+    let loadingIcone = document.getElementById("loadingIcone");
+    loadingIcone.style.color = "cyan";
+    loadingIcone.innerText = "Bouteille inseree";
+    loadingIcone.style.animationName = "none"
+    setTimeout(function () {
+        loadingIcone.style.color = "yellow";
+        loadingIcone.innerText = "Ajout de la bouteille au stock...";
+        let audio = new Audio('./audio/lecture.mp3');
+        audio.play();
+    },1000);
+
+
+    setTimeout(function () {
+        loadingIcone.style.color = "green";
+        loadingIcone.innerText = "Succes !";
+        nbBouteillesOxygene++;
+    }, 3000);
+
+}
+
+function animOxy() {
+    let bouteille = document.getElementById("bouteille")
+    if (bouteille) {
+        bouteille.setAttribute("src","img/oxy"+oxy+".png")
+        if (oxy <= 0) {
+            bouteille.remove();
+            let msgLoading = document.getElementById("msgChargementOxygene");
+            msgLoading.color = "green";
+            msgLoading.style.animationName = "none"
+            msgLoading.innerText = "TERMINE";
+        } else {
+            oxy--;
+            oxygene += 10;
+        }
+    }
+
+
+}
+function analysePDA() {
+    if (oxy >= 0) {
+        setInterval(animOxy(oxy), 300)
+    }
+    miseAJourOxygene()
+    qteOxygene()
+
+}
+function miseAJourOxygene() {
+    let decremente = 2;
+    let barre = document.getElementById('barre-oxygen');
+    let barreVide = document.getElementById('barre-vide');
+    if (oxygene !== 0) {
+        oxygene -= decremente;
+        if (oxygene < 100) {
+            barre.style.width = (oxygene * 5) + "px";
+        } else {
+            barre.style.width = document.getElementById("barre-vide").offsetWidth+"px";
+        }
+
+        document.getElementById('oxygen-nb').innerText = oxygene;
+        if (oxygene < 30) barre.style.backgroundColor = "red";
+        else if (oxygene <= 60) barre.style.backgroundColor = "orange";
+    }
+
+
+}
+function qteOxygene() {
+    if (document.getElementById("qteOxygene")) {
+        document.getElementById("qteOxygene").innerText = oxygene;
+    }
+
 }

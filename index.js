@@ -3,23 +3,28 @@ let vitesseWater = 1000;
 let vitesseFood = 1000;
 
 
+
+
 initGame();
 
 function initGame() {
-    var audio = new Audio('./audio/lecture.mp3');
-    audio.play();
     setTimeout(function () {
         setInterval(oxygen, 9000);
         setInterval(waterDesc, vitesseWater);
         setInterval(foodDesc, vitesseFood);
         setInterval(bougeVaisseau, 1000);
-
+        setInterval(analysePDA, 5000);
 
         initPDA();
     }, 3000);
 
-}
 
+}
+function bougeCurseurVitesse(event) {
+    let curseurVitesse = document.querySelector(".curseurVitesse");
+    curseurVitesse.setAttribute("style", "top" + (event.pageY -20) + "px; left:" + (event.pageX -20) + "px;")
+    
+}
 function deceleration() {
     let vaisseau = document.getElementById("vitesse-vaiseaux");
     if (vaisseau.innerText === 0) alert("Les moteurs sont coupés !");
@@ -57,15 +62,7 @@ function remplir() {
  * Il devient rouge et le joueur dois remettre de l'oxygen
  */
 function oxygen() {
-    let decremente = 2;
-    let barre = document.getElementById('barre-oxygen');
-    let oxygen = document.getElementById('oxygen-nb');
-    if (oxygen.innerText !== "0") {
-        oxygen.innerText -= decremente;
-        barre.style.width = ((barre.offsetWidth) - (decremente * 5)) + "px";
-        if (oxygen.innerText < 30) barre.style.backgroundColor = "red";
-        else if (oxygen.innerText <= 60) barre.style.backgroundColor = "orange";
-    }
+
 }
 
 /**

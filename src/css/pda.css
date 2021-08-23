@@ -1,0 +1,100 @@
+#oxygeneTitre{
+    color: cyan;
+    text-align: center;
+    font-size: 28px;
+}
+#retour{
+    color: blueviolet;
+    text-align: center;
+    font-size: 28px;
+}
+#retour:hover{
+    color: blueviolet;
+    text-align: center;
+    font-size: 28px;
+    cursor: pointer;
+}
+.itemClicablePDA{
+    color: cyan;
+    text-align: left;
+    font-size: 17px;
+    position: relative;
+    left: 12px;
+    cursor: pointer;
+}
+.itemClicablePDA:hover{
+    color: greenyellow;
+    text-align: left;
+    font-size: 17px;
+    position: relative;
+    left: 12px;
+
+    cursor: pointer;
+}
+#loadingIcone{
+    font-size: 45px;
+    color: greenyellow;
+    animation-name: "clignoter";
+    animation-duration: 0.4s;
+    animation-iteration-count: infinite;
+}
+#qteOxygene{
+    color: blue;
+    font-size: 48px;
+    text-align: center;
+}
+#msgLoading{
+    left: 0px;
+    font-size: 24px;
+    text-align: center;
+}
+#msgChargementOxygene{
+    color: rgb(4, 226, 189);
+    font-size: 24px;
+    text-align: center;
+}
+#msgPDA{
+    color: rgb(4, 226, 189);
+    font-size: 24px;
+}
+
+#msgPDA2{
+    color: rgb(4, 226, 189);
+    font-size: 24px;
+}
+#msgPDA3{
+    color: green;
+    font-size: 24px;
+    height: 100px;
+}
+#pda{
+    width: 400px;
+    height: 700px;
+    background-color: black;
+    margin: auto;
+    text-align: center;
+}
+#imgPDA{
+    border: blue 1px solid;
+    width: 400px;
+    margin: auto;
+    height: 250px;
+}
+#mapAsteroide{
+    width: 100px;
+    height: 100px;
+    border: 1px rgb(4, 226, 189) solid;
+    margin: auto;
+    overflow: hidden;
+}
+#mapAsteroideVaisseau{
+    border: 1px rgb(4, 226, 189) solid;
+    top: 84px;
+    left: 46px;
+    position: relative;
+
+}
+.asteroide{
+    background-color: rgb(4, 226, 189);
+    position: relative;
+}
