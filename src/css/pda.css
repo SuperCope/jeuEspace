@@ -3,6 +3,22 @@
     text-align: center;
     font-size: 28px;
 }
+.miseAJourPDA2{
+    background-color: aqua;
+    width: 100px;
+    border-radius: 2em;
+}
+.miseAJourPDA2:hover{
+    background-color: blue;
+    cursor: pointer;
+    width: 100px;
+    border-radius: 2em;
+}
+#pertes{
+    color: red;
+    text-align: center;
+    font-size: 45px;
+}
 #retour{
     color: blueviolet;
     text-align: center;
@@ -14,6 +30,55 @@
     font-size: 28px;
     cursor: pointer;
 }
+#retour2{
+    color: blueviolet;
+    text-align: center;
+    font-size: 28px;
+}
+#retour2:hover{
+    color: blueviolet;
+    text-align: center;
+    font-size: 28px;
+    cursor: pointer;
+}
+#retour2:hover{
+    color: blueviolet;
+    text-align: center;
+    font-size: 28px;
+    cursor: pointer;
+}
+#mapCanalisations{
+    width: 300px;
+    height: 300px;
+    background-color: cyan;
+    background-size: 100%;
+    background-image: url('../../img/canalisations.png');
+    margin: auto;
+}
+.fuite{
+    opacity: 77%;
+    width: 50px;
+    height: 50px;
+    font-size: 13px;
+    position: relative;
+    background-size: 100%;
+    padding-top: 10px;
+}
+.fuite:hover{
+    background-image: none;
+    background-size: 100%;
+    cursor: url('../../img/molette.png'),default;
+}
+#fuite1{
+    left: 82px;
+    top: 52px;
+}
+
+#fuite2{
+    left: 210px;
+    top: 104px;
+}
+
 .itemClicablePDA{
     color: cyan;
     text-align: left;

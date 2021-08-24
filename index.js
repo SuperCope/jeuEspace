@@ -9,16 +9,49 @@ initGame();
 
 function initGame() {
     setTimeout(function () {
-        setInterval(oxygen, 9000);
         setInterval(waterDesc, vitesseWater);
         setInterval(foodDesc, vitesseFood);
         setInterval(bougeVaisseau, 1000);
-        setInterval(analysePDA, 5000);
-
+        setInterval(analysePDA, 300);
+        setInterval(analyseVieJoueur, 2000)
+        setInterval(miseAJourFuites,30000)
         initPDA();
+
     }, 3000);
 
 
+}
+function analyseVieJoueur() {
+    vieJoueur = vieJoueur - ((60 - debitOxygene) / 10);
+    if (oxygene == 0) {
+        vieJoueur = vieJoueur - 10;
+    }
+    if (vieJoueur > 100) {
+        vieJoueur = 100;
+    }
+    if (vieJoueur < 0) {
+        vieJoueur = 0;
+    }
+    if (vieJoueur > 0) {
+        document.getElementById("santeJoueur").style.color = "red"
+        document.getElementById("santeJoueur").innerText = "catastrophique"
+    }
+    if (vieJoueur > 20) {
+        document.getElementById("santeJoueur").style.color = "orange"
+        document.getElementById("santeJoueur").innerText = "critique"
+    }
+    if (vieJoueur > 40) {
+        document.getElementById("santeJoueur").style.color = "yellow"
+        document.getElementById("santeJoueur").innerText = "moyenne"
+    }
+    if (vieJoueur > 60) {
+        document.getElementById("santeJoueur").style.color = "greenyellow";
+        document.getElementById("santeJoueur").innerText = "bonne"
+    }
+    if (vieJoueur > 80) {
+        document.getElementById("santeJoueur").style.color = "green";
+        document.getElementById("santeJoueur").innerText = "tres bonne"
+    }
 }
 function bougeCurseurVitesse(event) {
     let curseurVitesse = document.querySelector(".curseurVitesse");
@@ -56,14 +89,6 @@ function remplir() {
 
 
 
-/**
- * Gestion de l'oxygene 
- * L'oxygene est decrementer au fur du temps, des que l'oxygen descend a 50
- * Il devient rouge et le joueur dois remettre de l'oxygen
- */
-function oxygen() {
-
-}
 
 /**
  * Gestion des informations du joueurs

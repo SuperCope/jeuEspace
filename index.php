@@ -74,7 +74,7 @@
                     <div id="oxygeneTitre">Gestion de l'oxygene</div>
                         <div id="items">
 
-                            <br><div class="itemClicablePDA" onclick="rechargerBouteilleOxygeneMenu()">Recharger de l'oxygene</div>
+                            <br><div  class="itemClicablePDA" onclick="rechargerBouteilleOxygeneMenu()">Gerer l'oxygene</div>
                         </div>
                     </div>
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
@@ -87,7 +87,7 @@
             <div class="vide"></div>
             <div id="barre-vide"></div>
             <div id="barre-oxygen">
-                <h3 id="oxygen-nb" style="margin-top:25px"></h3>
+                <h3 id="oxygen-nb" style="margin-top:25px">----</h3>
             </div>
             <button class="btn btn-oxygen">Recharge (Restant : 1 )</button>
             <button class="btn btn-jardin">Acceder au Jardin</button>
@@ -241,7 +241,7 @@
                     <img id="food" class="image" src="./img/food.png" alt="">
                 </div>
                 <div class="etat">
-                    <h3 id="text-etat">SANTE DU JOUEUR : <span style="color: green;">BONNE<span></h3>
+                    <h3 id="text-etat">SANTE DU JOUEUR : <span style="color: green;" id="santeJoueur">-------<span></h3>
                 </div>
             </div>
             <div id="barre-vide"></div>
