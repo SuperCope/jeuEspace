@@ -8,6 +8,7 @@ let vitesseFood = 1000;
 initGame();
 
 function initGame() {
+
     setTimeout(function () {
         setInterval(waterDesc, vitesseWater);
         setInterval(foodDesc, vitesseFood);
@@ -140,5 +141,32 @@ function nombreFood() {
 
     if (lastFood < 50) {
         food.style["background-color"] = "red";
+    }
+}
+
+
+function dragstart_handler(ev) {
+ // On ajoute l'identifiant de l'élément cible à l'objet de transfert
+    ev.dataTransfer.setData("application/my-app", ev.target.id);
+    ev.dataTransfer.dropEffect = "move";
+}
+function dragover_handler(ev) {
+
+ ev.preventDefault();
+ ev.dataTransfer.dropEffect = "move"
+}
+
+function drop_handler(ev) {
+    ev.target.innerText = "";
+    ev.preventDefault();
+    // On obtient l'identifiant de la cible et on ajoute l'élément déplacé
+    // au DOM de la cible
+    var data = ev.dataTransfer.getData("application/my-app");
+    ev.target.appendChild(document.getElementById(data));
+    console.log(ev.target)
+    if (ev.target.getAttribute("id") == "lecteur") {
+        document.getElementById(data).style.width = "35px";
+        document.getElementById(data).style.height = "100px";
+        insererCleUSB();
     }
 }

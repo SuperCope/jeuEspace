@@ -114,7 +114,106 @@ body{
     width: 250px;
     height: 320px;
 }
-
+#msgCle1{
+    text-align: center;
+    color: cyan;
+    font-size: 24px;
+    visibility: hidden;
+}
+#consulterFichier{
+    text-align: center;
+    color: cyan;
+    font-size: 12px;
+}
+#activationDetectionAsteroide{
+    border: 1px dashed cyan;
+}
+#activationDetectionAsteroideSpan{
+    color: cyan;
+}
+#activationDetectionAsteroideTexte{
+    color: cyan;
+}
+#operations{
+    border: 1px solid cyan;
+    color: cyan;
+    font-size: 24px;
+}
+#ejecter{
+    text-align: center;
+    color: cyan;
+    cursor: pointer;
+}
+#cleUSB{
+    background-image: url('../../img/cleUSB.png');
+    background-size: 100%;
+    width: 10px;
+    height: 31px;
+    margin: auto;
+}
+#dossier{
+    color: cyan;
+}
+#quitterSpan{
+    float: right;
+}
+#downloadSpan{
+    color: cyan;
+    margin-top: 12px;
+}
+#download{
+    color: cyan;
+}
+#installationSpan{
+    width: 40px;
+    color: orange;
+    position: relative;
+    top: 4px;
+}
+#installation{
+    display: flex;
+    border: 1px solid cyan;
+}
+#installationFichier{
+    color: white;
+}
+#texteFichier{
+    color: white;
+}
+#texteSpan{
+    position: relative;
+    top: 4px;
+    width: 40px;
+    color: gray;
+}
+#texte{
+    display: flex;
+    border: 1px solid cyan;
+}
+#cadreFichiers{
+    color: cyan;
+    border: 3px cyan solid;
+    display: grid;
+}
+#usbGauche{
+    float: left;
+    left: 50px;
+    position: relative;
+}
+#usbDroite{
+    float: right;
+    right: 50px;
+    position: relative;
+}
+#lecteur{
+    color: cyan;
+    position: relative;
+    top: 45px;
+    width: 35px;
+    height: 100px;
+    margin: auto;
+    border: 1px dashed cyan;
+}
 #haut{
     background-color: rgb(98, 139, 192);
     margin: auto;

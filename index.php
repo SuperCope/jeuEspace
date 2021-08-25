@@ -29,6 +29,7 @@
     </div>
 
     <div class="main">
+        <div id="cleUSB" nbInstallations="4" nbFichiers="14" draggable="true" ondragstart="dragstart_handler(event)"></div>
         <div id="pda">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item">
@@ -71,10 +72,9 @@
                     <button id="atterir" onclick="vaisseauAtterrissage()">Atterir</button>
                 </div>
                 <div class="tab-pane fade" id="oxygen" role="tabpanel" aria-labelledby="oxygen-tab">
-                    <div id="oxygeneTitre">Gestion de l'oxygene</div>
+                    <div id="oxygeneTitre">Gerer l'oxygene</div>
                         <div id="items">
 
-                            <br><div  class="itemClicablePDA" onclick="rechargerBouteilleOxygeneMenu()">Gerer l'oxygene</div>
                         </div>
                     </div>
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
@@ -251,6 +251,8 @@
 </body>
 
 <script src="pda.js"></script>
+<script src="pdaNavigation.js"></script>
+<script src="pdaOxygene.js"></script>
 <script src="index.js"></script>
 
 

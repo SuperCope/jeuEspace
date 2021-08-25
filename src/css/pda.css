@@ -55,6 +55,27 @@
     background-image: url('../../img/canalisations.png');
     margin: auto;
 }
+#indicateurBatterie2{
+    font-size: 36px;
+    color: black;
+}
+#indicateurBatterie1{
+    font-size: 36px;
+}
+#indicateurBatterie0{
+    font-size: 36px;
+    color: cyan;
+}
+#indicateurBatterie{
+    display: inline-flex;
+}
+#itemAffichage{
+    color: cyan;
+    text-align: left;
+    font-size: 17px;
+    position: relative;
+    left: 12px;
+}
 .fuite{
     opacity: 77%;
     width: 50px;
@@ -122,6 +143,11 @@
     color: rgb(4, 226, 189);
     font-size: 24px;
 }
+#switch{
+    position: relative;
+    left: -10px;
+    top: 3px;
+}
 
 #msgPDA2{
     color: rgb(4, 226, 189);
@@ -133,6 +159,7 @@
     height: 100px;
 }
 #pda{
+    overflow-y: auto;
     width: 400px;
     height: 700px;
     background-color: black;
