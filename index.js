@@ -15,7 +15,7 @@ function initGame() {
         setInterval(bougeVaisseau, 1000);
         setInterval(analysePDA, 300);
         setInterval(analyseVieJoueur, 2000)
-        setInterval(miseAJourFuites,30000)
+        setInterval(miseAJourFuites, 30000)
         initPDA();
 
     }, 3000);
@@ -56,8 +56,8 @@ function analyseVieJoueur() {
 }
 function bougeCurseurVitesse(event) {
     let curseurVitesse = document.querySelector(".curseurVitesse");
-    curseurVitesse.setAttribute("style", "top" + (event.pageY -20) + "px; left:" + (event.pageX -20) + "px;")
-    
+    curseurVitesse.setAttribute("style", "top" + (event.pageY - 20) + "px; left:" + (event.pageX - 20) + "px;")
+
 }
 function deceleration() {
     let vaisseau = document.getElementById("vitesse-vaiseaux");
@@ -146,14 +146,14 @@ function nombreFood() {
 
 
 function dragstart_handler(ev) {
- // On ajoute l'identifiant de l'élément cible à l'objet de transfert
+    // On ajoute l'identifiant de l'élément cible à l'objet de transfert
     ev.dataTransfer.setData("application/my-app", ev.target.id);
     ev.dataTransfer.dropEffect = "move";
 }
 function dragover_handler(ev) {
 
- ev.preventDefault();
- ev.dataTransfer.dropEffect = "move"
+    ev.preventDefault();
+    ev.dataTransfer.dropEffect = "move"
 }
 
 function drop_handler(ev) {
@@ -163,7 +163,6 @@ function drop_handler(ev) {
     // au DOM de la cible
     var data = ev.dataTransfer.getData("application/my-app");
     ev.target.appendChild(document.getElementById(data));
-    console.log(ev.target)
     if (ev.target.getAttribute("id") == "lecteur") {
         document.getElementById(data).style.width = "35px";
         document.getElementById(data).style.height = "100px";

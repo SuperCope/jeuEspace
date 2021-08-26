@@ -7,14 +7,20 @@ let vieVaisseauHaut = 100;
 let vieVaisseauBas = 100;
 let vieVaisseauGauche = 100;
 let vieVaisseauDroite = 100;
-let energieTotale = 10000;
-let energie = 9000;
+let energieTotale = 100000;
+let energie = 90000;
 let detectionAsteroide = false;
 let vieJoueur = 100;
 let xVaisseau = 0;
 let yVaisseau = 0;
 let zVaisseau = 1200;
 let direction = "";
+let activationBouclier;
+let energieAuxiliaire = 4000;
+let energieAuxiliaireMax = 10000;
+let numBatterieActive = 0;
+let vieBouclier = 1000;
+let vieMaxBouclier = 5000;
 let champAsteroide = false;
 let tailleVaisseau = 50;
 let numAsteroide = 0;
@@ -39,17 +45,20 @@ let valReparationLongue = 1;
 let vieCanalisation = 100;
 let modeTelechargement;
 let fichiersTemp = [];
+let modules = [];
+
 
 
 function initPDA() {
+    modules[0] = detectionAsteroide;
     nbInstructions = Math.random() * (1 - 2) + 2;
     numInstruction = 0;
     document.getElementById("oxygen-nb").innerText = oxygene;
     nextInstruction();
-    for (let i = 0; i < 2; i++){
+    for (let i = 0; i < 2; i++) {
         fuites[i] = 100;
     }
-    for (let i = 0; i < 10; i++){
+    for (let i = 0; i < 10; i++) {
         misesAJours[i] = null;
     }
 
@@ -65,14 +74,14 @@ function nextInstruction() {
     yArrivee = parseInt(Math.random() * (19500 - 1500) + 1500);
     distanceAParcourir = Math.sqrt(((xVaisseau - xArrivee) * (xVaisseau - xArrivee)) + ((yVaisseau - yArrivee) * (yVaisseau - yArrivee)));
     distanceAParcourir = parseInt(distanceAParcourir);
-    distanceAParcourir = Math.ceil(distanceAParcourir/100)*100
+    distanceAParcourir = Math.ceil(distanceAParcourir / 100) * 100
     miseAJourPDA(distanceAParcourir)
 }
 
 
-function carburantConsommation(){
+function carburantConsommation() {
     let vitesse = document.getElementById('vitesse-vaiseaux');
-    let decremente = (vitesse.innerText /200);
+    let decremente = (vitesse.innerText / 200);
     let barre = document.getElementById('carburant-plein');
     barre.style.width = (barre.offsetWidth - decremente) + "px";
 }
@@ -83,7 +92,7 @@ function cleUSBMenu() {
     let menuOxygene = clearInterface("Lire une cle USB")
     let lecteur = document.createElement("div");
     lecteur.setAttribute("id", "lecteur");
-    lecteur.setAttribute("ondrop","drop_handler(event)")
+    lecteur.setAttribute("ondrop", "drop_handler(event)")
     lecteur.setAttribute("ondragover", "dragover_handler(event)")
     lecteur.innerText = "Cle"
     menuOxygene.appendChild(lecteur);
@@ -168,16 +177,16 @@ function consulterFichiers() {
     quitterSpan.setAttribute("class", "fas fa-times");
     cadre.appendChild(quitterSpan);
     cadre.setAttribute("id", "cadreFichiers");
-    for (let i = 0; i < fichiersTemp.length; i++){
+    for (let i = 0; i < fichiersTemp.length; i++) {
         if (fichiersTemp[i] == 1) {
             let installation = document.createElement("div");
             installation.setAttribute("id", "installation");
             let installationSpan = document.createElement("span");
-            installationSpan.setAttribute("class","fas fa-toolbox")
-            installationSpan.setAttribute("id","installationSpan")
+            installationSpan.setAttribute("class", "fas fa-toolbox")
+            installationSpan.setAttribute("id", "installationSpan")
             let installationFichier = document.createElement("div");
-            installationFichier.setAttribute("id","installationFichier")
-            installationFichier.innerText = " "+i;
+            installationFichier.setAttribute("id", "installationFichier")
+            installationFichier.innerText = " " + i;
             installation.appendChild(installationSpan);
             installation.appendChild(installationFichier);
             cadre.appendChild(installation)
@@ -186,11 +195,11 @@ function consulterFichiers() {
             let texte = document.createElement("div");
             texte.setAttribute("id", "texte");
             let texteSpan = document.createElement("span");
-            texteSpan.setAttribute("class","far fa-file-alt")
-            texteSpan.setAttribute("id","texteSpan")
+            texteSpan.setAttribute("class", "far fa-file-alt")
+            texteSpan.setAttribute("id", "texteSpan")
             let texteFichier = document.createElement("div");
-            texteFichier.setAttribute("id","texteFichier")
-            texteFichier.innerText = " "+i;
+            texteFichier.setAttribute("id", "texteFichier")
+            texteFichier.innerText = " " + i;
             texte.appendChild(texteSpan);
             texte.appendChild(texteFichier);
             cadre.appendChild(texte)
@@ -236,35 +245,34 @@ function ejecterCleUSB() {
 function insererCleUSB() {
     let typeFichier = 0;
     let nbFichiers = document.getElementById("cleUSB").getAttribute("nbFichiers");
-    for (let i = 0; i < nbFichiers; i++){
+    for (let i = 0; i < nbFichiers; i++) {
         typeFichier = parseInt(Math.random() * (3 - 1) + 1);
         fichiersTemp[i] = typeFichier;
     }
     document.getElementById("msgCle1").innerText = nbFichiers + " fichiers detectes";
     document.getElementById("msgCle1").style.visibility = "visible";
     document.getElementById("operationsPanel").style.visibility = "visible";
-    console.log(fichiersTemp)
 }
 function telechargement() {
     let duree = parseInt(Math.random() * (900 - 300) + 300);
-    for (let i = 0; i < fichiersTemp.length; i++){
-        let ratio  = (100 / fichiersTemp.length)
+    for (let i = 0; i < fichiersTemp.length; i++) {
+        let ratio = (100 / fichiersTemp.length)
         setTimeout(function () {
-            document.getElementById("download").innerText = "Telechargement du fichier " + (i+1) + " / " + fichiersTemp.length;
+            document.getElementById("download").innerText = "Telechargement du fichier " + (i + 1) + " / " + fichiersTemp.length;
             if (i < fichiersTemp.length - 1) {
-                document.getElementById("barreTelechargement").style.width  = (ratio+(ratio * i))+"%";
+                document.getElementById("barreTelechargement").style.width = (ratio + (ratio * i)) + "%";
             } else {
-                document.getElementById("barreTelechargement").style.width  = "100%" 
+                document.getElementById("barreTelechargement").style.width = "100%"
             }
             if (i == fichiersTemp.length - 1) {
-                document.getElementById("barreTelechargement").setAttribute("class","progress-bar")
+                document.getElementById("barreTelechargement").setAttribute("class", "progress-bar")
             }
 
-        }, ((i*duree)))
+        }, ((i * duree)))
     }
     modeTelechargement = false;
     setTimeout(function () {
         document.getElementById("operationsPanel").style.visibility = "visible"
         document.getElementById("cadreFichiers").style.visibility = "hidden"
-    }, ((fichiersTemp.length*duree)))
+    }, ((fichiersTemp.length * duree)))
 }

@@ -89,7 +89,6 @@
             <div id="barre-oxygen">
                 <h3 id="oxygen-nb" style="margin-top:25px">----</h3>
             </div>
-            <button class="btn btn-oxygen">Recharge (Restant : 1 )</button>
             <button class="btn btn-jardin">Acceder au Jardin</button>
         </div>
 

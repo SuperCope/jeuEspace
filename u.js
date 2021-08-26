@@ -20,11 +20,8 @@ function oxygeneMenu() {
 }
 function gererBatteries() {
     let menu = clearInterface("Gerer les batteries")
-    menu.style.display = "grid";
     let item1 = document.createElement("div");
     item1.setAttribute("id", "indicateurBatterie");
-    item1.setAttribute("onclick", "numBatterieActive = 0");
-    item1.style.float = "left";
     let item1A = document.createElement("div");
     item1A.setAttribute("id", "indicateurBatterie0");
     item1A.innerText = "(";
@@ -40,8 +37,6 @@ function gererBatteries() {
 
     let item2 = document.createElement("div");
     item2.setAttribute("id", "indicateurBatterieAuxiliaire");
-    item2.setAttribute("onclick", "numBatterieActive = 1");
-    item2.style.float = "left";
     let item2A = document.createElement("div");
     item2A.setAttribute("id", "indicateurBatterieAuxiliaire0");
     item2A.innerText = "(";
@@ -55,69 +50,6 @@ function gererBatteries() {
     item2D.setAttribute("id", "indicateurBatterieAuxiliaire0");
     item2D.innerText = ")";
 
-    let item3 = document.createElement("div");
-    item3.setAttribute("class", "itemClicablePDA");
-    item3.setAttribute("onclick", "rechargerChargeBouclierMenu()");
-    item3.innerText = "Recharger la batterie auxiliaire";
-
-
-
-    setInterval(function () {
-        res = updateJaugeEnergie()
-        let texte = res[0];
-        let texte2 = res[1];
-
-        if (numBatterieActive == 0) {
-            document.getElementById("indicateurBatterie").style.border = "blue 2px solid";
-        } else {
-            document.getElementById("indicateurBatterie").style.border = "";
-        }
-        if (numBatterieActive == 1) {
-            document.getElementById("indicateurBatterieAuxiliaire").style.border = "blue 2px solid";
-        } else {
-            document.getElementById("indicateurBatterieAuxiliaire").style.border = "";
-        }
-        document.getElementById("indicateurBatterie1").innerText = texte;
-        document.getElementById("indicateurBatterie2").innerText = texte2;
-        if (energie > 0) {
-            document.getElementById("indicateurBatterie1").style.color = "red";
-        }
-        if (energie > 20000) {
-            document.getElementById("indicateurBatterie1").style.color = "orange";
-        }
-        if (energie > 40000) {
-            document.getElementById("indicateurBatterie1").style.color = "yellow";
-        }
-        if (energie > 60000) {
-            document.getElementById("indicateurBatterie1").style.color = "greenyellow";
-        }
-        if (energie > 80000) {
-            document.getElementById("indicateurBatterie1").style.color = "green";
-        }
-
-        res = updateJaugeEnergie2()
-        texte = res[0];
-        texte2 = res[1];
-
-        item2B.innerText = texte;
-        item2C.innerText = texte2;
-        if (energieAuxiliaire > 0) {
-            item2B.style.color = "red";
-        }
-        if (energieAuxiliaire > 2000) {
-            item2B.style.color = "orange";
-        }
-        if (energieAuxiliaire > 4000) {
-            item2B.style.color = "yellow";
-        }
-        if (energieAuxiliaire > 6000) {
-            item2B.style.color = "greenyellow";
-        }
-        if (energieAuxiliaire > 8000) {
-            item2B.style.color = "green";
-        }
-
-    }, 300);
     item1.appendChild(item1A)
     item1.appendChild(item1B)
     item1.appendChild(item1C)
@@ -129,20 +61,57 @@ function gererBatteries() {
     menu.appendChild(item1)
     menu.innerHTML += "<br>"
     menu.appendChild(item2)
-    menu.appendChild(item3)
-    let boutonRetour = document.createElement("div");
-    boutonRetour.setAttribute("id", "retour")
-    boutonRetour.setAttribute("onclick", "gererEnergieMenu()")
-    boutonRetour.innerText = "Retour"
-    menu.appendChild(boutonRetour)
+
+    setInterval(function () {
+        res = updateJaugeEnergie()
+        let texte = res[0];
+        let texte2 = res[1];
+
+        item1B.innerText = texte;
+        item1C.innerText = texte2;
+        if (energie > 0) {
+            item1B.style.color = "red";
+        }
+        if (energie > 20000) {
+            item1B.style.color = "orange";
+        }
+        if (energie > 40000) {
+            item1B.style.color = "yellow";
+        }
+        if (energie > 60000) {
+            item1B.style.color = "greenyellow";
+        }
+        if (energie > 80000) {
+            item1B.style.color = "green";
+        }
+        res = updateJaugeEnergie2()
+        texte = res[0];
+        texte2 = res[1];
+
+        item2B.innerText = texte;
+        item2C.innerText = texte2;
+        if (energieAuxiliaire > 0) {
+            item2B.style.color = "red";
+        }
+        if (energieAuxiliaire > 20000) {
+            item2B.style.color = "orange";
+        }
+        if (energieAuxiliaire > 40000) {
+            item2B.style.color = "yellow";
+        }
+        if (energieAuxiliaire > 60000) {
+            item2B.style.color = "greenyellow";
+        }
+        if (energieAuxiliaire > 80000) {
+            item2B.style.color = "green";
+        }
+    }, 300);
 }
 
 function gererEnergieMenu() {
     let menu = clearInterface("Gerer l'energie")
-    menu.style.display = "";
     let item1 = document.createElement("div");
     item1.setAttribute("id", "indicateurBatterie");
-    item1.style.border = ""
     let item1A = document.createElement("div");
     item1A.setAttribute("id", "indicateurBatterie0");
     item1A.innerText = "(";
@@ -158,12 +127,10 @@ function gererEnergieMenu() {
 
     let item2 = document.createElement("div");
     item2.setAttribute("id", "itemAffichage");
-    item2.setAttribute("class", "itemClicablePDA");
     item2.innerText = "Affichage : 35%";
 
     let item7 = document.createElement("div");
     item7.setAttribute("id", "itemAffichage");
-    item7.setAttribute("class", "itemClicablePDA");
     item7.setAttribute("onclick", "gererBatteries()");
     item7.innerText = "Gerer les batteries";
 
@@ -199,17 +166,15 @@ function gererEnergieMenu() {
 
 
 
-
     item1.appendChild(item1A)
     item1.appendChild(item1B)
     item1.appendChild(item1C)
     item1.appendChild(item1D)
-
     menu.appendChild(item1);
-
-    menu.appendChild(item7);
+    menu.append("\n \n");
     menu.appendChild(item2);
-
+    menu.innerHTML += "<br>"
+    menu.appendChild(item7);
     let libelleModules = ["Dectection asteroides", "Bouclier"];
 
     modules[0] = detectionAsteroide;
@@ -233,12 +198,12 @@ function gererEnergieMenu() {
         itemB.setAttribute("onclick", "viewModule('" + libelleModules[i] + "'," + i + ")");
         itemB.innerText = "consulter";
         itemB.style.float = "right";
+        item.innerHTML += "<br><br>";
         item.appendChild(itemA);
         item.appendChild(itemB);
         menu.appendChild(item);
-        item.innerHTML += "<br><br>";
     }
-    item.innerHTML += "<br>";
+    item.innerHTML += "<br><br>";
     item.appendChild(boutonRetour);
 
 }
@@ -264,10 +229,10 @@ function transfererEnergieDansBouclier() {
     setInterval(animJaugeBouclier(), 100)
 
 
-
 }
 function rechargerBouclierMenu() {
     let menu = clearInterface("Recharger le bouclier")
+    console.log(menu)
     let item1 = document.createElement("div");
     item1.setAttribute("id", "valeurBatterie");
     setInterval(function () { item1.innerText = energieAuxiliaire }, 100);
@@ -392,7 +357,6 @@ function animJaugeBouclier() {
                 document.getElementById("msgBouclier").innerText = "Succes";
             }
 
-
         }
         if (document.getElementById("jaugeVieBouclier1") && document.getElementById("jaugeVieBouclier2")) {
             document.getElementById("jaugeVieBouclier1").innerText = chaine;
@@ -430,10 +394,15 @@ function viewModule(libelleModule, i) {
         item0.setAttribute("class", "itemClicablePDA");
         item0.setAttribute("onclick", "rechargerBouclierMenu()");
         item0.innerText = "Recharger le bouclier";
+        let item1 = document.createElement("div");
+        item1.setAttribute("class", "itemClicablePDA");
+        item1.setAttribute("onclick", "rechargerChargeBouclierMenu()");
+        item1.innerText = "Recharger la batterie auxiliaire";
         menu.innerHTML += " <br><br>"
         menu.appendChild(item0)
+        menu.innerHTML += " <br>"
+        menu.appendChild(item1)
     }
-
 
 
 
@@ -463,7 +432,6 @@ function ajoutCapaciteBouclier(boucle) {
                 boucle = false;
             }
         }
-
 
     }, 100)
 
@@ -511,7 +479,7 @@ function rechargerChargeBouclierMenu() {
     item2E.innerText = "0";
     let boutonRetour = document.createElement("div");
     boutonRetour.setAttribute("id", "retour")
-    boutonRetour.setAttribute("onclick", "gererBatteries()")
+    boutonRetour.setAttribute("onclick", "viewModule('Bouclier',1)")
     boutonRetour.innerText = "Retour"
     item2.appendChild(item2B)
     item2.appendChild(item2A)
@@ -738,7 +706,6 @@ function chargerBouteilleOxygene(event) {
     }
 
 
-
 }
 
 function insererBouteilleOxygeneMenu() {
@@ -772,7 +739,6 @@ function bouteilleInseree() {
         let audio = new Audio('./audio/lecture.mp3');
         audio.play();
     }, 1000);
-
 
     setTimeout(function () {
         if (fuites[0] > 0) {
@@ -844,7 +810,6 @@ function animOxy() {
         }
     }
 
-
 }
 function miseAJourFuites() {
     for (let i = 0; i < fuites.length; i++) {
@@ -856,7 +821,6 @@ function miseAJourFuites() {
     if (document.getElementById("pertes")) {
         document.getElementById("pertes").innerText = pertesOxygene;
     }
-
 
 }
 function desactiveDetectionAsteroides() {
@@ -921,7 +885,6 @@ function analysePDA() {
         activationBouclier = false;
     }
 
-
     if (oxy >= 0) {
         setInterval(animOxy(oxy), 300)
         setInterval(miseAJourOxygene(oxy), 300)
@@ -939,7 +902,6 @@ function analysePDA() {
     for (let i = 0; i < misesAJours.length; i++) {
 
         setInterval(updateMiseAJour(i), 8000)
-
 
     }
 
@@ -972,7 +934,6 @@ function analysePDA() {
         }
     }
 
-
 }
 function miseAJourOxygene() {
     let barre = document.getElementById('barre-oxygen');
@@ -993,7 +954,6 @@ function miseAJourOxygene() {
 
     }
 
-
 }
 function qteOxygene() {
     if (document.getElementById("qteOxygene")) {
@@ -1001,7 +961,6 @@ function qteOxygene() {
     }
 
 }
-
 
 function repareFuite(num) {
     if (fuites[num] >= vieCanalisation && document.getElementById("fuite" + (num + 1)) != null) {
@@ -1023,12 +982,10 @@ function repareFuite(num) {
             audio.play();
         }
 
-
         if (fuites[num] <= vieCanalisation) {
             document.getElementById("fuite" + (num + 1)).innerText = ((Math.round(fuites[num]) * 10) / 10) + " %";
         }
     }
-
 
 }
 function reglerDebitDiffuseur() {
@@ -1104,7 +1061,6 @@ function reglerDiffuseur(event) {
         document.getElementById("jaugeDiffuseur").style.backgroundColor = "orange";
     }
     debitOxygene = value
-
 
 }
 function installerMisesAJours() {

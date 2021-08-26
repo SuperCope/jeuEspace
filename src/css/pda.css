@@ -55,6 +55,20 @@
     background-image: url('../../img/canalisations.png');
     margin: auto;
 }
+#indicateurBatterieAuxiliaire2{
+    font-size: 36px;
+    color: black;
+}
+#indicateurBatterieAuxiliaire1{
+    font-size: 36px;
+}
+#indicateurBatterieAuxiliaire0{
+    font-size: 36px;
+    color: cyan;
+}
+#indicateurBatterieAuxiliaire{
+    display: inline-flex;
+}
 #indicateurBatterie2{
     font-size: 36px;
     color: black;
@@ -69,10 +83,17 @@
 #indicateurBatterie{
     display: inline-flex;
 }
+#indicateurBatterie:hover{
+    display: inline-flex;
+    border: 1px dashed blue;
+}
+#indicateurBatterieAuxiliaire:hover{
+    display: inline-flex;
+    border: 1px dashed blue;
+}
 #itemAffichage{
     color: cyan;
     text-align: left;
-    font-size: 17px;
     position: relative;
     left: 12px;
 }
@@ -103,7 +124,7 @@
 .itemClicablePDA{
     color: cyan;
     text-align: left;
-    font-size: 17px;
+    font-size: 20px;
     position: relative;
     left: 12px;
     cursor: pointer;
@@ -111,10 +132,9 @@
 .itemClicablePDA:hover{
     color: greenyellow;
     text-align: left;
-    font-size: 17px;
+    font-size: 20px;
     position: relative;
     left: 12px;
-
     cursor: pointer;
 }
 #loadingIcone{
@@ -189,4 +209,87 @@
 .asteroide{
     background-color: rgb(4, 226, 189);
     position: relative;
+}
+#valeurBatterie{
+    position: relative;
+    color: cyan;
+    font-size: 45px;
+    text-align: center;
+}
+#valBatterieBouclier{
+    color: cyan;
+    font-size: 45px;
+}
+#valeurEnergieDediee{
+    color: cyan;
+    font-size: 45px;
+}
+#valeurBatterie3{
+    color: cyan;
+    font-size: 45px;
+}
+#valBatterieAAjouter{
+    color: cyan;
+    font-size: 45px;
+}
+#valeurBatterie2{
+    color: cyan;
+    font-size: 45px;
+}
+#ajoutBatterieBouclierDiv{
+    display: flex;
+    margin-left: 45%;
+}
+#ajoutBatterieBouclierSpan1{
+    top: 31px;
+    position: relative;
+    color: blue;
+    right: 40px;
+}
+#ajoutBatterieBouclierSpan11{
+    top: 140px;
+    position: relative;
+    color: blue;
+    right: 60px;
+}
+#ajoutBatterieBouclierSpan2{
+    top: 31px;
+    position: relative;
+    color: red;
+    left: 40px;
+}
+#ajoutBatterieBouclierSpan22{
+    top: 50px;
+    position: relative;
+    color: red;
+    left: 60px;
+}
+#ajoutBatterieBouclierSpan3{
+    top: 21px;
+    font-size: 34px;
+    left: 50px;
+    position: relative;
+    color: green;
+}
+#ajoutBatterieBouclierSpan33{
+    font-size: 34px;
+    position: relative;
+    color: green;
+}
+#jaugeVieBouclier0{
+    color: cyan;
+}
+#jaugeVieBouclier1{
+    color: greenyellow;
+}
+#jaugeVieBouclier2{
+    color: black;
+}
+#msgBouclier{
+    font-size: 24px;
+}
+#jaugeVieBouclierDiv{
+    font-size: 47px;
+    margin-left: 27%;
+    display: flex;
 }
