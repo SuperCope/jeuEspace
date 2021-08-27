@@ -8,7 +8,9 @@ let vieVaisseauBas = 100;
 let vieVaisseauGauche = 100;
 let vieVaisseauDroite = 100;
 let energieTotale = 100000;
-let energie = 90000;
+let batteries = [];
+let batteriesMax = [];
+let thread = -1;
 let detectionAsteroide = false;
 let vieJoueur = 100;
 let xVaisseau = 0;
@@ -16,7 +18,6 @@ let yVaisseau = 0;
 let zVaisseau = 1200;
 let direction = "";
 let activationBouclier;
-let energieAuxiliaire = 4000;
 let energieAuxiliaireMax = 10000;
 let numBatterieActive = 0;
 let vieBouclier = 1000;
@@ -46,11 +47,14 @@ let vieCanalisation = 100;
 let modeTelechargement;
 let fichiersTemp = [];
 let modules = [];
-
-
+let puissanceBouclier;
+let activationClimatisation;
+let puissanceClimatisation;
+let temperature;
+let usage;
+let augmentationTemp;
 
 function initPDA() {
-    modules[0] = detectionAsteroide;
     nbInstructions = Math.random() * (1 - 2) + 2;
     numInstruction = 0;
     document.getElementById("oxygen-nb").innerText = oxygene;
@@ -61,9 +65,15 @@ function initPDA() {
     for (let i = 0; i < 10; i++) {
         misesAJours[i] = null;
     }
-
-
-
+    usage = 0;
+    batteries[0] = 90000;
+    batteries[1] = 4000;
+    batteries[2] = 40000;
+    batteriesMax[0] = 100000;
+    batteriesMax[1] = 10000;
+    batteriesMax[2] = 60000;
+    temperature = 19;
+    puissanceClimatisation = 50;
     oxygeneMenu();
 }
 function nextInstruction() {

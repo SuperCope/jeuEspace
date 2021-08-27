@@ -19,116 +19,78 @@ function oxygeneMenu() {
     menuOxygene.appendChild(item3)
 }
 function gererBatteries() {
+
     let menu = clearInterface("Gerer les batteries")
     menu.style.display = "grid";
-    let item1 = document.createElement("div");
-    item1.setAttribute("id", "indicateurBatterie");
-    item1.setAttribute("onclick", "numBatterieActive = 0");
-    item1.style.float = "left";
-    let item1A = document.createElement("div");
-    item1A.setAttribute("id", "indicateurBatterie0");
-    item1A.innerText = "(";
-    let item1B = document.createElement("div");
-    item1B.setAttribute("id", "indicateurBatterie1");
-    item1B.innerText = "";
-    item1B.style.color = "yellow";
-    let item1C = document.createElement("div");
-    item1C.setAttribute("id", "indicateurBatterie2");
-    let item1D = document.createElement("div");
-    item1D.setAttribute("id", "indicateurBatterie0");
-    item1D.innerText = ")";
+    for (let i = 0; i < batteries.length; i++) {
+        let item1 = document.createElement("div");
+        item1.setAttribute("id", "indicateurBatterie" + i);
+        item1.setAttribute("class", "indicateurBatterie");
+        item1.setAttribute("onclick", "numBatterieActive = " + i + "");
+        item1.style.float = "left";
+        let item1A = document.createElement("div");
+        item1A.setAttribute("id", "indicateurBatterieA" + i);
+        item1A.setAttribute("class", "indicateurBatterieA");
+        item1A.innerText = "(";
+        let item1B = document.createElement("div");
+        item1B.setAttribute("id", "indicateurBatterieB" + i);
+        item1B.setAttribute("class", "indicateurBatterieB");
+        item1B.innerText = "";
+        item1B.style.color = "yellow";
+        let item1C = document.createElement("div");
+        item1C.setAttribute("id", "indicateurBatterieC" + i);
+        item1C.setAttribute("class", "indicateurBatterieC");
+        let item1D = document.createElement("div");
+        item1D.setAttribute("id", "indicateurBatterieA" + i);
+        item1D.setAttribute("class", "indicateurBatterieA");
+        item1D.innerText = ")";
+        item1.appendChild(item1A)
+        item1.appendChild(item1B)
+        item1.appendChild(item1C)
+        item1.appendChild(item1D)
+        menu.appendChild(item1)
+    }
 
-    let item2 = document.createElement("div");
-    item2.setAttribute("id", "indicateurBatterieAuxiliaire");
-    item2.setAttribute("onclick", "numBatterieActive = 1");
-    item2.style.float = "left";
-    let item2A = document.createElement("div");
-    item2A.setAttribute("id", "indicateurBatterieAuxiliaire0");
-    item2A.innerText = "(";
-    let item2B = document.createElement("div");
-    item2B.setAttribute("id", "indicateurBatterieAuxiliaire1");
-    item2B.innerText = "";
-    item2B.style.color = "yellow";
-    let item2C = document.createElement("div");
-    item2C.setAttribute("id", "indicateurBatterieAuxiliaire2");
-    let item2D = document.createElement("div");
-    item2D.setAttribute("id", "indicateurBatterieAuxiliaire0");
-    item2D.innerText = ")";
 
     let item3 = document.createElement("div");
     item3.setAttribute("class", "itemClicablePDA");
     item3.setAttribute("onclick", "rechargerChargeBouclierMenu()");
-    item3.innerText = "Recharger la batterie auxiliaire";
+    item3.innerText = "Transferer de l'energie";
 
 
 
-    setInterval(function () {
-        res = updateJaugeEnergie()
-        let texte = res[0];
-        let texte2 = res[1];
+    thread = setInterval(function () {
+        for (let i = 0; i < batteries.length; i++) {
+            res = updateJaugeEnergie(i)
+            let texte = res[0];
+            let texte2 = res[1];
 
-        if (numBatterieActive == 0) {
-            document.getElementById("indicateurBatterie").style.border = "blue 2px solid";
-        } else {
-            document.getElementById("indicateurBatterie").style.border = "";
-        }
-        if (numBatterieActive == 1) {
-            document.getElementById("indicateurBatterieAuxiliaire").style.border = "blue 2px solid";
-        } else {
-            document.getElementById("indicateurBatterieAuxiliaire").style.border = "";
-        }
-        document.getElementById("indicateurBatterie1").innerText = texte;
-        document.getElementById("indicateurBatterie2").innerText = texte2;
-        if (energie > 0) {
-            document.getElementById("indicateurBatterie1").style.color = "red";
-        }
-        if (energie > 20000) {
-            document.getElementById("indicateurBatterie1").style.color = "orange";
-        }
-        if (energie > 40000) {
-            document.getElementById("indicateurBatterie1").style.color = "yellow";
-        }
-        if (energie > 60000) {
-            document.getElementById("indicateurBatterie1").style.color = "greenyellow";
-        }
-        if (energie > 80000) {
-            document.getElementById("indicateurBatterie1").style.color = "green";
-        }
+            if (numBatterieActive == i) {
+                document.getElementById("indicateurBatterie" + i).style.border = "blue 2px solid";
+            } else {
+                document.getElementById("indicateurBatterie" + i).style.border = "";
+            }
+            document.getElementById("indicateurBatterieB" + i).innerText = texte;
+            document.getElementById("indicateurBatterieC" + i).innerText = texte2;
+            if (batteries[i] > (0 * batteriesMax[i])) {
+                document.getElementById("indicateurBatterieB" + i).style.color = "red";
+            }
+            if (batteries[i] > (0.2 * batteriesMax[i])) {
+                document.getElementById("indicateurBatterieB" + i).style.color = "orange";
+            }
+            if (batteries[i] > (0.4 * batteriesMax[i])) {
+                document.getElementById("indicateurBatterieB" + i).style.color = "yellow";
+            }
+            if (batteries[i] > (0.6 * batteriesMax[i])) {
+                document.getElementById("indicateurBatterieB" + i).style.color = "greenyellow";
+            }
+            if (batteries[i] > (0.8 * batteriesMax[i])) {
+                document.getElementById("indicateurBatterieB" + i).style.color = "green";
+            }
 
-        res = updateJaugeEnergie2()
-        texte = res[0];
-        texte2 = res[1];
-
-        item2B.innerText = texte;
-        item2C.innerText = texte2;
-        if (energieAuxiliaire > 0) {
-            item2B.style.color = "red";
         }
-        if (energieAuxiliaire > 2000) {
-            item2B.style.color = "orange";
-        }
-        if (energieAuxiliaire > 4000) {
-            item2B.style.color = "yellow";
-        }
-        if (energieAuxiliaire > 6000) {
-            item2B.style.color = "greenyellow";
-        }
-        if (energieAuxiliaire > 8000) {
-            item2B.style.color = "green";
-        }
-
     }, 300);
-    item1.appendChild(item1A)
-    item1.appendChild(item1B)
-    item1.appendChild(item1C)
-    item1.appendChild(item1D)
-    item2.appendChild(item2A)
-    item2.appendChild(item2B)
-    item2.appendChild(item2C)
-    item2.appendChild(item2D)
-    menu.appendChild(item1)
-    menu.innerHTML += "<br>"
-    menu.appendChild(item2)
+
     menu.appendChild(item3)
     let boutonRetour = document.createElement("div");
     boutonRetour.setAttribute("id", "retour")
@@ -140,21 +102,33 @@ function gererBatteries() {
 function gererEnergieMenu() {
     let menu = clearInterface("Gerer l'energie")
     menu.style.display = "";
+
     let item1 = document.createElement("div");
-    item1.setAttribute("id", "indicateurBatterie");
-    item1.style.border = ""
+    item1.setAttribute("id", "indicateurBatterie" + numBatterieActive);
+    item1.setAttribute("class", "indicateurBatterie2");
+    item1.setAttribute("onclick", "numBatterieActive = 0");
     let item1A = document.createElement("div");
-    item1A.setAttribute("id", "indicateurBatterie0");
+    item1A.setAttribute("id", "indicateurBatterieA" + numBatterieActive);
+    item1A.setAttribute("class", "indicateurBatterieA");
     item1A.innerText = "(";
     let item1B = document.createElement("div");
-    item1B.setAttribute("id", "indicateurBatterie1");
+    item1B.setAttribute("id", "indicateurBatterieB" + numBatterieActive);
+    item1B.setAttribute("class", "indicateurBatterieB");
     item1B.innerText = "";
     item1B.style.color = "yellow";
     let item1C = document.createElement("div");
-    item1C.setAttribute("id", "indicateurBatterie2");
+    item1C.setAttribute("id", "indicateurBatterieC" + numBatterieActive);
+    item1C.setAttribute("class", "indicateurBatterieC");
     let item1D = document.createElement("div");
-    item1D.setAttribute("id", "indicateurBatterie0");
+    item1D.setAttribute("id", "indicateurBatterieA" + numBatterieActive);
+    item1D.setAttribute("class", "indicateurBatterieA");
     item1D.innerText = ")";
+    item1.appendChild(item1A)
+    item1.appendChild(item1B)
+    item1.appendChild(item1C)
+    item1.appendChild(item1D)
+    menu.appendChild(item1)
+
 
     let item2 = document.createElement("div");
     item2.setAttribute("id", "itemAffichage");
@@ -172,48 +146,50 @@ function gererEnergieMenu() {
     boutonRetour.setAttribute("onclick", "oxygeneMenu()")
     boutonRetour.innerText = "Retour"
     let res;
-    setInterval(function () {
-        res = updateJaugeEnergie()
+    thread = setInterval(function () {
+
+
+        res = updateJaugeEnergie(numBatterieActive)
         let texte = res[0];
         let texte2 = res[1];
 
-        item1B.innerText = texte;
-        item1C.innerText = texte2;
-        if (energie > 0) {
-            item1B.style.color = "red";
+        if (true) {
+            document.getElementById("indicateurBatterieB" + numBatterieActive).innerText = texte;
+            document.getElementById("indicateurBatterieC" + numBatterieActive).innerText = texte2;
+            if (batteries[numBatterieActive] > (0 * batteriesMax[numBatterieActive])) {
+
+                document.getElementById("indicateurBatterieB" + numBatterieActive).style.color = "red";
+
+            }
+            if (batteries[numBatterieActive] > (0.2 * batteriesMax[numBatterieActive])) {
+                document.getElementById("indicateurBatterieB" + numBatterieActive).style.color = "orange";
+            }
+            if (batteries[numBatterieActive] > (0.4 * batteriesMax[numBatterieActive])) {
+                document.getElementById("indicateurBatterieB" + numBatterieActive).style.color = "yellow";
+            }
+            if (batteries[numBatterieActive] > (0.6 * batteriesMax[numBatterieActive])) {
+                document.getElementById("indicateurBatterieB" + numBatterieActive).style.color = "greenyellow";
+            }
+            if (batteries[numBatterieActive] > (0.8 * batteriesMax[numBatterieActive])) {
+                document.getElementById("indicateurBatterieB" + numBatterieActive).style.color = "green";
+            }
         }
-        if (energie > 20000) {
-            item1B.style.color = "orange";
-        }
-        if (energie > 40000) {
-            item1B.style.color = "yellow";
-        }
-        if (energie > 60000) {
-            item1B.style.color = "greenyellow";
-        }
-        if (energie > 80000) {
-            item1B.style.color = "green";
-        }
+
+
+
     }, 300);
 
-
-
-
-
-    item1.appendChild(item1A)
-    item1.appendChild(item1B)
-    item1.appendChild(item1C)
-    item1.appendChild(item1D)
-
-    menu.appendChild(item1);
-
+    menu.innerHTML += "<br><br>"
     menu.appendChild(item7);
+    menu.innerHTML += "<br><br>"
     menu.appendChild(item2);
-
-    let libelleModules = ["Dectection asteroides", "Bouclier"];
+    menu.innerHTML += "<br>"
+    let libelleModules = ["Dectection asteroides", "Climatisation", "Bouclier"];
 
     modules[0] = detectionAsteroide;
-    modules[1] = activationBouclier;
+    modules[1] = activationClimatisation;
+    modules[2] = activationBouclier;
+
 
     for (let i = 0; i < libelleModules.length; i++) {
         item = document.createElement("div");
@@ -221,32 +197,56 @@ function gererEnergieMenu() {
         let itemA = document.createElement("div");
         itemA.setAttribute("class", "itemClicablePDA")
         itemA.innerText = libelleModules[i];
-        if (modules[i]) {
+        if (modules[i] && i != 2) {
             itemA.innerText += ": 10%";
-        } else {
-            itemA.innerText += ": 0%";
+        }
+        if (modules[i] && i == 2) {
+            itemA.innerText += ": Batterie individuelle";
         }
         itemA.style.float = "left";
         let itemB = document.createElement("div");
         itemB.setAttribute("class", "miseAJourPDA2")
         itemB.setAttribute("id", "viewModule" + i)
-        itemB.setAttribute("onclick", "viewModule('" + libelleModules[i] + "'," + i + ")");
+        itemB.setAttribute("onclick", " viewModule('" + libelleModules[i] + "'," + i + ");");
         itemB.innerText = "consulter";
         itemB.style.float = "right";
         item.appendChild(itemA);
         item.appendChild(itemB);
         menu.appendChild(item);
-        item.innerHTML += "<br><br>";
+        if (i < libelleModules.length - 1) {
+            item.innerHTML += "<br><br>";
+        }
+
     }
     item.innerHTML += "<br>";
+    let item3 = document.createElement("div");
+    item3.setAttribute("id", "jaugeVieBouclierDiv2");
+    let item3A = document.createElement("div");
+    item3A.setAttribute("id", "jaugeVieBouclier0");
+    item3A.innerText = "(";
+    let item3B = document.createElement("div");
+    item3B.setAttribute("id", "jaugeVieBouclier1");
+    item3B.innerText = "";
+    let item3C = document.createElement("div");
+    item3C.setAttribute("id", "jaugeVieBouclier2");
+    item3C.innerText = "";
+    let item3D = document.createElement("div");
+    item3D.setAttribute("id", "jaugeVieBouclier0");
+    item3D.innerText = ")";
+    item3.appendChild(item3A)
+    item3.appendChild(item3B)
+    item3.appendChild(item3C)
+    item3.appendChild(item3D)
+    item.appendChild(item3)
+    animJaugeBouclier()
     item.appendChild(boutonRetour);
 
 }
 function plusEnergieATransferer() {
     let val = Number(document.getElementById("valBatterieBouclier").innerText);
     val += 20;
-    if (val > energieAuxiliaire) {
-        val = energieAuxiliaire;
+    if (val > batteries[numBatterieActive]) {
+        val = batteries[numBatterieActive];
     }
     document.getElementById("valBatterieBouclier").innerText = val;
 }
@@ -270,7 +270,7 @@ function rechargerBouclierMenu() {
     let menu = clearInterface("Recharger le bouclier")
     let item1 = document.createElement("div");
     item1.setAttribute("id", "valeurBatterie");
-    setInterval(function () { item1.innerText = energieAuxiliaire }, 100);
+    setInterval(function () { item1.innerText = batteries[numBatterieActive] }, 100);
     let item2 = document.createElement("div");
     item2.setAttribute("id", "ajoutBatterieBouclierDiv");
     let item2A = document.createElement("span");
@@ -332,7 +332,10 @@ function rechargerBouclierMenu() {
 }
 function animJaugeBouclier() {
     let delai = 50;
-    let valBatterieATransferer = parseInt(document.getElementById("valBatterieBouclier").innerText)
+    let valBatterieATransferer = -1;
+    if (document.getElementById("valBatterieBouclier")) {
+        valBatterieATransferer = parseInt(document.getElementById("valBatterieBouclier").innerText)
+    }
     let cible2 = 0;
 
     let cible = 0;
@@ -371,22 +374,22 @@ function animJaugeBouclier() {
             cible = cible - 200;
         }
 
-        if (cible2 < valBatterieATransferer) {
+        if (valBatterieATransferer && document.getElementById("valBatterieBouclier") && cible2 < valBatterieATransferer) {
             vieBouclier = vieBouclier += 20;
         }
-        if (valBatterieATransferer > 0 && cible2 < valBatterieATransferer) {
+        if (document.getElementById("valBatterieBouclier") && valBatterieATransferer > 0 && cible2 < valBatterieATransferer) {
             if (!msg) {
                 document.getElementById("msgBouclier").style.color = "orange";
                 document.getElementById("msgBouclier").innerText = "Transfert en cours...";
                 msg = true
             }
 
-            energieAuxiliaire = energieAuxiliaire - 20;
+            batteries[numBatterieActive] = batteries[numBatterieActive] - 20;
             cible2 = cible2 + 20;
             document.getElementById("valBatterieBouclier").innerText = (valBatterieATransferer - cible2)
 
         }
-        if (valBatterieATransferer - cible2 == 0) {
+        if (document.getElementById("valBatterieBouclier") && valBatterieATransferer - cible2 == 0) {
             if (!msg && document.getElementById("msgBouclier")) {
                 document.getElementById("msgBouclier").style.color = "green";
                 document.getElementById("msgBouclier").innerText = "Succes";
@@ -403,6 +406,7 @@ function animJaugeBouclier() {
 
 }
 function viewModule(libelleModule, i) {
+    clearInterval(52)
     let menu = clearInterface(libelleModule);
     item = document.createElement("div");
     item.setAttribute("class", "miseAJourPDA1")
@@ -425,6 +429,7 @@ function viewModule(libelleModule, i) {
     item.appendChild(itemB);
     item.appendChild(itemA);
     menu.appendChild(item);
+
     if (libelleModule == "Bouclier") {
         let item0 = document.createElement("div");
         item0.setAttribute("class", "itemClicablePDA");
@@ -434,14 +439,88 @@ function viewModule(libelleModule, i) {
         menu.appendChild(item0)
     }
 
-
-
+    if (libelleModule == "Climatisation") {
+        let item1 = document.createElement("span")
+        item1.setAttribute("id", "iconeTemperature");
+        let item2 = document.createElement("span")
+        item2.setAttribute("id", "valTemperature");
+        thread = setInterval(function () {
+            if (temperature > 35) {
+                document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-full");
+                document.getElementById("iconeTemperature").style.color = "red";
+                document.getElementById("valTemperature").style.color = "red"
+            }
+            if (temperature < 35) {
+                document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-three-quarters");
+                document.getElementById("iconeTemperature").style.color = "oangered";
+                document.getElementById("valTemperature").style.color = "orangered"
+            }
+            if (temperature < 26) {
+                document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-half");
+                document.getElementById("iconeTemperature").style.color = "lightcoral";
+                document.getElementById("valTemperature").style.color = "lightcoral"
+            }
+            if (temperature < 22) {
+                document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-quarter");
+                document.getElementById("iconeTemperature").style.color = "cyan";
+                document.getElementById("valTemperature").style.color = "cyan"
+            }
+            if (temperature < 18) {
+                document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-empty")
+                document.getElementById("iconeTemperature").style.color = "blue";
+                document.getElementById("valTemperature").style.color = "blue"
+            }
+            item2.innerText = temperature + " °C";
+        }, 500)
+        let item3 = document.createElement("div")
+        item3.setAttribute("id", "jaugePuissanceClimatisationDiv");
+        item3.innerText = puissanceClimatisation + " %";
+        let item3A = document.createElement("span")
+        item3A.setAttribute("id", "moinsPuissanceClimatisation");
+        item3A.setAttribute("class", "fas fa-minus-square");
+        item3A.setAttribute("onclick", "moinsPuissanceClimatisation()");
+        let item3B = document.createElement("span")
+        item3B.setAttribute("id", "jaugePuissanceClimatisation");
+        item3B.setAttribute("class", "fas fa-plus-square");
+        item3B.setAttribute("onclick", "plusPuissanceClimatisation()");
+        let item3C = document.createElement("div")
+        item3C.setAttribute("id", "plusPuissanceClimatisation");
+        item3C.setAttribute("onclick", "plusPuissanceClimatisation()");
+        item3C.innerText = puissanceClimatisation + " %";
+        item3.appendChild(item3A);
+        item3.appendChild(item3C);
+        item3.appendChild(item3B);
+        menu.innerHTML += "<br><br>"
+        menu.appendChild(item1)
+        menu.innerHTML += "<br>"
+        menu.appendChild(item2)
+        menu.innerHTML += "<br>"
+        menu.appendChild(item3)
+    }
 
     let boutonRetour = document.createElement("div");
     boutonRetour.setAttribute("id", "retour")
     boutonRetour.setAttribute("onclick", "gererEnergieMenu()")
     boutonRetour.innerText = "Retour"
     document.getElementById("oxygeneTitre").appendChild(boutonRetour);
+}
+function plusPuissanceClimatisation() {
+    puissanceClimatisation = puissanceClimatisation + 50;
+    if (puissanceClimatisation == 100) {
+        document.getElementById("plusPuissanceClimatisation").style.visibility = "hidden";
+        document.getElementById("moinsPuissanceClimatisation").style.visibility = "visible";
+    }
+
+    document.getElementById("jaugePuissanceClimatisation").innerText = puissanceClimatisation;
+}
+function moinsPuissanceClimatisation() {
+    puissanceClimatisation = puissanceClimatisation - 50;
+    if (puissanceClimatisation == 0) {
+        document.getElementById("moinsPuissanceClimatisation").style.visibility = "hidden";
+        document.getElementById("plusPuissanceClimatisation").style.visibility = "visible";
+    }
+    document.getElementById("moinsPuissanceClimatisation").style.visibility = "hidden";
+    document.getElementById("jaugePuissanceClimatisation").innerText = puissanceClimatisation;
 }
 function rechargerBouclier() {
     document.getElementById("valeurBatterie2").style.visibility = "visible";
@@ -451,15 +530,15 @@ function rechargerBouclier() {
     document.getElementById("msgBouclier").style.visibility = "visible";
     document.getElementById("valeurBatterie2").style.visibility = "visible";
 }
-function ajoutCapaciteBouclier(boucle) {
-
+function ajoutCapaciteBouclier(boucle, i, j) {
     setInterval(function () {
         if (boucle) {
-            if (parseInt(document.getElementById("valBatterieAAjouter").innerText) > 0) {
+            if (parseInt(document.getElementById("valBatterieAAjouter").innerText) > 0 && batteries[j] < batteriesMax[j] && batteries[i] > 0) {
                 moinsBatterieBouclier();
-                energie = energie - 20;
-                energieAuxiliaire = energieAuxiliaire + 20;
+                batteries[i] = batteries[i] - 20;
+                batteries[j] = batteries[j] + 20;
             } else {
+                document.getElementById("valBatterieAAjouter").innerHTML = "0";
                 boucle = false;
             }
         }
@@ -471,8 +550,8 @@ function ajoutCapaciteBouclier(boucle) {
 function plusBatterieBouclier() {
     let valBatterieAAjouter = parseInt(document.getElementById("valBatterieAAjouter").innerText)
     valBatterieAAjouter = valBatterieAAjouter + 20;
-    if (valBatterieAAjouter > energie) {
-        valBatterieAAjouter = energie;
+    if (valBatterieAAjouter > batteries[numBatterieActive]) {
+        valBatterieAAjouter = batteries[numBatterieActive];
     }
     document.getElementById("valBatterieAAjouter").innerText = valBatterieAAjouter
 }
@@ -484,16 +563,101 @@ function moinsBatterieBouclier() {
     }
     document.getElementById("valBatterieAAjouter").innerText = valBatterieAAjouter
 }
+
 function rechargerChargeBouclierMenu() {
     let menu = clearInterface("Augmenter la puissance \n dedie au bouclier")
+    let selection = -1;
+    menu.style.display = "grid";
+    for (let i = 0; i < batteries.length; i++) {
+        if (i != numBatterieActive) {
+            let item1 = document.createElement("div");
+            item1.setAttribute("id", "indicateurBatterie" + i);
+            item1.setAttribute("class", "indicateurBatterie");
+            item1.onclick = function () {
+                selection = i;
+                for (let j = 0; j < batteries.length; j++) {
+                    if (j != numBatterieActive) {
+                        if (j == selection) {
+                            document.getElementById("indicateurBatterie" + j).style.border = "2px blue solid";
+                        } else {
+                            document.getElementById("indicateurBatterie" + j).style.border = "";
+                        }
+                    }
+
+                }
+
+            };
+            item1.style.float = "left";
+            let item1A = document.createElement("div");
+            item1A.setAttribute("id", "indicateurBatterieA" + i);
+            item1A.setAttribute("class", "indicateurBatterieA");
+            item1A.innerText = "(";
+            let item1B = document.createElement("div");
+            item1B.setAttribute("id", "indicateurBatterieB" + i);
+            item1B.setAttribute("class", "indicateurBatterieB");
+            item1B.innerText = "";
+            item1B.style.color = "yellow";
+            let item1C = document.createElement("div");
+            item1C.setAttribute("id", "indicateurBatterieC" + i);
+            item1C.setAttribute("class", "indicateurBatterieC");
+            let item1D = document.createElement("div");
+            item1D.setAttribute("id", "indicateurBatterieA" + i);
+            item1D.setAttribute("class", "indicateurBatterieA");
+            item1D.innerText = ")";
+            item1.appendChild(item1A)
+            item1.appendChild(item1B)
+            item1.appendChild(item1C)
+            item1.appendChild(item1D)
+            menu.appendChild(item1)
+        }
+
+    }
+    thread = setInterval(function () {
+        for (let i = 0; i < batteries.length; i++) {
+            if (i != numBatterieActive) {
+                res = updateJaugeEnergie(i)
+                let texte = res[0];
+                let texte2 = res[1];
+
+
+                document.getElementById("indicateurBatterieB" + i).innerText = texte;
+                document.getElementById("indicateurBatterieC" + i).innerText = texte2;
+                if (batteries[i] > (0 * batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "red";
+                }
+                if (batteries[i] > (0.2 * batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "orange";
+                }
+                if (batteries[i] > (0.4 * batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "yellow";
+                }
+                if (batteries[i] > (0.6 * batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "greenyellow";
+                }
+                if (batteries[i] > (0.8 * batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "green";
+                }
+            }
+
+
+        }
+    }, 300);
     let item1 = document.createElement("div");
     item1.setAttribute("id", "valeurBatterie3");
-    setInterval(function () { item1.innerText = energie }, 100);
+    setInterval(function () { item1.innerText = batteries[numBatterieActive] }, 100);
     let item2 = document.createElement("div");
     item2.setAttribute("id", "operationPuissanceBouclier");
     let item2A = document.createElement("div");
     item2A.setAttribute("id", "valeurEnergieDediee");
-    setInterval(function () { item2A.innerText = energieAuxiliaire }, 100);
+    thread = setInterval(function () {
+        if (selection > -1) {
+            item2A.innerText = batteries[selection]
+            document.getElementById("ajoutBatterieBouclierSpan33").setAttribute("onclick", "ajoutCapaciteBouclier(true," + numBatterieActive + "," + selection + ")");
+        } else {
+            item2A.innerText = "Choisir une batterie";
+        }
+    }, 100);
+
     let item2B = document.createElement("div");
     item2B.setAttribute("id", "ajoutBatterieBouclierSpan11");
     item2B.setAttribute("class", "fas fa-plus");
@@ -505,7 +669,7 @@ function rechargerChargeBouclierMenu() {
     let item2D = document.createElement("div");
     item2D.setAttribute("id", "ajoutBatterieBouclierSpan33");
     item2D.setAttribute("class", "fas fa-check-circle");
-    item2D.setAttribute("onclick", "ajoutCapaciteBouclier(true)");
+    item2D.setAttribute("onclick", "ajoutCapaciteBouclier(true," + numBatterieActive + "," + selection + ")");
     let item2E = document.createElement("div");
     item2E.setAttribute("id", "valBatterieAAjouter");
     item2E.innerText = "0";
@@ -536,6 +700,16 @@ function interactModule(i, interact, libelle) {
             break;
         case 1:
             if (!interact) {
+                activationClimatisation = true;
+                modules[i] = true;
+            } else {
+                activationClimatisation = false;
+                modules[i] = false;
+            }
+
+            break;
+        case 2:
+            if (!interact) {
                 activationBouclier = true;
                 modules[i] = true;
             } else {
@@ -547,38 +721,23 @@ function interactModule(i, interact, libelle) {
     }
     viewModule(libelle, i)
 }
-function updateJaugeEnergie() {
+function updateJaugeEnergie(j) {
     let aRenvoyer = [];
     aRenvoyer[0] = "";
-    for (let i = 0; i < energie; i++) {
+    for (let i = 0; i < batteries[j]; i++) {
         if (i % 2000 == 0) {
             aRenvoyer[0] += "|";
         }
     }
     aRenvoyer[1] = "";
-    for (let i = energie; i < energieTotale; i++) {
+    for (let i = batteries[j]; i < batteriesMax[j]; i++) {
         if (i % 2000 == 0) {
             aRenvoyer[1] += ".";
         }
     }
     return aRenvoyer;
 }
-function updateJaugeEnergie2() {
-    let aRenvoyer = [];
-    aRenvoyer[0] = "";
-    for (let i = 0; i < energieAuxiliaire; i++) {
-        if (i % 2000 == 0) {
-            aRenvoyer[0] += "|";
-        }
-    }
-    aRenvoyer[1] = "";
-    for (let i = energieAuxiliaire; i < energieAuxiliaireMax; i++) {
-        if (i % 2000 == 0) {
-            aRenvoyer[1] += ".";
-        }
-    }
-    return aRenvoyer;
-}
+
 function rechargerBouteilleOxygeneMenu() {
     let menuOxygene = clearInterface("Gerer l'oxyegne")
     let item1 = document.createElement("div");
@@ -904,16 +1063,47 @@ function activeDetectionAsteroides() {
     }
 
 }
-function analysePDA() {
-    energie = energie -= 35;
-    if (detectionAsteroide) {
-        energie -= 10;
+
+function miseAJourTemperature() {
+    for (let i = 0; i < 60; i++) {
+        if (i % augmentationTemp == 0) {
+            temperature++
+        }
+
     }
-    if (energie < 0) {
-        energie = 0;
+}
+function verifClimatisation() {
+    if (activationClimatisation) {
+        for (let i = 0; i < 99; i++) {
+            if (i % (100 - parseInt(puissanceClimatisation / 2)) == 0 && puissanceClimatisation > 0) {
+                console.log("CLIM")
+                temperature--;
+            }
+        }
+    }
+
+}
+
+function analysePDA() {
+    usage = 35;
+    batteries[numBatterieActive] = batteries[numBatterieActive] -= 35;
+    if (detectionAsteroide) {
+        usage += 10;
+        batteries[numBatterieActive] -= 10;
+    }
+    if (activationClimatisation) {
+        usage += 10;
+        batteries[numBatterieActive] -= 10;
+    }
+    if (usage > 40) {
+        augmentationTemp = 100 - usage;
+    }
+    if (batteries[numBatterieActive] < 0) {
+        batteries[numBatterieActive] = 0;
     }
     if (activationBouclier) {
         vieBouclier -= 1;
+        puissanceBouclier = 5;
     }
     if (vieBouclier < 0) {
         vieBouclier = 0;
@@ -1229,6 +1419,7 @@ function updateMiseAJour(j) {
 
 }
 function clearInterface(titre) {
+    clearInterval(thread)
     let audio = new Audio('./audio/clic.mp3');
     audio.play();
     let titremenuOxygene = document.getElementById("oxygeneTitre")

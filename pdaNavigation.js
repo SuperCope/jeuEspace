@@ -269,16 +269,16 @@ function verifAsteroide() {
         asteroides[index] = false;
         switch (direction) {
             case "haut":
-                vieVaisseauHaut = vieVaisseauHaut - 20;
+                vieVaisseauHaut = vieVaisseauHaut - (20 - puissanceBouclier);
             break;
             case "bas":
-                vieVaisseauBas = vieVaisseauBas - 20;
+                vieVaisseauBas = vieVaisseauBas - (20 - puissanceBouclier);
             break;
             case "gauche":
-                vieVaisseauGauche = vieVaisseauGauche - 20;
+                vieVaisseauGauche = vieVaisseauGauche - (20 - puissanceBouclier);
             break;
             case "droite":
-                vieVaisseauDroite = vieVaisseauDroite - 20;
+                vieVaisseauDroite = vieVaisseauDroite - (20 - puissanceBouclier);
             break;
         }
 

@@ -8,7 +8,6 @@ let vitesseFood = 1000;
 initGame();
 
 function initGame() {
-
     setTimeout(function () {
         setInterval(waterDesc, vitesseWater);
         setInterval(foodDesc, vitesseFood);
@@ -16,6 +15,8 @@ function initGame() {
         setInterval(analysePDA, 300);
         setInterval(analyseVieJoueur, 2000)
         setInterval(miseAJourFuites, 30000)
+        setInterval(miseAJourTemperature, 40000)
+        setInterval(verifClimatisation, 39000)
         initPDA();
 
     }, 3000);

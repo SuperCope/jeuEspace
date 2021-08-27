@@ -55,39 +55,25 @@
     background-image: url('../../img/canalisations.png');
     margin: auto;
 }
-#indicateurBatterieAuxiliaire2{
+
+.indicateurBatterieC{
     font-size: 36px;
     color: black;
 }
-#indicateurBatterieAuxiliaire1{
+.indicateurBatterieB{
     font-size: 36px;
 }
-#indicateurBatterieAuxiliaire0{
-    font-size: 36px;
-    color: cyan;
-}
-#indicateurBatterieAuxiliaire{
-    display: inline-flex;
-}
-#indicateurBatterie2{
-    font-size: 36px;
-    color: black;
-}
-#indicateurBatterie1{
-    font-size: 36px;
-}
-#indicateurBatterie0{
+.indicateurBatterieA{
     font-size: 36px;
     color: cyan;
 }
-#indicateurBatterie{
+.indicateurBatterie{
     display: inline-flex;
 }
-#indicateurBatterie:hover{
+.indicateurBatterie2{
     display: inline-flex;
-    border: 1px dashed blue;
 }
-#indicateurBatterieAuxiliaire:hover{
+.indicateurBatterie:hover{
     display: inline-flex;
     border: 1px dashed blue;
 }
@@ -130,7 +116,7 @@
     cursor: pointer;
 }
 .itemClicablePDA:hover{
-    color: greenyellow;
+    color: greenyellow !important;
     text-align: left;
     font-size: 20px;
     position: relative;
@@ -276,6 +262,18 @@
     position: relative;
     color: green;
 }
+#moinsPuissanceClimatisation{
+    color: red;
+    font-size: 48px;
+}
+#plusPuissanceClimatisation{
+    color: green;
+    font-size: 48px;
+}
+#jaugePuissanceClimatisation{
+    color: cyan;
+    font-size: 48px;
+}
 #jaugeVieBouclier0{
     color: cyan;
 }
@@ -285,6 +283,24 @@
 #jaugeVieBouclier2{
     color: black;
 }
+#iconeTemperature{
+    font-size: 50px;
+    text-align: center;
+    -webkit-animation-name: fadeInOpacity;
+	        animation-name: fadeInOpacity;
+	-webkit-animation-iteration-count: 1;
+	        animation-iteration-count: 1;
+	-webkit-animation-timing-function: ease-in;
+	        animation-timing-function: ease-in;
+	-webkit-animation-duration: 8s;
+	        animation-duration: 8s;
+    transition: 8s;
+}
+#valTemperature{
+    transition: 8s;
+    font-size: 40px;
+    text-align: center;
+}
 #msgBouclier{
     font-size: 24px;
 }
@@ -292,4 +308,26 @@
     font-size: 47px;
     margin-left: 27%;
     display: flex;
+}
+#jaugeVieBouclierDiv2{
+    font-size: 27px;
+    display: flex;
+    position: absolute;
+}
+@-webkit-keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }
