@@ -6,6 +6,7 @@ class GPS {
         this.x = 0;
         this.y = 0;
         this.distance = 0;
+        this.distanceAsteroide = null;
         this.asteroides = [];
         this.countAsteroide = 0;
         this.champAsteroide = false;

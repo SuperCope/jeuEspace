@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./src/css/style.css">
-    <link rel="stylesheet" href="./src/css/vaisseau.css">
     <link rel="stylesheet" href="./src/css/pda.css">
     <!-- JS only -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -39,7 +38,7 @@
                     <a class="nav-link" id="oxygen-tab" data-toggle="tab" href="#oxygen" role="tab" aria-controls="oxygen" aria-selected="false">Oxygene</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Mises à jour</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -77,7 +76,14 @@
 
                         </div>
                     </div>
-                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                    <div id="oxygeneTitre">Rechercher une installation</div>
+                    <div id="items"><br>
+                        <input type="text" id="searchBarInstallation" size="200" max="200"></input>
+                        <span class="fas fa-search" id="searchIcon" onclick=""></span>
+                    </div>
+                    
+                </div>
             </div>
 
         </div>
@@ -245,6 +251,7 @@
         </div>
     </div>
 </body>
+<script src="./src/class/Update.js"></script>
 <script src="./src/class/Asteroide.js"></script>
 <script src="./src/class/GPS.js"></script>
 <script src="./src/class/Oxygen.js"></script>

@@ -13,6 +13,8 @@ class Vaisseau {
         this.oxygenRepairLongMode = false;
         this.clim = false;
         this.climPower = 0;
+        this.climUpgrade = 0;
+
 
         this.life = [0, 0, 0, 0];
 
@@ -20,6 +22,7 @@ class Vaisseau {
         this.batteriesMax = [100000, 10000, 60000];
         this.batteryActive = 0;
         this.batteryUse = 0;
+        this.pdaConso = 35;
 
         this.x = 0;
         this.y = 0;
@@ -38,6 +41,8 @@ class Vaisseau {
 
         this.heat = 19;
         this.heatAugment = 0;
+        this.heatAnimation = 0;
+        this.heatAnimation2 = 0;
 
         this.leaks = [100, 100];
         this.lifeLeak = 100;

@@ -3,19 +3,33 @@ class Game {
         this.vaisseau = new Vaisseau();
         this.player = new Player();
         this.gps = new GPS();
-        this.thread = -1;
+        this.thread = [];
         // game.intervalId = null;
     }
 
     init() {
+        this.initUpdates()
+
         setInterval(this.waterDesc.bind(this), 1000);
         setInterval(this.foodDesc.bind(this), 1000);
         setInterval(this.moveShip.bind(this), 1000);
         setInterval(this.analysePDA.bind(this), 300);
         setInterval(this.displayLife.bind(this), 2000)
         setInterval(this.updateLeaks.bind(this), 30000)
-        setInterval(this.verifClim.bind(this), 39000)
-        setInterval(this.updateHeat.bind(this), 40000)
+        setInterval(this.verifClim.bind(this), 8000)
+        setInterval(this.updateHeat.bind(this), 8000)
+        setInterval(function () {
+            if (game.vaisseau.heatAnimation > 0) {
+                game.vaisseau.heat++;
+                game.vaisseau.heatAnimation--;
+            }
+        }, 1000);
+        setInterval(function () {
+            if (game.vaisseau.heatAnimation2 < 0) {
+                game.vaisseau.heat--;
+                game.vaisseau.heatAnimation2++;
+            }
+        }, 1000);
         this.initPDA()
     }
 
@@ -27,6 +41,7 @@ class Game {
         let item1 = document.createElement("div");
         item1.setAttribute("class", "itemClicablePDA");
         item1.setAttribute("onclick", "game.menuReloadOxygen()");
+        menuOxygene.innerHTML += "<br>";
         item1.innerText = "Gerer l'oxygene";
         menuOxygene.appendChild(item1);
         menuOxygene.append("\n \n");
@@ -35,6 +50,7 @@ class Game {
         item2.setAttribute("class", "itemClicablePDA");
         item2.setAttribute("onclick", "Game.prototype.USBKeyMenu()");
         item2.innerText = "Lire une cle USB";
+        menuOxygene.innerHTML += "<br>";
         menuOxygene.appendChild(item2);
         menuOxygene.append("\n \n");
 
@@ -42,6 +58,7 @@ class Game {
         item3.setAttribute("class", "itemClicablePDA");
         item3.setAttribute("onclick", "game.menuManageEnergy()");
         item3.innerText = "Gerer l'energie";
+        menuOxygene.innerHTML += "<br>";
         menuOxygene.appendChild(item3);
 
     }
@@ -394,9 +411,11 @@ class Game {
             }
 
             document.getElementById('oxygen-nb').innerText = game.vaisseau.oxygen;
-            if (game.vaisseau.oxygen >= 60) barre.style.backgroundColor = "cyan";
-            if (game.vaisseau.oxygen >= 30) barre.style.backgroundColor = "orange";
             if (game.vaisseau.oxygen >= 0) barre.style.backgroundColor = "red";
+            if (game.vaisseau.oxygen >= 3000) barre.style.backgroundColor = "orange";
+            if (game.vaisseau.oxygen >= 6000) barre.style.backgroundColor = "cyan";
+
+
         }
     }
 
@@ -413,9 +432,6 @@ class Game {
         game.nextInstruction();
         for (let i = 0; i < game.vaisseau.leaks.length; i++) {
             game.vaisseau.leaks[i] = 100;
-        }
-        for (let i = 0; i < 10; i++) {
-            game.vaisseau.updates[i] = null;
         }
         game.vaisseau.usage = 0;
         game.vaisseau.batteries[0] = 90000;
@@ -590,15 +606,12 @@ class Game {
     menuInstallUpdatesOxygen() {
         let menuOxygene = game.clearInterface("Faire des mises \n a jour \n \n")
         let item = null;
-        let libelleMisesAJours = ["Augmenter la capacite du reservoir (1)", "Augmenter la capacite du reservoir (2)",
-            "Reparation totale plus rapide (1)", "Reparation totale plus rapide (2)",
-            "Canalisations resistantes (1)", "Canalisations resistantes (2)"];
-        for (let i = 0; i < libelleMisesAJours.length; i++) {
+        for (let i = 0; i < 6; i++) {
             item = document.createElement("div");
             item.setAttribute("class", "miseAJourPDA1");
             let itemA = document.createElement("div");
             itemA.setAttribute("class", "itemClicablePDA")
-            itemA.innerText = libelleMisesAJours[i];
+            itemA.innerText = game.vaisseau.updates[i].libelle;
             itemA.style.float = "left";
             let itemB = document.createElement("div");
             itemB.setAttribute("class", "miseAJourPDA2")
@@ -618,8 +631,43 @@ class Game {
         boutonRetour.innerText = "Retour"
         item.appendChild(boutonRetour);
 
-        for (let i = 0; i < game.vaisseau.updates.length; i++) {
-            if (game.vaisseau.updates[i] != null) {
+        for (let i = 0; i < 6; i++) {
+            if (game.vaisseau.updates[i].progress > 0) {
+                game.updateUpdatesOxygen2(i);
+                game.updateUpdatesOxygen(i);
+            }
+        }
+    }
+    menuInstallUpdatesEnergy() {
+        let menuOxygene = game.clearInterface("Faire des mises \n a jour \n \n")
+        let item = null;
+        for (let i = 6; i < 10; i++) {
+            item = document.createElement("div");
+            item.setAttribute("class", "miseAJourPDA1");
+            let itemA = document.createElement("div");
+            itemA.setAttribute("class", "itemClicablePDA")
+            itemA.innerText = game.vaisseau.updates[i].libelle;
+            itemA.style.float = "left";
+            let itemB = document.createElement("div");
+            itemB.setAttribute("class", "miseAJourPDA2")
+            itemB.setAttribute("id", "miseAJour" + (i))
+            itemB.setAttribute("onclick", "game.updateUpdatesOxygen2(" + (i) + ")")
+            itemB.innerText = "installer";
+            itemB.style.float = "right";
+            item.appendChild(itemA);
+            item.appendChild(itemB);
+            menuOxygene.innerHTML += "<br><br>";
+            menuOxygene.appendChild(item);
+        }
+        item.innerHTML += "<br><br><br>";
+        let boutonRetour = document.createElement("div");
+        boutonRetour.setAttribute("id", "retour")
+        boutonRetour.setAttribute("onclick", "game.menuManageEnergy()")
+        boutonRetour.innerText = "Retour"
+        item.appendChild(boutonRetour);
+
+        for (let i = 6; i < 10; i++) {
+            if (game.vaisseau.updates[i].progress > 0) {
                 game.updateUpdatesOxygen2(i);
                 game.updateUpdatesOxygen(i);
             }
@@ -627,11 +675,11 @@ class Game {
     }
 
     updateUpdatesOxygen(j) {
-        if (game.vaisseau.updates[j] < 100 && game.vaisseau.updates[j] != null) {
+        if (j != null && game.vaisseau.updates[j].progress < 100 && game.vaisseau.updates[j] != null) {
             if (document.getElementById("miseAJour" + j)) {
                 document.getElementById("miseAJour" + j).innerText = "(";
             }
-            for (let i = 0; i < game.vaisseau.updates[j]; i++) {
+            for (let i = 0; i < game.vaisseau.updates[j].progress; i++) {
                 if (i % 5 === 0) {
                     if (document.getElementById("miseAJour" + j)) {
                         document.getElementById("miseAJour" + j).style.color = "yellow";
@@ -642,7 +690,7 @@ class Game {
             if (document.getElementById("miseAJour" + j)) {
                 document.getElementById("miseAJour" + j).style.color = "orange";
             }
-            for (let k = game.vaisseau.updates[j]; k < 100; k++) {
+            for (let k = game.vaisseau.updates[j].progress; k < 100; k++) {
                 if (k % 5 === 0) {
                     if (document.getElementById("miseAJour" + j)) {
                         document.getElementById("miseAJour" + j).innerText += ".";
@@ -652,8 +700,8 @@ class Game {
             if (document.getElementById("miseAJour" + j)) {
                 document.getElementById("miseAJour" + j).innerText += ")";
             }
-            game.vaisseau.updates[j]++;
-            if (game.vaisseau.updates[j] === 100) {
+            game.vaisseau.updates[j].progress++;
+            if (game.vaisseau.updates[j].progress === 100) {
                 if (document.getElementById("miseAJour" + j)) {
                     document.getElementById("miseAJour" + j).style.color = "greenyellow";
                     document.getElementById("miseAJour" + j).onclick = null;
@@ -673,6 +721,11 @@ class Game {
                         game.vaisseau.leaks[i] = game.vaisseau.lifeLeak;
                     }
                 }
+                else if (j === 6) game.vaisseau.shieldMax += 1000;
+                else if (j === 7) game.vaisseau.shieldMax += 1000;
+                else if (j === 8) game.vaisseau.climUpgrade = 1;
+                else if (j === 9) game.vaisseau.climUpgrade = 2;
+                else if (j === 10) game.vaisseau.pdaConso = 15;
             }
         }
     }
@@ -683,6 +736,7 @@ class Game {
         event.style.fontSize = "20px";
         event.style.background = "none";
         event.innerText = "(....................)";
+        game.vaisseau.updates[i].progress = 1;
         if (!game.vaisseau.updates[i]) game.vaisseau.updates[i] = 0;
         else if (game.vaisseau.updates[i] === 100) {
             document.getElementById("miseAJour" + i).style.color = "greenyellow";
@@ -692,8 +746,8 @@ class Game {
     }
 
     analysePDA() {
-        game.vaisseau.usage = 35;
-        game.vaisseau.batteries[game.vaisseau.batteryActive] -= 35;
+        game.vaisseau.usage = game.vaisseau.pdaConso;
+        game.vaisseau.batteries[game.vaisseau.batteryActive] -= game.vaisseau.usage;
         if (game.vaisseau.detectionAsteroide) {
             game.vaisseau.usage += 10;
             game.vaisseau.batteries[game.vaisseau.batteryActive] -= 10;
@@ -713,27 +767,29 @@ class Game {
         }
         if (game.vaisseau.shieldLife < 0) {
             game.vaisseau.shieldLife = 0;
-            game.vaisseau.modules[1] = false;
             game.vaisseau.shieldActive = false;
         }
 
         if (game.vaisseau.oxygenFrame >= 0) {
-            setInterval(game.animFrameOxygen(game.vaisseau.oxygenFrame), 300)
-            setInterval(game.updateUpdatesOxygen(game.vaisseau.oxygenFrame), 300)
-            setInterval(game.updateJaugeOxygen(game.vaisseau.oxygenFrame), 300)
+            game.thread[this.thread.length - 1] = setInterval(game.animFrameOxygen(game.vaisseau.oxygenFrame), 300)
+            game.thread[this.thread.length - 1] = setInterval(game.updateUpdatesOxygen(game.vaisseau.oxygenFrame), 300)
+            game.thread[this.thread.length - 1] = setInterval(game.updateJaugeOxygen(game.vaisseau.oxygenFrame), 300)
         }
 
         game.vaisseau.oxygen -= Math.round((game.vaisseau.oxygenDebit) / 40);
 
         if (game.vaisseau.oxygen % 1 === 0) {
-            setInterval(game.updateOxygen(), 3000)
-            setInterval(game.updateJaugeOxygen(), 3000)
+            game.thread[this.thread.length - 1] = setInterval(game.updateOxygen(), 3000)
+            game.thread[this.thread.length - 1] = setInterval(game.updateJaugeOxygen(), 3000)
         }
         if (game.vaisseau.dlMod) {
             this.download2();
         }
         for (let i = 0; i < game.vaisseau.updates.length; i++) {
-            setInterval(game.updateUpdatesOxygen(i), 8000)
+            if (game.vaisseau.updates[i].progress > 0) {
+                game.thread[this.thread.length - 1] = setInterval(game.updateUpdatesOxygen(i), 8000)
+            }
+
         }
 
         let ok = false;
@@ -742,7 +798,7 @@ class Game {
             document.getElementById("retour2").style.visibility = "hidden";
             for (let i = 0; i < game.vaisseau.leaks.length; i++) {
                 if (game.vaisseau.leaks[i] <= game.vaisseau.lifeLeak) {
-                    setInterval(game.fixLeak(i), 10000)
+                    game.thread[this.thread.length - 1] = setInterval(game.fixLeak(i), 10000)
                     ok = true;
                 }
 
@@ -758,13 +814,17 @@ class Game {
                 document.getElementById("retour2").style.visibility = "visible";
             }
             for (let i = 0; i < game.vaisseau.oxygenRepair.length; i++) {
-                setInterval(game.fixLeak(i), 500);
+                game.thread[this.thread.length - 1] = setInterval(game.fixLeak(i), 500);
             }
         }
     }
 
     clearInterface(titre) {
-        clearInterval(game.thread);
+        for (let i = 0; i < game.thread.length; i++) {
+            clearInterval(game.thread[i]);
+        }
+        this.thread = [];
+
         let audio = new Audio('./audio/clic.mp3');
         audio.play();
         let titremenuOxygene = document.getElementById("oxygeneTitre")
@@ -778,18 +838,27 @@ class Game {
 
     updateHeat() {
         for (let i = 0; i < 60; i++) {
-            if (i % game.vaisseau.heatAugment === 0) game.vaisseau.heat++
+            if (i % game.vaisseau.heatAugment === 0) game.vaisseau.heatAnimation++;
         }
+
+
     }
 
+
     verifClim() {
+        let baisse = 0;
         if (game.vaisseau.clim) {
             for (let i = 0; i < 99; i++) {
                 if (i % (100 - parseInt(game.vaisseau.climPower / 2)) === 0 && game.vaisseau.climPower > 0) {
-                    game.vaisseau.heat--;
+                    baisse--;
                 }
             }
+            if (game.vaisseau.climUpgrade > 0) {
+                baisse -= game.vaisseau.climUpgrade;
+            }
+            game.vaisseau.heatAnimation2 += baisse;
         }
+
     }
 
     enableAsteroidesDetection() {
@@ -808,7 +877,20 @@ class Game {
             document.getElementById("mapAsteroide").appendChild(vaisseauMap);
         }
     }
-
+    initUpdates() {
+        let libelles = ["Augmenter la capacite du reservoir (1)", "Augmenter la capacite du reservoir (2)", "Reparation totale plus rapide (1)", "Reparation totale plus rapide (2)",
+            "Canalisations resistantes (1)", "Canalisations resistantes (2)", "Capacite bouclier (1)", "Capacite du bouclier (2)", "Climatisaton plus efficace", "Climatisaton plus efficace (2)",
+            "Economiseur d'energie (-20%)"];
+        let essai = []
+        for (let i = 0; i < libelles.length; i++) {
+            let update = new Update();
+            update.libelle = libelles[i];
+            update.progress = 0;
+            essai[i] = update;
+            game.vaisseau.updates = essai;
+        }
+        console.log(game.vaisseau.updates)
+    }
     energyRedirect() {
         document.getElementById("navigation-tab").setAttribute("class", "nav-link");
         document.getElementById("oxygen-tab").setAttribute("class", "nav-link active");
@@ -822,7 +904,6 @@ class Game {
             case 0:
                 if (!interact) {
                     game.vaisseau.detectionAsteroide = true;
-                    game.vaisseau.modules[i] = true;
                 } else {
                     game.vaisseau.detectionAsteroide = false;
                     game.vaisseaum.modules[i] = false;
@@ -832,20 +913,16 @@ class Game {
             case 1:
                 if (!interact) {
                     game.vaisseau.clim = true;
-                    game.vaisseau.modules[i] = true;
                 } else {
                     game.vaisseau.clim = false;
-                    game.vaisseau.modules[i] = false;
                 }
 
                 break;
             case 2:
                 if (!interact) {
                     game.vaisseau.shieldActive = true;
-                    game.vaisseau.modules[i] = true;
                 } else {
                     game.vaisseau.shieldActive = false;
-                    game.vaisseau.modules[i] = false;
                 }
 
                 break;
@@ -890,33 +967,36 @@ class Game {
             item1.setAttribute("id", "iconeTemperature");
             let item2 = document.createElement("span")
             item2.setAttribute("id", "valTemperature");
-            game.thread = setInterval(function () {
-                if (game.vaisseau.heat >= 35) {
-                    document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-full");
-                    document.getElementById("iconeTemperature").style.color = "red";
-                    document.getElementById("valTemperature").style.color = "red"
+            game.thread[this.thread.length - 1] = setInterval(function () {
+                if (document.getElementById("iconeTemperature")) {
+                    if (game.vaisseau.heat >= 35) {
+                        document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-full");
+                        document.getElementById("iconeTemperature").style.color = "red";
+                        document.getElementById("valTemperature").style.color = "red"
+                    }
+                    if (game.vaisseau.heat < 35) {
+                        document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-three-quarters");
+                        document.getElementById("iconeTemperature").style.color = "oangered";
+                        document.getElementById("valTemperature").style.color = "orangered"
+                    }
+                    if (game.vaisseau.heat < 26) {
+                        document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-half");
+                        document.getElementById("iconeTemperature").style.color = "lightcoral";
+                        document.getElementById("valTemperature").style.color = "lightcoral"
+                    }
+                    if (game.vaisseau.heat < 22) {
+                        document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-quarter");
+                        document.getElementById("iconeTemperature").style.color = "cyan";
+                        document.getElementById("valTemperature").style.color = "cyan"
+                    }
+                    if (game.vaisseau.heat < 18) {
+                        document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-empty")
+                        document.getElementById("iconeTemperature").style.color = "blue";
+                        document.getElementById("valTemperature").style.color = "blue"
+                    }
+                    document.getElementById("valTemperature").innerText = game.vaisseau.heat + " °C";
                 }
-                if (game.vaisseau.heat < 35) {
-                    document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-three-quarters");
-                    document.getElementById("iconeTemperature").style.color = "oangered";
-                    document.getElementById("valTemperature").style.color = "orangered"
-                }
-                if (game.vaisseau.heat < 26) {
-                    document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-half");
-                    document.getElementById("iconeTemperature").style.color = "lightcoral";
-                    document.getElementById("valTemperature").style.color = "lightcoral"
-                }
-                if (game.vaisseau.heat < 22) {
-                    document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-quarter");
-                    document.getElementById("iconeTemperature").style.color = "cyan";
-                    document.getElementById("valTemperature").style.color = "cyan"
-                }
-                if (game.vaisseau.heat < 18) {
-                    document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-empty")
-                    document.getElementById("iconeTemperature").style.color = "blue";
-                    document.getElementById("valTemperature").style.color = "blue"
-                }
-                document.getElementById("valTemperature").innerText = game.vaisseau.heat + " °C";
+
             }, 500)
             let item3 = document.createElement("div")
             item3.setAttribute("id", "jaugePuissanceClimatisationDiv");
@@ -952,11 +1032,11 @@ class Game {
     morePowerClim() {
         game.vaisseau.climPower += 50;
 
-        if (game.vaisseau.climPower === 100) {
+        if (game.vaisseau.climPower >= 150) {
             document.getElementById("plusPuissanceClimatisation").style.visibility = "hidden";
         }
         document.getElementById("moinsPuissanceClimatisation").style.visibility = "visible";
-        document.getElementById("jaugePuissanceClimatisation").innerText = game.vaisseau.climPower+" %";
+        document.getElementById("jaugePuissanceClimatisation").innerText = game.vaisseau.climPower + " %";
     }
 
     lessPowerClim() {
@@ -965,83 +1045,45 @@ class Game {
             document.getElementById("moinsPuissanceClimatisation").style.visibility = "hidden";
         }
         document.getElementById("plusPuissanceClimatisation").style.visibility = "visible";
-        document.getElementById("jaugePuissanceClimatisation").innerText = game.vaisseau.climPower+" %";
+        document.getElementById("jaugePuissanceClimatisation").innerText = game.vaisseau.climPower + " %";
     }
 
-    gererBatteries() {
-        let menu = game.clearInterface("Gerer les batteries")
-        menu.style.display = "grid";
-        for (let i = 0; i < game.vaisseau.batteries.length; i++) {
-            let item1 = document.createElement("div");
-            item1.setAttribute("id", "indicateurBatterie" + i);
-            item1.setAttribute("class", "indicateurBatterie");
-            item1.setAttribute("onclick", "game.vaisseau.batteryActive = " + i + "");
-            item1.style.float = "left";
-            let item1A = document.createElement("div");
-            item1A.setAttribute("id", "indicateurBatterieA" + i);
-            item1A.setAttribute("class", "indicateurBatterieA");
-            item1A.innerText = "(";
-            let item1B = document.createElement("div");
-            item1B.setAttribute("id", "indicateurBatterieB" + i);
-            item1B.setAttribute("class", "indicateurBatterieB");
-            item1B.innerText = "";
-            item1B.style.color = "yellow";
-            let item1C = document.createElement("div");
-            item1C.setAttribute("id", "indicateurBatterieC" + i);
-            item1C.setAttribute("class", "indicateurBatterieC");
-            let item1D = document.createElement("div");
-            item1D.setAttribute("id", "indicateurBatterieA" + i);
-            item1D.setAttribute("class", "indicateurBatterieA");
-            item1D.innerText = ")";
-            item1.appendChild(item1A);
-            item1.appendChild(item1B);
-            item1.appendChild(item1C);
-            item1.appendChild(item1D);
-            menu.appendChild(item1);
-        }
-
-        let item3 = document.createElement("div");
-        item3.setAttribute("class", "itemClicablePDA");
-        item3.setAttribute("onclick", "game.reloadShieldMenu()");
-        item3.innerText = "Transferer de l'energie";
-        this.thread = setInterval(this.updateCurrentBattery.bind(this), 300)
-        menu.appendChild(item3)
-        let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour")
-        boutonRetour.setAttribute("onclick", "game.menuManageEnergy()")
-        boutonRetour.innerText = "Retour"
-        menu.appendChild(boutonRetour)
-    }
     updateCurrentBattery() {
         for (let i = 0; i < game.vaisseau.batteries.length; i++) {
             let res = game.updateJaugeEnergie(i)
             let texte = res[0];
             let texte2 = res[1];
 
-            if (game.vaisseau.batteryActive === i) {
+            if (game.vaisseau.batteryActive === i && document.getElementById("indicateurBatterie" + i)) {
                 document.getElementById("indicateurBatterie" + i).style.border = "blue 2px solid";
-            } else if (document.getElementById("indicateurBatterie" + i)){
+            } else if (document.getElementById("indicateurBatterie" + i)) {
                 document.getElementById("indicateurBatterie" + i).style.border = "";
             }
 
-            document.getElementById("indicateurBatterieB" + i).innerText = texte;
-            document.getElementById("indicateurBatterieC" + i).innerText = texte2;
+            if (document.getElementById("indicateurBatterieB" + i) && document.getElementById("indicateurBatterieC" + i)) {
+                document.getElementById("indicateurBatterieB" + i).innerText = texte;
+                document.getElementById("indicateurBatterieC" + i).innerText = texte2;
+            }
 
-            if (game.vaisseau.batteries[i] > 0) {
-                document.getElementById("indicateurBatterieB" + i).style.color = "red";
+
+            if (document.getElementById("indicateurBatterieB" + i)) {
+                if (game.vaisseau.batteries[i] > 0) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "red";
+                }
+                if (game.vaisseau.batteries[i] > (0.2 * game.vaisseau.batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "orange";
+                }
+                if (game.vaisseau.batteries[i] > (0.4 * game.vaisseau.batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "yellow";
+                }
+                if (game.vaisseau.batteries[i] > (0.6 * game.vaisseau.batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "greenyellow";
+                }
+                if (game.vaisseau.batteries[i] > (0.8 * game.vaisseau.batteriesMax[i])) {
+                    document.getElementById("indicateurBatterieB" + i).style.color = "green";
+                }
             }
-            if (game.vaisseau.batteries[i] > (0.2 * game.vaisseau.batteriesMax[i])) {
-                document.getElementById("indicateurBatterieB" + i).style.color = "orange";
-            }
-            if (game.vaisseau.batteries[i] > (0.4 * game.vaisseau.batteriesMax[i])) {
-                document.getElementById("indicateurBatterieB" + i).style.color = "yellow";
-            }
-            if (game.vaisseau.batteries[i] > (0.6 * game.vaisseau.batteriesMax[i])) {
-                document.getElementById("indicateurBatterieB" + i).style.color = "greenyellow";
-            }
-            if (game.vaisseau.batteries[i] > (0.8 * game.vaisseau.batteriesMax[i])) {
-                document.getElementById("indicateurBatterieB" + i).style.color = "green";
-            }
+
         }
     }
 
@@ -1049,6 +1091,41 @@ class Game {
         let menu = game.clearInterface("Gerer l'energie")
         menu.style.display = "";
 
+        let item7 = document.createElement("div");
+        item7.setAttribute("id", "itemAffichage");
+        item7.setAttribute("class", "itemClicablePDA");
+        item7.setAttribute("onclick", "game.manageBatteries()");
+        item7.innerText = "Gerer les batteries";
+
+        let item8 = document.createElement("div");
+        item8.setAttribute("id", "itemAffichage");
+        item8.setAttribute("class", "itemClicablePDA");
+        item8.setAttribute("onclick", "game.manageModules()");
+        item8.innerText = "Consulter les modules";
+
+        let item9 = document.createElement("div");
+        item9.setAttribute("id", "itemAffichage");
+        item9.setAttribute("class", "itemClicablePDA");
+        item9.setAttribute("onclick", "game.menuInstallUpdatesEnergy()");
+        item9.innerText = "Faire des mises a jour";
+
+        let boutonRetour = document.createElement("div");
+        boutonRetour.setAttribute("id", "retour")
+        boutonRetour.setAttribute("onclick", "game.menuOxygen()")
+        boutonRetour.innerText = "Retour"
+
+
+        menu.innerHTML += "<br><br>";
+        menu.appendChild(item7);
+        menu.innerHTML += "<br><br>";
+        menu.appendChild(item8);
+        menu.innerHTML += "<br><br>";
+        menu.appendChild(item9);
+        menu.innerHTML += "<br><br>";
+        menu.appendChild(boutonRetour);
+    }
+    manageModules() {
+        let menu = this.clearInterface("Modules")
         let item1 = document.createElement("div");
         item1.setAttribute("id", "indicateurBatterie" + game.vaisseau.batteryActive);
         item1.setAttribute("class", "indicateurBatterie2");
@@ -1075,46 +1152,12 @@ class Game {
         item1.appendChild(item1D);
         menu.appendChild(item1);
 
+
         let item2 = document.createElement("div");
         item2.setAttribute("id", "itemAffichage");
         item2.setAttribute("class", "itemClicablePDA");
-        item2.innerText = "Affichage : 35%";
+        item2.innerText = "Affichage : " + game.vaisseau.pdaConso + " %";
 
-        let item7 = document.createElement("div");
-        item7.setAttribute("id", "itemAffichage");
-        item7.setAttribute("class", "itemClicablePDA");
-        item7.setAttribute("onclick", "game.manageBatteries()");
-        item7.innerText = "Gerer les batteries";
-
-        let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour")
-        boutonRetour.setAttribute("onclick", "game.menuOxygen()")
-        boutonRetour.innerText = "Retour"
-        let res = game.updateJaugeEnergie(game.vaisseau.batteryActive);
-        let texte = res[0];
-        let texte2 = res[1];
-
-        document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).innerText = texte;
-        document.getElementById("indicateurBatterieC" + game.vaisseau.batteryActive).innerText = texte2;
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > 0) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "red";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.2 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "orange";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.4 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "yellow";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.6 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "greenyellow";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.8 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "green";
-        }
-
-        menu.innerHTML += "<br><br>";
-        menu.appendChild(item7);
-        menu.innerHTML += "<br><br>";
         menu.appendChild(item2);
         menu.innerHTML += "<br>";
         let libelleModules = ["Dectection asteroides", "Climatisation", "Bouclier"];
@@ -1145,8 +1188,29 @@ class Game {
             menu.appendChild(item);
             if (i < libelleModules.length - 1) item.innerHTML += "<br><br>";
         }
-
         item.innerHTML += "<br>"
+        let res = game.updateJaugeEnergie(game.vaisseau.batteryActive);
+        let texte = res[0];
+        let texte2 = res[1];
+
+        document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).innerText = texte;
+        document.getElementById("indicateurBatterieC" + game.vaisseau.batteryActive).innerText = texte2;
+        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > 0) {
+            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "red";
+        }
+        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.2 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "orange";
+        }
+        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.4 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "yellow";
+        }
+        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.6 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "greenyellow";
+        }
+        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.8 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "green";
+        }
+
         let item3 = document.createElement("div");
         item3.setAttribute("id", "jaugeVieBouclierDiv2");
         let item3A = document.createElement("div");
@@ -1166,13 +1230,23 @@ class Game {
         item3.appendChild(item3C)
         item3.appendChild(item3D)
         item.appendChild(item3)
-        this.animJaugeShield();
+        let boutonRetour = document.createElement("div");
+        boutonRetour.setAttribute("id", "retour")
+        boutonRetour.setAttribute("onclick", "game.menuManageEnergy()")
+        boutonRetour.innerText = "Retour"
         item.innerHTML += "<br><br>"
-        item.appendChild(boutonRetour);
-    }
+        item.appendChild(boutonRetour)
+        this.animJaugeShield();
 
+    }
     manageBatteries() {
         let menu = game.clearInterface("Gerer les batteries")
+        let item0 = document.createElement("div");
+        item0.setAttribute("class", "itemClicablePDA");
+        item0.innerText = "Choix de la batterie";
+        menu.innerHTML += "<br>";
+        menu.appendChild(item0);
+        menu.innerHTML += "<br><br><br>";
         menu.style.display = "grid";
         for (let i = 0; i < game.vaisseau.batteries.length; i++) {
             let item1 = document.createElement("div");
@@ -1209,7 +1283,7 @@ class Game {
         item3.innerText = "Transferer de l'energie";
 
 
-        this.thread = setInterval(this.updateCurrentBattery.bind(this), 300)
+        this.thread[this.thread.length - 1] = setInterval(this.updateCurrentBattery.bind(this), 300)
 
         menu.appendChild(item3)
         let boutonRetour = document.createElement("div");
@@ -1220,9 +1294,10 @@ class Game {
     }
 
     reloadShieldMenu() {
-        let menu = game.clearInterface("Augmenter la puissance \n dediee au bouclier");
+        let menu = game.clearInterface("Transferer \n de l'energie");
         let selection = -1;
         menu.style.display = "grid";
+
         for (let i = 0; i < game.vaisseau.batteries.length; i++) {
             if (i !== game.vaisseau.batteryActive) {
                 let item1 = document.createElement("div");
@@ -1295,12 +1370,12 @@ class Game {
 
         let item1 = document.createElement("div");
         item1.setAttribute("id", "valeurBatterie3");
-        setInterval(function () { item1.innerText = game.vaisseau.batteries[game.vaisseau.batteryActive] }, 100);
+        game.thread[this.thread.length - 1] = setInterval(function () { item1.innerText = game.vaisseau.batteries[game.vaisseau.batteryActive] }, 100);
         let item2 = document.createElement("div");
         item2.setAttribute("id", "operationPuissanceBouclier");
         let item2A = document.createElement("div");
         item2A.setAttribute("id", "valeurEnergieDediee");
-        game.thread = setInterval(function () {
+        game.thread[this.thread.length - 1] = setInterval(function () {
             if (selection > -1) {
                 item2A.innerText = game.vaisseau.batteries[selection];
                 document.getElementById("ajoutBatterieBouclierSpan33").setAttribute("onclick", "game.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ")");
@@ -1352,7 +1427,7 @@ class Game {
         document.getElementById("valBatterieAAjouter").innerText = valBatterieAAjouter;
     }
 
-    transferEnergyInSheild() { setInterval(game.animJaugeShield(), 100) }
+    transferEnergyInSheild() { game.thread[this.thread.length - 1] = setInterval(game.animJaugeShield(), 100) }
 
     animJaugeShield() {
         let valBatterieATransferer = -1;
@@ -1364,7 +1439,7 @@ class Game {
         let chaine = "";
         let chaine2 = "";
         let msg = false;
-        setInterval(function () {
+        game.thread[this.thread.length - 1] = setInterval(function () {
             msg = false;
             if (game.vaisseau.shieldLife > game.vaisseau.shieldMax) {
                 document.getElementById("msgBouclier").style.color = "red";
@@ -1416,7 +1491,7 @@ class Game {
     }
 
     improveShieldCapacity(boucle, i, j) {
-        setInterval(function () {
+        game.thread[this.thread.length - 1] = setInterval(function () {
             if (boucle) {
                 if (parseInt(document.getElementById("valBatterieAAjouter").innerText) > 0 && game.vaisseau.batteries[j] < game.vaisseau.batteriesMax[j] && game.vaisseau.batteries[i] > 0) {
                     Game.prototype.lessBatteryShield();
@@ -1513,7 +1588,7 @@ class Game {
         document.getElementById("oxygen-tab").setAttribute("class", "nav-link active");
         document.getElementById("navigation").setAttribute("class", "tab-pane fade");
         document.getElementById("oxygen").setAttribute("class", "tab-pane fade show active");
-        viewModule("Dectection asteroides", 0);
+        Game.prototype.viewModule("Dectection asteroides", 0);
 
     }
     verifAltitude() {
@@ -1551,7 +1626,7 @@ class Game {
 
     updateMapAsteroide() {
         if (game.gps.champAsteroide) {
-            for (let i = 0; i < nbAsteroides; i++) {
+            for (let i = 0; i < game.gps.nbAsteroides; i++) {
                 if (game.gps.asteroides[i]) {
                     let x = (game.gps.asteroides[i].x - game.vaisseau.x);
                     let y = (game.gps.asteroides[i].y - game.vaisseau.y);
@@ -1621,7 +1696,7 @@ class Game {
             document.getElementById("mapAsteroide").appendChild(vaisseauMap);
         }
         if (!game.gps.champAsteroide) game.hasAsteroides();
-        else setInterval(game.verifAsteroide.bind(this), 1000);
+        else game.thread[this.thread.length - 1] = setInterval(game.verifAsteroide.bind(this), 1000);
     }
 
     shipUp() {
@@ -1674,34 +1749,46 @@ class Game {
     }
 
     genereAsteroide(idAsteroide) {
-        if (idAsteroide < game.gps.asteroides.length) {
+        if (idAsteroide < game.gps.nbAsteroides) {
             let asteroide = document.createElement("div");
             asteroide.style.width = "1px";
             asteroide.style.height = "1px";
             asteroide.setAttribute("class", "asteroide")
             asteroide.setAttribute("id", "asteroide" + idAsteroide);
+
             document.getElementById("mapAsteroide").appendChild(asteroide);
             let xAsteroide = parseInt(Math.random() * ((game.vaisseau.x + 800) - (game.vaisseau.x - 800)) + (game.vaisseau.x - 800));
             let yAsteroide = parseInt(Math.random() * ((game.vaisseau.y + 800) - (game.vaisseau.y - 800)) + (game.vaisseau.y - 800));
-            game.gps.asteroides = new Asteroide(idAsteroide, xAsteroide, yAsteroide);
+            let asteroideObj = new Asteroide(idAsteroide, xAsteroide, yAsteroide);
+            game.gps.asteroides[idAsteroide] = asteroideObj;
         }
     }
 
     verifAsteroide() {
+
         let x = -1;
         let y = -1;
         let dist = -1;
-        for (let i = 0; i < game.gps.nbAsteroides; i++) {
-            dist = Math.sqrt(((game.vaisseau.x - game.gps.asteroides.x[i]) * (game.vaisseau.x - game.gps.asteroides[i].x)) + ((game.vaisseau.y - game.gps.asteroides[i].y) * (game.vaisseau.y - game.gps.asteroides[i].y)))
-            if ((game.gps.distance === -1 || dist < game.gps.distance) && game.gps.asteroides[i] !== undefined) {
-                game.gps.distance = dist;
+        console.log(game.gps.asteroides)
+        for (let i = 0; i < game.gps.countAsteroide; i++) {
+            dist = Math.sqrt(((game.vaisseau.x - game.gps.asteroides[i].x) * (game.vaisseau.x - game.gps.asteroides[i].x)) + ((game.vaisseau.y - game.gps.asteroides[i].y) * (game.vaisseau.y - game.gps.asteroides[i].y)))
+            if ((dist < game.gps.distanceAsteroide || game.gps.distanceAsteroide == null) && (game.gps.asteroides[i].x != -1 && game.gps.asteroides[i].y != -1)) {
+                game.gps.distanceAsteroide = dist;
+                console.log("ACTU")
                 x = game.gps.asteroides[i].x;
                 y = game.gps.asteroides[i].y;
+                alert("X ET Y " + x + " , " + y)
+                game.gps.idAsteroide = i;
             }
         }
-
-
-        if (game.gps.distance < 50 && game.gps.distance !== -1) {
+        alert(game.gps.distanceAsteroide)
+        if (x == -1 && y == -1 && game.gps.asteroides[game.gps.idAsteroide]) {
+            alert("COMPENSATION")
+            x = game.gps.asteroides[game.gps.idAsteroide].x;
+            y = game.gps.asteroides[game.gps.idAsteroide].y;
+        }
+        if (game.gps.distanceAsteroide < 50 && game.gps.distanceAsteroide !== null && game.gps.champAsteroide && game.gps.idAsteroide != -1) {
+            alert("BOUM")
             document.getElementById("msgPDA3").style.color = "red";
             document.getElementById("msgPDA3").innerText = "TOUCHE !";
             let explosion = parseInt(Math.random() * (3 - 1) + 1);
@@ -1713,9 +1800,17 @@ class Game {
                 let audio = new Audio('./audio/explosion.mp3');
                 audio.play();
             }
+
+            alert("NULLIFIONS CECI " + game.gps.asteroides[game.gps.idAsteroide] + "," + game.gps.asteroides.length + "," + game.gps.idAsteroide)
+            alert("ACTU")
+            game.gps.asteroides.splice(game.gps.idAsteroide, 1);
+            alert("NULLIFIONS CECI " + game.gps.asteroides[game.gps.idAsteroide] + "," + game.gps.asteroides.length + "," + game.gps.idAsteroide)
+            alert("ACTU2")
+            game.gps.distanceAsteroide == null;
             game.gps.countAsteroide--;
+            game.gps.idAsteroide = -1;
             game.vaisseau.key = true;
-            game.gps.asteroides[game.gps.nbAsteroides.length - 1] = false;
+
             switch (game.vaisseau.direction) {
                 case "haut": game.vaisseau.life[0] = game.vaisseau.life[0] - 20;
                     break;
@@ -1727,17 +1822,19 @@ class Game {
                     break;
             }
         }
-        if (game.gps.distance > 1500 && game.gps.champAsteroide) {
+        if (game.gps.distanceAsteroide > 1500 && game.gps.champAsteroide) {
             document.getElementById("msgPDA3").style.color = "green";
             document.getElementById("msgPDA3").innerText = "ASTEROIDE EVITE !";
             game.gps.champAsteroide = false;
+            game.gps.distanceAsteroide = null;
             game.gps.countAsteroide = 0;
         }
 
-        if (game.gps.distance < 1500 && !game.vaisseau.key && game.gps.distance !== -1) {
+        if (game.gps.distanceAsteroide < 1500 && !game.vaisseau.key && game.gps.distanceAsteroide !== -1 && x != -1 && y != -1 && game.gps.idAsteroide) {
+            alert("ASTEROIDE " + game.gps.idAsteroide + " EN " + x + " PAR " + y + " A " + game.gps.distanceAsteroide + " METRES")
             document.getElementById("msgPDA3").style.color = "yellow";
             document.getElementById("msgPDA3").style.animationName = "none";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(game.gps.distance) + " METRES " + game.gps.nbAsteroides + " / " + game.gps.asteroides.length;
+            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(game.gps.distanceAsteroide) + " METRES " + game.gps.nbAsteroides + " / " + game.gps.asteroides.length;
             if (x < game.vaisseau.x && (Math.abs(game.vaisseau.y - y)) < game.vaisseau.size) {
                 document.getElementById("msgPDA3").style.color = "orange";
                 document.getElementById("msgPDA3").style.animationDuration = "1s";
@@ -1758,13 +1855,6 @@ class Game {
                 document.getElementById("msgPDA3").style.animationName = "clignoter";
                 document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE EN FACE A " + (Math.abs(game.vaisseau.y - y)) + " METRES !!";
-            }
-            if (y < game.vaisseau.y && (Math.abs(game.vaisseau.x - x)) < game.vaisseau.size) {
-                document.getElementById("msgPDA3").style.color = "orange";
-                document.getElementById("msgPDA3").style.animationDuration = "1s";
-                document.getElementById("msgPDA3").style.animationName = "clignoter";
-                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
-                document.getElementById("msgPDA3").innerText = "ASTEROIDE EN ARRIERE A " + (Math.abs(y - game.vaisseau.y)) + " METRES !!";
             }
         }
     }

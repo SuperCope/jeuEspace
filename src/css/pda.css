@@ -3,6 +3,31 @@
     text-align: center;
     font-size: 28px;
 }
+#searchBarInstallation{
+    background-color: black;
+    border: cyan 1px solid;
+    color: cyan;
+    border-radius: 2em;
+    font-size: 18px;
+    width: 80%;
+    padding-left: 12px;
+}
+#searchBarInstallation::selection{
+    background-color: black;
+    border: blue 1px solid;
+    color: cyan;
+    border-radius: 2em;
+    font-size: 18px;
+    width: 80%;
+}
+#searchIcon{
+    color: cyan;
+    position: relative;
+    bottom: 3px;
+    right: 40px;
+    transition: 2s;
+}
+
 .miseAJourPDA2{
     background-color: aqua;
     width: 100px;
@@ -298,8 +323,6 @@
 	        animation-name: fadeInOpacity;
 	-webkit-animation-iteration-count: 1;
 	        animation-iteration-count: 1;
-	-webkit-animation-timing-function: ease-in;
-	        animation-timing-function: ease-in;
 	-webkit-animation-duration: 8s;
 	        animation-duration: 8s;
     transition: 8s;
