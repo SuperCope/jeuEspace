@@ -265,14 +265,22 @@
 #moinsPuissanceClimatisation{
     color: red;
     font-size: 48px;
+    position: relative;
+    right: 10px;
 }
 #plusPuissanceClimatisation{
     color: green;
     font-size: 48px;
+    position: relative;
+    left: 10px;
 }
 #jaugePuissanceClimatisation{
     color: cyan;
     font-size: 48px;
+    margin-top: -16px;
+}
+#jaugePuissanceClimatisationDiv{
+    display: inline-flex;
 }
 #jaugeVieBouclier0{
     color: cyan;

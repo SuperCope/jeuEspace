@@ -18,7 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="init()">
     <div id="menu" >
         <ul>
             <li>Jours de Voyage : 000</li>
@@ -46,30 +46,30 @@
                 <div class="tab-pane fade show active" id="navigation" role="tabpanel" aria-labelledby="navigation-tab">
                     <div id="imgPDA">
                         <div id="msgPDA">Loading data...</div>
-                        <img id="imgPDA2" width="250px" height="150px" src="img/loading.gif" >
+                        <img id="imgPDA2" width="250px" height="150px" src="img/loading.gif" alt="">
                     </div>
                     <div id="msgPDA2">HAUTEUR : ANALYSE EN COURS...</div>
                     <div id="mapAsteroide"></div>
                     <div id="msgPDA3">Pas de champ d'asteroide detecte</div>
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary" onclick="vaisseauHaut()" style="width:20%"><i class="fas fa-angle-double-up"></i></button>
+                            <button class="btn btn-primary" id="shipUp" onclick="game.shipUp()" style="width:20%"><i class="fas fa-angle-double-up"></i></button>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary" onclick="vaisseauGauche()" style="width:20%"><i class="fas fa-angle-double-left"></i></button>
-                            <button class="btn btn-danger" onclick="stop()" style="width:20%"><i class="fas fa-ban"></i></button>
-                            <button class="btn btn-primary" onclick="vaisseauDroite()" style="width:20%"><i class="fas fa-angle-double-right"></i></button>
+                            <button class="btn btn-primary" id="shipLeft" onclick="game.shipLeft()" style="width:20%"><i class="fas fa-angle-double-left"></i></button>
+                            <button class="btn btn-danger" id="stop" onclick="game.stop()" style="width:20%"><i class="fas fa-ban"></i></button>
+                            <button class="btn btn-primary" id="shipRight" onclick="game.shipRight()" style="width:20%"><i class="fas fa-angle-double-right"></i></button>
                         </div>
                     </div> 
                     <div class="row">
                         <div class="col">
-                            <button class="btn btn-primary" onclick="vaisseauBas()" style="width:20%"><i class="fas fa-angle-double-down"></i></button>
+                            <button class="btn btn-primary" id="shipDown" onclick="shipDown()" style="width:20%"><i class="fas fa-angle-double-down"></i></button>
                         </div>
                     </div><br>
-                    <button id="decoller" onclick="vaisseauElevation()">Decoller</button>
-                    <button id="atterir" onclick="vaisseauAtterrissage()">Atterir</button>
+                    <button id="decoller" onclick="game.shipElevation()">Decoller</button>
+                    <button id="atterir" onclick="game.shipAtterir()">Atterir</button>
                 </div>
                 <div class="tab-pane fade" id="oxygen" role="tabpanel" aria-labelledby="oxygen-tab">
                     <div id="oxygeneTitre">Gerer l'oxygene</div>
@@ -89,6 +89,7 @@
             <div id="barre-oxygen">
                 <h3 id="oxygen-nb" style="margin-top:25px">----</h3>
             </div>
+            <button class="btn btn-oxygen">Recharge (Restant : 1 )</button>
             <button class="btn btn-jardin">Acceder au Jardin</button>
         </div>
 
@@ -137,62 +138,58 @@
 
         <!-- Panneau des vitesses -->
 
-    <div class="control">
-        <div class="tableaux-bord">
-            <div>
+        <div class="control">
+            <div class="tableaux-bord">
                 <div>
-                    <h3>Panneau de Control</h3>
+                    <div>
+                        <h3>Panneau de Control</h3>
+                    </div>
+                    <div class="affichage">
+                        <div class="vitesse-atterissage">
+                            <p>VITESSE ATTERISSAGE</p>
+                            <h2 id="vitesse-atterisage-vaiseaux">13</h2>
+                        </div>
+                        <div class="gravite">
+                            <p>GRAVITE</p>
+                            <h2 id="gravite-vaiseaux">78</h2>
+                        </div>
+                        <div class="vitesse">
+                            <p>VITESSE EN KM/H</p>
+                            <div id="vitesse-vaiseaux">120</div>
+                        </div>
+                        <div class="temperature">
+                            <p>TEMPERATURE</p>
+                            <h2 id="temperature-vaiseaux">35</h2>
+                        </div>
+                            <div class="pression">
+                            <p>PRESSION</p>
+                            <h2 id="pression-vaiseaux">12</h2>
+                        </div>
+                    </div>
                 </div>
-                <div class="affichage">
-                    <div class="vitesse-atterissage">
-                        <p>VITESSE ATTERISSAGE</p>
-                        <h2 id="vitesse-atterisage-vaiseaux">13</h2>
-                    </div>
-                    <div class="gravite">
-                        <p>GRAVITE</p>
-                        <h2 id="gravite-vaiseaux">78</h2>
-                    </div>
-                    <div class="vitesse">
-                        <p>VITESSE EN KM/H</p>
-                        <div id="vitesse-vaiseaux">120</div>
-                    </div>
-                    <div class="temperature">
-                        <p>TEMPERATURE</p>
-                        <h2 id="temperature-vaiseaux">35</h2>
-                    </div>
-                        <div class="pression">
-                        <p>PRESSION</p>
-                        <h2 id="pression-vaiseaux">12</h2>
-                    </div>
+            </div>
+            <div class="carburant">
+                <h3>Carburant</h3>
+                <div class="carburant-vide">
+
                 </div>
+                <div id="carburant-plein">
+
+                </div>
+                <button id="btn-carburant" onmousedown="game.fill()">Remplir</button>
+                <?php 
+                    for($i=0; $i < 3 ; $i++){
+                        $html = '<img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">';
+                    }
+                    echo $html;
+                ?>
             </div>
         </div>
-        <div class="carburant">
-            <h3>Carburant</h3>
-            <div class="carburant-vide">
-
-            </div>
-            <div id="carburant-plein">
-
-            </div>
-            <button id="btn-carburant" onmousedown="remplir()">Remplir</button>
-            <?php 
-            for($i=0; $i < 3 ; $i++){
-                $html = '<img class="jerrycan" src="./img/jerrycan.png" alt="Utile pour remplir le carburant">';
-            }
-            echo $html;
-            ?>
-        </div>
-        
-        
-    </div>
-        
-
-            
+   
         <!-- Puissance -->
         <div class="puissance">
-            <button id="iconeVaisseau" onmousedown="deceleration()" class="btn-reacteur"></button>
-            <button id="iconeVaisseau" onmousedown="acceleration()" class="btn-accelerateur"></button>
+            <button id="iconeVaisseau1" onmousedown="game.deceleration()" class="btn-reacteur"></button>
+            <button id="iconeVaisseau2" onmousedown="game.acceleration()" class="btn-accelerateur"></button>
 
             <div id="vaisseau-view" hidden>
                 <div class="fire0">
@@ -248,11 +245,54 @@
         </div>
     </div>
 </body>
+<script src="./src/class/Asteroide.js"></script>
+<script src="./src/class/GPS.js"></script>
+<script src="./src/class/Oxygen.js"></script>
+<script src="./src/class/Vaisseau.js"></script>
+<script src="./src/class/Player.js"></script>
+<script src="./src/class/Game.js"></script>
+<script>
+    let game;
+    function init() {
+        game = new Game();
+        setTimeout(game.init(),3000);
 
-<script src="pda.js"></script>
-<script src="pdaNavigation.js"></script>
-<script src="pdaOxygene.js"></script>
-<script src="index.js"></script>
+        document.getElementById("shipUp").onclick = function() { game.shipUp() };
+        document.getElementById("shipLeft").onclick = function() { game.shipLeft() };
+        document.getElementById("shipRight").onclick = function() { game.shipRight() };
+        document.getElementById("shipDown").onclick = function() { game.shipDown() };
+        document.getElementById("decoller").onclick = function() { game.shipElevation() };
+        document.getElementById("atterir").onclick = function() { game.shipAtterir() };
+        document.getElementById("btn-carburant").onclick = function() { game.fill() };
+        document.getElementById("iconeVaisseau1").onclick = function() { game.deceleration() };
+        document.getElementById("iconeVaisseau2").onclick = function() { game.acceleration() };
+    }
 
+    function dragstart_handler(ev) {
+        console.log(ev.target)
+        // On ajoute l'identifiant de l'élément cible à l'objet de transfert
+        ev.dataTransfer.setData("application/my-app", ev.target.id);
+        ev.dataTransfer.dropEffect = "move";
+    }
 
+    function dragover_handler(ev) {
+        ev.preventDefault();
+        ev.dataTransfer.dropEffect = "move"
+    }
+
+    function drop_handler(ev) {
+        ev.target.innerText = "";
+        ev.preventDefault();
+        // On obtient l'identifiant de la cible et on ajoute l'élément déplacé
+        // au DOM de la cible
+        let data = ev.dataTransfer.getData("application/my-app");
+        ev.target.appendChild(document.getElementById(data));
+        console.log(ev.target)
+        if (ev.target.getAttribute("id") === "lecteur") {
+            document.getElementById(data).style.width = "35px";
+            document.getElementById(data).style.height = "100px";
+            game.insertCleUSB()
+        }
+    }
+</script>
 </html>
