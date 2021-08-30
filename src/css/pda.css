@@ -20,12 +20,53 @@
     font-size: 18px;
     width: 80%;
 }
+#divPlanetes{
+    background-color: black;
+    overflow: hidden;
+    width: 200px;
+    height: 200px;
+    margin: auto;
+}
+.divPlanete{
+    border: 1px solid cyan;
+    background-color: black;
+    position: relative;
+    border-radius: 2em;
+}
 #searchIcon{
     color: cyan;
     position: relative;
     bottom: 3px;
     right: 40px;
     transition: 2s;
+    cursor: pointer;
+}
+#cancelSearchIcon{
+    color: cyan;
+    position: relative;
+    bottom: 3px;
+    right: 80px;
+    transition: 2s;
+    visibility: hidden;
+    cursor: pointer;
+}
+#suggestion{
+    color: cyan;
+}
+#suggestions{
+    display: table;
+    border: 1px solid cyan;
+    width: 90%;
+    text-align: left;
+    left: 5%;
+    position: relative;
+    visibility: hidden;
+}
+#suggestion:hover{
+    color: blue;
+    background-color: aquamarine;
+    border: 1px solid blue;
+    cursor: pointer;
 }
 
 .miseAJourPDA2{

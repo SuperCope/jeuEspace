@@ -35,10 +35,10 @@
                     <a class="nav-link active" id="navigation-tab" data-toggle="tab" href="#navigation" role="tab" aria-controls="navigation" aria-selected="true">Navigation</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="oxygen-tab" data-toggle="tab" href="#oxygen" role="tab" aria-controls="oxygen" aria-selected="false">Oxygene</a>
+                    <a class="nav-link" id="oxygen-tab" data-toggle="tab" href="#oxygen" role="tab" aria-controls="oxygen" aria-selected="false">Gestionnaire</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Mises à jour</a>
+                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Mises e jour</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -79,8 +79,10 @@
                 <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                     <div id="oxygeneTitre">Rechercher une installation</div>
                     <div id="items"><br>
-                        <input type="text" id="searchBarInstallation" size="200" max="200"></input>
+                        <input type="text" onkeyup="updateValSearch()" id="searchBarInstallation" size="200" max="200"></input>
                         <span class="fas fa-search" id="searchIcon" onclick=""></span>
+                        <span class="fas fa-times" id="cancelSearchIcon" onclick="cancelSearch()"></span>
+                        <br><br><div id="suggestions"></div>
                     </div>
                     
                 </div>
@@ -191,7 +193,7 @@
                 ?>
             </div>
         </div>
-   
+        <div id="mapPlanetes"></div>
         <!-- Puissance -->
         <div class="puissance">
             <button id="iconeVaisseau1" onmousedown="game.deceleration()" class="btn-reacteur"></button>
@@ -251,6 +253,9 @@
         </div>
     </div>
 </body>
+<script src="./src/class/Planete.js"></script>
+<script src="./src/class/mapPlanetes.js"></script>
+<script src="./src/class/SearchBarInstallations.js"></script>
 <script src="./src/class/Update.js"></script>
 <script src="./src/class/Asteroide.js"></script>
 <script src="./src/class/GPS.js"></script>

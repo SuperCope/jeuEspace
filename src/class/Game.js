@@ -440,7 +440,7 @@ class Game {
         game.vaisseau.batteriesMax[0] = 100000;
         game.vaisseau.batteriesMax[1] = 10000;
         game.vaisseau.batteriesMax[2] = 60000;
-        game.vaisseau.temperature = 19;
+        game.vaisseau.heat = 19;
         game.vaisseau.climPower = 50;
         game.menuOxygen();
     }
@@ -731,18 +731,21 @@ class Game {
     }
 
     updateUpdatesOxygen2(i) {
-        let event = document.getElementById("miseAJour" + i)
-        event.style.color = "orange";
-        event.style.fontSize = "20px";
-        event.style.background = "none";
-        event.innerText = "(....................)";
-        game.vaisseau.updates[i].progress = 1;
-        if (!game.vaisseau.updates[i]) game.vaisseau.updates[i] = 0;
-        else if (game.vaisseau.updates[i] === 100) {
-            document.getElementById("miseAJour" + i).style.color = "greenyellow";
-            document.getElementById("miseAJour" + i).onclick = null;
-            document.getElementById("miseAJour" + i).innerText = "[ FAIT ]";
+        if (document.getElementById("miseAJour" + i)) {
+            let event = document.getElementById("miseAJour" + i)
+            event.style.color = "orange";
+            event.style.fontSize = "20px";
+            event.style.background = "none";
+            event.innerText = "(....................)";
+            game.vaisseau.updates[i].progress = 1;
+            if (!game.vaisseau.updates[i]) game.vaisseau.updates[i] = 0;
+            else if (game.vaisseau.updates[i] === 100) {
+                document.getElementById("miseAJour" + i).style.color = "greenyellow";
+                document.getElementById("miseAJour" + i).onclick = null;
+                document.getElementById("miseAJour" + i).innerText = "[ FAIT ]";
+            }
         }
+
     }
 
     analysePDA() {
@@ -881,15 +884,19 @@ class Game {
         let libelles = ["Augmenter la capacite du reservoir (1)", "Augmenter la capacite du reservoir (2)", "Reparation totale plus rapide (1)", "Reparation totale plus rapide (2)",
             "Canalisations resistantes (1)", "Canalisations resistantes (2)", "Capacite bouclier (1)", "Capacite du bouclier (2)", "Climatisaton plus efficace", "Climatisaton plus efficace (2)",
             "Economiseur d'energie (-20%)"];
+
+        let categories = ["reservoir", "reservoir", "reparation", "reparation",
+            "canalisations", "canalisations", "bouclier", "bouclier", "climatisation", "climatisation",
+            "economiseur"];
         let essai = []
         for (let i = 0; i < libelles.length; i++) {
             let update = new Update();
             update.libelle = libelles[i];
             update.progress = 0;
+            update.category = categories[i];
             essai[i] = update;
             game.vaisseau.updates = essai;
         }
-        console.log(game.vaisseau.updates)
     }
     energyRedirect() {
         document.getElementById("navigation-tab").setAttribute("class", "nav-link");
@@ -898,31 +905,73 @@ class Game {
         document.getElementById("oxygen").setAttribute("class", "tab-pane fade show active");
         game.viewModule("Dectection asteroides", 0);
     }
+    menuInstallUpdates(motCle) {
+        let menuOxygene = game.clearInterface("Faire des mises \n a jour \n \n")
+        let item = null;
+        for (let i = 0; i < game.vaisseau.updates.length; i++) {
+            if (game.vaisseau.updates[i].category == motCle) {
+                item = document.createElement("div");
+                item.setAttribute("class", "miseAJourPDA1");
+                let itemA = document.createElement("div");
+                itemA.setAttribute("class", "itemClicablePDA")
+                itemA.innerText = game.vaisseau.updates[i].libelle;
+                itemA.style.float = "left";
+                let itemB = document.createElement("div");
+                itemB.setAttribute("class", "miseAJourPDA2")
+                itemB.setAttribute("id", "miseAJour" + (i))
+                itemB.setAttribute("onclick", "game.updateUpdatesOxygen2(" + (i) + ")")
+                itemB.innerText = "installer";
+                itemB.style.float = "right";
+                item.appendChild(itemA);
+                item.appendChild(itemB);
+                menuOxygene.innerHTML += "<br><br>";
+                menuOxygene.appendChild(item);
+            }
 
+        }
+        item.innerHTML += "<br><br><br>";
+        let boutonRetour = document.createElement("div");
+        boutonRetour.setAttribute("id", "retour")
+        boutonRetour.setAttribute("onclick", "game.menuManageEnergy()")
+        boutonRetour.innerText = "Retour"
+        item.appendChild(boutonRetour);
+
+        for (let i = 6; i < 10; i++) {
+            if (game.vaisseau.updates[i].progress > 0) {
+                game.updateUpdatesOxygen2(i);
+                game.updateUpdatesOxygen(i);
+            }
+        }
+    }
     interactModule(i, interact, libelle) {
         switch (i) {
             case 0:
                 if (!interact) {
                     game.vaisseau.detectionAsteroide = true;
+                    game.vaisseau.modules[i] = true;
                 } else {
                     game.vaisseau.detectionAsteroide = false;
-                    game.vaisseaum.modules[i] = false;
+                    game.vaisseau.modules[i] = false;
                 }
 
                 break;
             case 1:
                 if (!interact) {
                     game.vaisseau.clim = true;
+                    game.vaisseau.modules[i] = true;
                 } else {
                     game.vaisseau.clim = false;
+                    game.vaisseau.modules[i] = false;
                 }
 
                 break;
             case 2:
                 if (!interact) {
                     game.vaisseau.shieldActive = true;
+                    game.vaisseau.modules[i] = true;
                 } else {
                     game.vaisseau.shieldActive = false;
+                    game.vaisseau.modules[i] = false;
                 }
 
                 break;
@@ -930,28 +979,30 @@ class Game {
         game.viewModule(libelle, i)
     }
     viewModule(libelleModule, i) {
-        // game.clearInterval(game.thread);
-        let menu = game.clearInterface(libelleModule);
+        let menu = game.clearInterface(libelleModule)
         let item = document.createElement("div");
-        item.setAttribute("class", "miseAJourPDA1");
+        item.setAttribute("class", "miseAJourPDA1")
         let itemA = document.createElement("div");
-        itemA.setAttribute("class", "itemClicablePDA");
-        itemA.setAttribute("id", "switch");
+        itemA.setAttribute("class", "itemClicablePDA")
+        itemA.setAttribute("id", "switch")
         itemA.style.float = "right";
         itemA.style.fontSize = "24px";
-        itemA.setAttribute("onclick", "Game.prototype.interactModule(" + i + "," + game.vaisseau.modules[i] + ",'" + libelleModule + "')");
+        itemA.setAttribute("onclick", "game.interactModule(" + i + "," + game.vaisseau.modules[i] + ",'" + libelleModule + "')")
         let itemB = document.createElement("div");
-        itemB.setAttribute("class", "itemClicablePDA");
+        itemB.setAttribute("class", "itemClicablePDA")
         itemB.innerText = "Activer ce module";
-
-        if (!game.vaisseau.modules[i]) itemA.setAttribute("class", "fas fa-toggle-off itemClicablePDA");
-        else itemA.setAttribute("class", "fas fa-toggle-on itemClicablePDA");
-
+        if (!game.vaisseau.modules[i]) {
+            itemA.setAttribute("class", "fas fa-toggle-off itemClicablePDA")
+        } else {
+            itemA.setAttribute("class", "fas fa-toggle-on itemClicablePDA")
+        }
         itemB.style.float = "left";
         item.innerHTML += "<br>";
         item.appendChild(itemB);
         item.appendChild(itemA);
         menu.appendChild(item);
+
+
 
         if (libelleModule === "Bouclier") {
             let item0 = document.createElement("div");
@@ -1028,7 +1079,6 @@ class Game {
         boutonRetour.innerText = "Retour"
         document.getElementById("oxygeneTitre").appendChild(boutonRetour);
     }
-
     morePowerClim() {
         game.vaisseau.climPower += 50;
 
@@ -1283,7 +1333,7 @@ class Game {
         item3.innerText = "Transferer de l'energie";
 
 
-        this.thread[this.thread.length - 1] = setInterval(this.updateCurrentBattery.bind(this), 300)
+        setInterval(this.updateCurrentBattery.bind(this), 300)
 
         menu.appendChild(item3)
         let boutonRetour = document.createElement("div");
@@ -1376,7 +1426,7 @@ class Game {
         let item2A = document.createElement("div");
         item2A.setAttribute("id", "valeurEnergieDediee");
         game.thread[this.thread.length - 1] = setInterval(function () {
-            if (selection > -1) {
+            if (selection > -1 && document.getElementById("ajoutBatterieBouclierSpan33")) {
                 item2A.innerText = game.vaisseau.batteries[selection];
                 document.getElementById("ajoutBatterieBouclierSpan33").setAttribute("onclick", "game.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ")");
             } else item2A.innerText = "Choisir une batterie";
@@ -1597,7 +1647,7 @@ class Game {
             audio.play();
             document.getElementById("msgPDA").style.color = "red";
             document.getElementById("msgPDA").innerText = "LE VAISSEAU S'EST ECRASE";
-            alert("PERDU")
+            console.log("PERDU")
             return;
         } else if (game.vaisseau.z <= 0) {
             document.getElementById("msgPDA").style.color = "green";
@@ -1764,100 +1814,7 @@ class Game {
         }
     }
 
-    verifAsteroide() {
 
-        let x = -1;
-        let y = -1;
-        let dist = -1;
-        console.log(game.gps.asteroides)
-        for (let i = 0; i < game.gps.countAsteroide; i++) {
-            dist = Math.sqrt(((game.vaisseau.x - game.gps.asteroides[i].x) * (game.vaisseau.x - game.gps.asteroides[i].x)) + ((game.vaisseau.y - game.gps.asteroides[i].y) * (game.vaisseau.y - game.gps.asteroides[i].y)))
-            if ((dist < game.gps.distanceAsteroide || game.gps.distanceAsteroide == null) && (game.gps.asteroides[i].x != -1 && game.gps.asteroides[i].y != -1)) {
-                game.gps.distanceAsteroide = dist;
-                console.log("ACTU")
-                x = game.gps.asteroides[i].x;
-                y = game.gps.asteroides[i].y;
-                alert("X ET Y " + x + " , " + y)
-                game.gps.idAsteroide = i;
-            }
-        }
-        alert(game.gps.distanceAsteroide)
-        if (x == -1 && y == -1 && game.gps.asteroides[game.gps.idAsteroide]) {
-            alert("COMPENSATION")
-            x = game.gps.asteroides[game.gps.idAsteroide].x;
-            y = game.gps.asteroides[game.gps.idAsteroide].y;
-        }
-        if (game.gps.distanceAsteroide < 50 && game.gps.distanceAsteroide !== null && game.gps.champAsteroide && game.gps.idAsteroide != -1) {
-            alert("BOUM")
-            document.getElementById("msgPDA3").style.color = "red";
-            document.getElementById("msgPDA3").innerText = "TOUCHE !";
-            let explosion = parseInt(Math.random() * (3 - 1) + 1);
-            if (explosion === 1) {
-                let audio = new Audio('./audio/explode.mp3');
-                audio.play();
-            }
-            if (explosion === 2) {
-                let audio = new Audio('./audio/explosion.mp3');
-                audio.play();
-            }
-
-            alert("NULLIFIONS CECI " + game.gps.asteroides[game.gps.idAsteroide] + "," + game.gps.asteroides.length + "," + game.gps.idAsteroide)
-            alert("ACTU")
-            game.gps.asteroides.splice(game.gps.idAsteroide, 1);
-            alert("NULLIFIONS CECI " + game.gps.asteroides[game.gps.idAsteroide] + "," + game.gps.asteroides.length + "," + game.gps.idAsteroide)
-            alert("ACTU2")
-            game.gps.distanceAsteroide == null;
-            game.gps.countAsteroide--;
-            game.gps.idAsteroide = -1;
-            game.vaisseau.key = true;
-
-            switch (game.vaisseau.direction) {
-                case "haut": game.vaisseau.life[0] = game.vaisseau.life[0] - 20;
-                    break;
-                case "bas": game.vaisseau.life[1] = game.vaisseau.life[1] - 20;
-                    break;
-                case "gauche": game.vaisseau.life[2] = game.vaisseau.life[2] - 20;
-                    break;
-                case "droite": game.vaisseau.life[3] = game.vaisseau.life[3] - 20;
-                    break;
-            }
-        }
-        if (game.gps.distanceAsteroide > 1500 && game.gps.champAsteroide) {
-            document.getElementById("msgPDA3").style.color = "green";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE EVITE !";
-            game.gps.champAsteroide = false;
-            game.gps.distanceAsteroide = null;
-            game.gps.countAsteroide = 0;
-        }
-
-        if (game.gps.distanceAsteroide < 1500 && !game.vaisseau.key && game.gps.distanceAsteroide !== -1 && x != -1 && y != -1 && game.gps.idAsteroide) {
-            alert("ASTEROIDE " + game.gps.idAsteroide + " EN " + x + " PAR " + y + " A " + game.gps.distanceAsteroide + " METRES")
-            document.getElementById("msgPDA3").style.color = "yellow";
-            document.getElementById("msgPDA3").style.animationName = "none";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(game.gps.distanceAsteroide) + " METRES " + game.gps.nbAsteroides + " / " + game.gps.asteroides.length;
-            if (x < game.vaisseau.x && (Math.abs(game.vaisseau.y - y)) < game.vaisseau.size) {
-                document.getElementById("msgPDA3").style.color = "orange";
-                document.getElementById("msgPDA3").style.animationDuration = "1s";
-                document.getElementById("msgPDA3").style.animationName = "clignoter";
-                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
-                document.getElementById("msgPDA3").innerText = "ASTEROIDE A DROITE A " + (Math.abs(game.vaisseau.x - x)) + " METRES !!";
-            }
-            if (game.vaisseau.x < x && (Math.abs(game.vaisseau.y - y)) < game.vaisseau.size) {
-                document.getElementById("msgPDA3").style.color = "orange";
-                document.getElementById("msgPDA3").style.animationDuration = "1s";
-                document.getElementById("msgPDA3").style.animationName = "clignoter";
-                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
-                document.getElementById("msgPDA3").innerText = "ASTEROIDE A GAUCHE A " + (Math.abs(x - game.vaisseau.x)) + " METRES !!";
-            }
-            if (game.vaisseau.y < y && (Math.abs(game.vaisseau.x - x)) < game.vaisseau.size) {
-                document.getElementById("msgPDA3").style.color = "orange";
-                document.getElementById("msgPDA3").style.animationDuration = "1s";
-                document.getElementById("msgPDA3").style.animationName = "clignoter";
-                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
-                document.getElementById("msgPDA3").innerText = "ASTEROIDE EN FACE A " + (Math.abs(game.vaisseau.y - y)) + " METRES !!";
-            }
-        }
-    }
 
     moveSpeedCursor(event) {
         let curseurVitesse = document.querySelector(".curseurVitesse");
@@ -1975,6 +1932,99 @@ class Game {
             document.getElementById("operationsPanel").style.visibility = "visible"
             document.getElementById("cadreFichiers").style.visibility = "hidden"
         }, ((game.vaisseau.fileTemp.length * duree)))
+    }
+    verifAsteroide() {
+        let distanceRestanteAsteroide = -1;
+        let x = -1;
+        let y = -1;
+        let index = -1;
+
+        for (let i = 0; i < game.gps.nbAsteroides; i++) {
+            let dist = Math.sqrt(((game.vaisseau.x - game.gps.asteroides[i].x) * (game.vaisseau.x - game.gps.asteroides[i].x)) + ((game.vaisseau.y - game.gps.asteroides[i].y) * (game.vaisseau.y - game.gps.asteroides[i].y)))
+            if ((distanceRestanteAsteroide == -1 || dist < distanceRestanteAsteroide)) {
+                distanceRestanteAsteroide = dist;
+                x = game.gps.asteroides[i].x;
+                y = game.gps.asteroides[i].y;
+                index = i;
+            }
+
+        }
+
+
+        if (distanceRestanteAsteroide < 50 && distanceRestanteAsteroide != -1) {
+
+            document.getElementById("msgPDA3").style.color = "red";
+            document.getElementById("msgPDA3").innerText = "TOUCHE !";
+            let explosion = parseInt(Math.random() * (3 - 1) + 1);
+            if (explosion == 1) {
+                let audio = new Audio('./audio/explode.mp3');
+                audio.play();
+            }
+            if (explosion == 2) {
+                let audio = new Audio('./audio/explosion.mp3');
+                audio.play();
+            }
+            game.gps.countAsteroide--;
+            game.gps.key = true;
+            asteroides[index] = false;
+            switch (direction) {
+                case "haut":
+                    vieVaisseauHaut = vieVaisseauHaut - (20 - puissanceBouclier);
+                    break;
+                case "bas":
+                    vieVaisseauBas = vieVaisseauBas - (20 - puissanceBouclier);
+                    break;
+                case "gauche":
+                    vieVaisseauGauche = vieVaisseauGauche - (20 - puissanceBouclier);
+                    break;
+                case "droite":
+                    vieVaisseauDroite = vieVaisseauDroite - (20 - puissanceBouclier);
+                    break;
+            }
+
+        }
+        if (distanceRestanteAsteroide > 1500 && game.gps.champAsteroide) {
+            document.getElementById("msgPDA3").style.color = "green";
+            document.getElementById("msgPDA3").innerText = "ASTEROIDE EVITE !";
+            game.gps.champAsteroide = false;
+            game.gps.countAsteroide = 0;
+        }
+        console.log(distanceRestanteAsteroide);
+        if (distanceRestanteAsteroide < 1500 && !game.gps.key && distanceRestanteAsteroide != -1) {
+            document.getElementById("msgPDA3").style.color = "yellow";
+            document.getElementById("msgPDA3").style.animationName = "none";
+            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(distanceRestanteAsteroide) + " METRES " + game.gps.idAsteroide + " / " + game.gps.nbAsteroides;
+            if (x < game.vaisseau.x && (Math.abs(game.vaisseau.y - y)) < tailleVaisseau) {
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE A DROITE A " + (Math.abs(game.vaisseau.x - x)) + " METRES !!";
+            }
+            if (game.vaisseau.x < x && (Math.abs(game.vaisseau.y - y)) < tailleVaisseau) {
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE A GAUCHE A " + (Math.abs(x - game.vaisseau.x)) + " METRES !!";
+            }
+            if (game.vaisseau.y < y && (Math.abs(game.vaisseau.x - x)) < tailleVaisseau) {
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE EN FACE A " + (Math.abs(game.vaisseau.y - y)) + " METRES !!";
+            }
+            if (y < game.vaisseau.y && (Math.abs(game.vaisseau.x - x)) < tailleVaisseau) {
+                document.getElementById("msgPDA3").style.color = "orange";
+                document.getElementById("msgPDA3").style.animationDuration = "1s";
+                document.getElementById("msgPDA3").style.animationName = "clignoter";
+                document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
+                document.getElementById("msgPDA3").innerText = "ASTEROIDE EN ARRIERE A " + (Math.abs(y - game.vaisseau.y)) + " METRES !!";
+            }
+
+
+        }
     }
 
 
