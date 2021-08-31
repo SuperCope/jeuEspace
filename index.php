@@ -153,25 +153,13 @@
                         <h3>Panneau de Control</h3>
                     </div>
                     <div class="affichage">
-                        <div class="vitesse-atterissage">
-                            <p>VITESSE ATTERISSAGE</p>
-                            <h2 id="vitesse-atterisage-vaiseaux">13</h2>
-                        </div>
-                        <div class="gravite">
-                            <p>GRAVITE</p>
-                            <h2 id="gravite-vaiseaux">78</h2>
-                        </div>
                         <div class="vitesse">
                             <p>VITESSE EN KM/H</p>
                             <div id="vitesse-vaiseaux">120</div>
                         </div>
                         <div class="temperature">
                             <p>TEMPERATURE</p>
-                            <h2 id="temperature-vaiseaux">35</h2>
-                        </div>
-                            <div class="pression">
-                            <p>PRESSION</p>
-                            <h2 id="pression-vaiseaux">12</h2>
+                            <h2 id="temperature-vaiseaux">-- °C</h2>
                         </div>
                     </div>
                 </div>

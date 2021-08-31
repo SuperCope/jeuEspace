@@ -1,7 +1,7 @@
-#oxygeneTitre{
+.titre{
     color: cyan;
     text-align: center;
-    font-size: 28px;
+    font-size: 48px;
 }
 #searchBarInstallation{
     background-color: black;
@@ -176,7 +176,7 @@
 .itemClicablePDA{
     color: cyan;
     text-align: left;
-    font-size: 20px;
+    font-size: 40px;
     position: relative;
     left: 12px;
     cursor: pointer;
@@ -184,7 +184,7 @@
 .itemClicablePDA:hover{
     color: greenyellow !important;
     text-align: left;
-    font-size: 20px;
+    font-size: 40px;
     position: relative;
     left: 12px;
     cursor: pointer;
@@ -218,7 +218,7 @@
 #switch{
     position: relative;
     left: -10px;
-    top: 3px;
+    top: 23px;
 }
 
 #msgPDA2{
@@ -233,6 +233,14 @@
 #pda{
     overflow-y: auto;
     width: 400px;
+    height: 700px;
+    background-color: black;
+    margin: auto;
+    text-align: center;
+}
+.pda{
+    width: 100%;
+    overflow-y: auto;
     height: 700px;
     background-color: black;
     margin: auto;
@@ -299,7 +307,7 @@
     right: 40px;
 }
 #ajoutBatterieBouclierSpan11{
-    top: 140px;
+    top: 191px;
     position: relative;
     color: blue;
     right: 60px;

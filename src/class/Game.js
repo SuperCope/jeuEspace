@@ -9,7 +9,6 @@ class Game {
 
     init() {
         this.initUpdates()
-
         setInterval(this.waterDesc.bind(this), 1000);
         setInterval(this.foodDesc.bind(this), 1000);
         setInterval(this.moveShip.bind(this), 1000);
@@ -24,6 +23,7 @@ class Game {
                 game.vaisseau.heatAnimation--;
             }
         }, 1000);
+
         setInterval(function () {
             if (game.vaisseau.heatAnimation2 < 0) {
                 game.vaisseau.heat--;
@@ -36,7 +36,7 @@ class Game {
     displayLife() { game.player.displayLife(game.vaisseau.oxygenDebit, game.vaisseau.oxygen) }
 
     menuOxygen() {
-        let menuOxygene = game.clearInterface("Gerer l'oxygene");
+        let menuOxygene = game.clearInterface("");
 
         let item1 = document.createElement("div");
         item1.setAttribute("class", "itemClicablePDA");
@@ -197,111 +197,124 @@ class Game {
         item40.appendChild(item4)
         item34.appendChild(item3);
         item34.appendChild(item4);
+        let boutonRetour = document.createElement("div");
+        boutonRetour.setAttribute("id", "retour");
+        boutonRetour.setAttribute("onclick", "game.menuOxygen()");
+        boutonRetour.innerText = "Retour";
+        menuOxygene.appendChild(boutonRetour);
         menuOxygene.appendChild(item34);
     }
 
     menuReloadOxygen() {
-        let menuOxygene = game.clearInterface("Gerer l'oxygene");
+        let menuOxygene = game.clearInterface("Actions");
 
         let item1 = document.createElement("div");
         item1.setAttribute("class", "itemClicablePDA");
         item1.setAttribute("onclick", "game.menuInsertBottleOxygen()");
         item1.innerText = "Inserer une bouteille d'oxygene";
         menuOxygene.appendChild(item1);
-        menuOxygene.append("<br>");
 
         let item2 = document.createElement("div");
         item2.setAttribute("class", "itemClicablePDA");
         item2.setAttribute("onclick", "game.menuLoadOxygen()");
         item2.innerText = "Charger une bouteille d'oxygene";
+        menuOxygene.innerHTML += "<br>";
         menuOxygene.appendChild(item2);
-        menuOxygene.append("<br>");
 
         let item3 = document.createElement("div");
         item3.setAttribute("class", "itemClicablePDA");
         item3.setAttribute("onclick", "game.showCanalisations()");
         item3.innerText = "Consulter les canalisations";
+        menuOxygene.innerHTML += "<br>";
         menuOxygene.appendChild(item3);
-        menuOxygene.append("<br>");
 
         let item4 = document.createElement("div");
         item4.setAttribute("class", "itemClicablePDA");
         item4.setAttribute("onclick", "game.configDebitDiffuseur()");
         item4.innerText = "Regler le debit du diffuseur";
+        menuOxygene.innerHTML += "<br>";
         menuOxygene.appendChild(item4);
-        menuOxygene.append("<br>");
 
-        let item5 = document.createElement("div");
-        item5.setAttribute("class", "itemClicablePDA");
-        item5.setAttribute("onclick", "game.menuInstallUpdatesOxygen()");
-        item5.innerText = "Faire des mises a jour";
-        menuOxygene.appendChild(item5);
+
+
 
         let boutonRetour = document.createElement("div");
         boutonRetour.setAttribute("id", "retour");
         boutonRetour.setAttribute("onclick", "game.menuOxygen()");
         boutonRetour.innerText = "Retour";
-        menuOxygene.appendChild(boutonRetour);
     }
 
     menuLoadOxygen() {
-        let menuOxygene = game.clearInterface("Charger une bouteille d'oxygene");
+        let menuOxygene = this.clearInterface("Charger une bouteille d'oxygene")
         let msgLoading = document.createElement("div");
-        msgLoading.setAttribute("id", "msgChargementOxygene");
+        msgLoading.setAttribute("id", "msgChargementOxygene")
         msgLoading.innerText = "Choisissez une bouteille a charger";
-        menuOxygene.appendChild(msgLoading);
+        menuOxygene.appendChild(msgLoading)
         let qteOxygene = document.createElement("div");
-        qteOxygene.setAttribute("id", "qteOxygene");
+        qteOxygene.setAttribute("id", "qteOxygene")
         qteOxygene.innerText = game.vaisseau.oxygen;
         for (let i = 0; i < game.vaisseau.oxygens.length; i++) {
             let bouteille = document.createElement("img");
             bouteille.setAttribute("width", "50px");
             bouteille.setAttribute("height", "100px");
-            bouteille.setAttribute("idBouteille", "" + i + "");
             bouteille.setAttribute("onclick", "game.loadBottleOxygen(event)");
-            if (game.vaisseau.oxygenFrame && i === game.vaisseau.oxygens.length - 1) {
+            if (game.vaisseau.oxygenFrame && i == game.vaisseau.oxygens.length - 1) {
                 bouteille.setAttribute("oxy", "" + game.vaisseau.oxygenFrame + "");
             }
-            if (i === game.vaisseau.oxygens.length - 1 && game.vaisseau.oxygenFrame > 0 && game.vaisseau.oxygenFrame < 8) {
-                bouteille.setAttribute("src", "img/oxy" + game.vaisseau.oxygenFrame + ".png");
+            bouteille.setAttribute("idBouteille", "" + i + "");
+            if (i == game.vaisseau.oxygens.length - 1 && game.vaisseau.oxygenFrame > 0 && game.vaisseau.oxygenFrame < 8) {
+                bouteille.setAttribute("src", "img/oxy" + oxy + ".png");
             } else {
                 bouteille.setAttribute("src", "img/oxy9.png");
             }
-            menuOxygene.appendChild(bouteille);
+            menuOxygene.appendChild(bouteille)
         }
-        menuOxygene.appendChild(msgLoading);
-        menuOxygene.appendChild(qteOxygene);
+        menuOxygene.appendChild(msgLoading)
+        menuOxygene.appendChild(qteOxygene)
         let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour");
-        boutonRetour.setAttribute("onclick", "game.menuReloadOxygen()");
-        boutonRetour.innerText = "Retour";
-        menuOxygene.appendChild(boutonRetour);
+        boutonRetour.setAttribute("id", "retour")
+        boutonRetour.setAttribute("onclick", "game.menuReloadOxygen()")
+        boutonRetour.innerText = "Retour"
+        menuOxygene.appendChild(boutonRetour)
     }
 
     loadBottleOxygen(event) {
+
         if (!document.getElementById("bouteille")) {
             event.target.onclick = null;
+            console.log(game.vaisseau.updates)
+            console.log("OK")
             game.vaisseau.leaks[1] -= parseInt(Math.random() * (12 - 4) + 4);
             if (game.vaisseau.leaks[1] < 0) game.vaisseau.leaks[1] = 0;
             let retour = document.getElementById("retour");
             retour.style.visibility = "hidden";
+            console.log(game.vaisseau.updates)
+            console.log("OK")
             let msgLoading = document.getElementById("msgChargementOxygene");
             msgLoading.style.color = "orange";
             msgLoading.style.animationName = "clignoter";
             msgLoading.style.animationDuration = "1s";
+            console.log(game.vaisseau.updates)
+            console.log("OK")
             msgLoading.style.animationIterationCount = "infinite";
             msgLoading.innerText = "Vidage du contenu de la bouteille dans le reservoir";
             event.target.setAttribute("id", "bouteille");
             if (event.target.getAttribute("oxy")) game.vaisseau.oxygenFrame = event.target.getAttribute("oxy");
             else game.vaisseau.oxygenFrame = 8;
+            console.log(game.vaisseau.updates)
+            console.log("OK")
 
             let audio = new Audio('./audio/air.mp3');
             audio.play();
+            console.log(game.vaisseau.updates)
+            console.log("OK")
             // audio = null;
             audio = new Audio('./audio/verin.wav');
             audio.play();
 
             setTimeout(function () { retour.style.visibility = "visible"; }, 3000)
+            console.log(game.vaisseau.updates)
+            console.log("OK")
         }
     }
 
@@ -402,21 +415,21 @@ class Game {
     }
 
     updateOxygen() {
-        let barre = document.getElementById('barre-oxygen');
-        if (game.vaisseau.oxygen !== 0) {
-            if (game.vaisseau.oxygen < game.vaisseau.oxygenMax) {
-                barre.style.width = (game.vaisseau.oxygen / 20) + "px";
-            } else {
-                barre.style.width = document.getElementById("barre-vide").offsetWidth + "px";
-            }
+        // let barre = document.getElementById('barre-oxygen');
+        // if (game.vaisseau.oxygen !== 0) {
+            // if (game.vaisseau.oxygen < game.vaisseau.oxygenMax) {
+                // barre.style.width = (game.vaisseau.oxygen / 20) + "px";
+            // } else {
+                // barre.style.width = document.getElementById("barre-vide").offsetWidth + "px";
+            // }
 
-            document.getElementById('oxygen-nb').innerText = game.vaisseau.oxygen;
-            if (game.vaisseau.oxygen >= 0) barre.style.backgroundColor = "red";
-            if (game.vaisseau.oxygen >= 3000) barre.style.backgroundColor = "orange";
-            if (game.vaisseau.oxygen >= 6000) barre.style.backgroundColor = "cyan";
+            // document.getElementById('oxygen-nb').innerText = game.vaisseau.oxygen;
+            // if (game.vaisseau.oxygen >= 0) barre.style.backgroundColor = "red";
+            // if (game.vaisseau.oxygen >= 3000) barre.style.backgroundColor = "orange";
+            // if (game.vaisseau.oxygen >= 6000) barre.style.backgroundColor = "cyan";
 
 
-        }
+        // }
     }
 
     updateJaugeOxygen() {
@@ -428,7 +441,7 @@ class Game {
     initPDA() {
         game.gps.nbInstructions = (Math.random() * (1 - 2) + 2);
         game.gps.idInstruction = 0;
-        document.getElementById("oxygen-nb").innerText = game.vaisseau.oxygen;
+        // document.getElementById("oxygen-nb").innerText = game.vaisseau.oxygen;
         game.nextInstruction();
         for (let i = 0; i < game.vaisseau.leaks.length; i++) {
             game.vaisseau.leaks[i] = 100;
@@ -442,7 +455,8 @@ class Game {
         game.vaisseau.batteriesMax[2] = 60000;
         game.vaisseau.heat = 19;
         game.vaisseau.climPower = 50;
-        game.menuOxygen();
+        game.showCanalisations();
+
     }
     nextInstruction() {
         document.getElementById("imgPDA2").setAttribute("src", "img/loading.gif");
@@ -456,7 +470,7 @@ class Game {
         game.updatePDA();
     }
     configDebitDiffuseur() {
-        let menuOxygene = game.clearInterface("Regler le debit \n du diffuseur \n \n");
+        let menuOxygene = game.clearInterface("pdaDebit","Gerer le debit d'oxygene");
         let item1 = document.createElement("input");
         item1.setAttribute("class", "form-range");
         item1.setAttribute("id", "jaugeDiffuseur");
@@ -486,18 +500,14 @@ class Game {
         item4.style.textAlign = "center";
         item4.setAttribute("class", "itemClicablePDA");
         item4.setAttribute("onclick", "game.scanLoses()");
-        let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour");
-        boutonRetour.setAttribute("onclick", "game.menuReloadOxygen()");
-        boutonRetour.innerText = "Retour";
-        document.getElementById("oxygeneTitre").appendChild(item1);
+        menuOxygene.appendChild(item1);
+        menuOxygene.innerHTML += ("<br>");
         menuOxygene.appendChild(item2);
         menuOxygene.innerHTML += ("<br>");
         menuOxygene.appendChild(item3);
         menuOxygene.innerHTML += ("<br>");
         menuOxygene.appendChild(item4);
         menuOxygene.innerHTML += ("<br>");
-        menuOxygene.appendChild(boutonRetour);
         game.configDiffuseur(null);
     }
 
@@ -553,7 +563,7 @@ class Game {
     }
 
     showCanalisations() {
-        let menuOxygene = game.clearInterface("Consulter les canalisation");
+        let menuOxygene = game.clearInterface("pdaCanalisation","Consulter les canalisation");
         let map = document.createElement("div");
         map.setAttribute("id", "mapCanalisations");
         let divFuite1 = document.createElement("div");
@@ -584,23 +594,18 @@ class Game {
             divFuite2.style.opacity = "100%";
         }
 
-        let boutonRetour = document.createElement("div");
         let item1 = document.createElement("div");
         item1.setAttribute("class", "itemClicablePDA");
         item1.setAttribute("id", "reparationLongue");
         item1.setAttribute("onclick", "game.vaisseau.oxygenRepairLongMode = true");
         item1.style.textAlign = "center";
         item1.innerText = "Lancer une reparation complete";
-        boutonRetour.setAttribute("id", "retour2");
-        boutonRetour.setAttribute("onclick", "game.menuReloadOxygen()");
-        boutonRetour.innerText = "Retour";
         map.appendChild(divFuite1);
         map.appendChild(divFuite2);
         menuOxygene.appendChild(map);
         if (game.vaisseau.leaks[0] === 0 || game.vaisseau.leaks[1] === 0) {
             menuOxygene.appendChild(item1);
         }
-        menuOxygene.appendChild(boutonRetour);
     }
 
     menuInstallUpdatesOxygen() {
@@ -668,6 +673,7 @@ class Game {
 
         for (let i = 6; i < 10; i++) {
             if (game.vaisseau.updates[i].progress > 0) {
+                alert("OK2")
                 game.updateUpdatesOxygen2(i);
                 game.updateUpdatesOxygen(i);
             }
@@ -675,8 +681,9 @@ class Game {
     }
 
     updateUpdatesOxygen(j) {
-        if (j != null && game.vaisseau.updates[j].progress < 100 && game.vaisseau.updates[j] != null) {
+        if (game.vaisseau.updates[j] && j != null && game.vaisseau.updates[j].progress < 100 && game.vaisseau.updates[j] != null) {
             if (document.getElementById("miseAJour" + j)) {
+                game.vaisseau.updates[j].progress++;
                 document.getElementById("miseAJour" + j).innerText = "(";
             }
             for (let i = 0; i < game.vaisseau.updates[j].progress; i++) {
@@ -700,7 +707,8 @@ class Game {
             if (document.getElementById("miseAJour" + j)) {
                 document.getElementById("miseAJour" + j).innerText += ")";
             }
-            game.vaisseau.updates[j].progress++;
+
+
             if (game.vaisseau.updates[j].progress === 100) {
                 if (document.getElementById("miseAJour" + j)) {
                     document.getElementById("miseAJour" + j).style.color = "greenyellow";
@@ -725,7 +733,7 @@ class Game {
                 else if (j === 7) game.vaisseau.shieldMax += 1000;
                 else if (j === 8) game.vaisseau.climUpgrade = 1;
                 else if (j === 9) game.vaisseau.climUpgrade = 2;
-                else if (j === 10) game.vaisseau.pdaConso = 15;
+                else if (j === 10) game.vaisseau.pdaConso = 60;
             }
         }
     }
@@ -749,18 +757,20 @@ class Game {
     }
 
     analysePDA() {
+
+
         game.vaisseau.usage = game.vaisseau.pdaConso;
         game.vaisseau.batteries[game.vaisseau.batteryActive] -= game.vaisseau.usage;
         if (game.vaisseau.detectionAsteroide) {
-            game.vaisseau.usage += 10;
+            game.vaisseau.usage += 30;
             game.vaisseau.batteries[game.vaisseau.batteryActive] -= 10;
         }
         if (game.vaisseau.clim) {
-            game.vaisseau.usage += 10;
+            game.vaisseau.usage += 30;
             game.vaisseau.batteries[game.vaisseau.batteryActive] -= 10;
         }
-        if (game.vaisseau.usage > 40) game.vaisseau.heatAugment = 100 - game.vaisseau.usage;
-
+        game.vaisseau.heatAugment = (100 - game.vaisseau.usage) + 10;
+        document.getElementById("jaugeEnergie").style.width = ((game.vaisseau.batteries[game.vaisseau.batteryActive] / game.vaisseau.batteriesMax[game.vaisseau.batteryActive]) * 100)+"%";
         if (game.vaisseau.batteries[game.vaisseau.batteryActive] < 0) {
             game.vaisseau.batteries[game.vaisseau.batteryActive] = 0;
         }
@@ -774,23 +784,23 @@ class Game {
         }
 
         if (game.vaisseau.oxygenFrame >= 0) {
-            game.thread[this.thread.length - 1] = setInterval(game.animFrameOxygen(game.vaisseau.oxygenFrame), 300)
-            game.thread[this.thread.length - 1] = setInterval(game.updateUpdatesOxygen(game.vaisseau.oxygenFrame), 300)
-            game.thread[this.thread.length - 1] = setInterval(game.updateJaugeOxygen(game.vaisseau.oxygenFrame), 300)
+            game.thread[game.thread.length - 1] = setInterval(game.animFrameOxygen(game.vaisseau.oxygenFrame), 300)
+            game.thread[game.thread.length - 1] = setInterval(game.updateUpdatesOxygen(game.vaisseau.oxygenFrame), 300)
+            game.thread[game.thread.length - 1] = setInterval(game.updateJaugeOxygen(game.vaisseau.oxygenFrame), 300)
         }
 
         game.vaisseau.oxygen -= Math.round((game.vaisseau.oxygenDebit) / 40);
-
+        document.getElementById("jaugeOxygene").style.width = ((game.vaisseau.oxygen / game.vaisseau.oxygenMax) * 100)+"%";
         if (game.vaisseau.oxygen % 1 === 0) {
-            game.thread[this.thread.length - 1] = setInterval(game.updateOxygen(), 3000)
-            game.thread[this.thread.length - 1] = setInterval(game.updateJaugeOxygen(), 3000)
+            game.thread[game.thread.length - 1] = setInterval(game.updateOxygen(), 3000)
+            game.thread[game.thread.length - 1] = setInterval(game.updateJaugeOxygen(), 3000)
         }
         if (game.vaisseau.dlMod) {
             this.download2();
         }
         for (let i = 0; i < game.vaisseau.updates.length; i++) {
             if (game.vaisseau.updates[i].progress > 0) {
-                game.thread[this.thread.length - 1] = setInterval(game.updateUpdatesOxygen(i), 8000)
+                game.thread[game.thread.length - 1] = setInterval(game.updateUpdatesOxygen(i), 8000)
             }
 
         }
@@ -801,7 +811,7 @@ class Game {
             document.getElementById("retour2").style.visibility = "hidden";
             for (let i = 0; i < game.vaisseau.leaks.length; i++) {
                 if (game.vaisseau.leaks[i] <= game.vaisseau.lifeLeak) {
-                    game.thread[this.thread.length - 1] = setInterval(game.fixLeak(i), 10000)
+                    game.thread[game.thread.length - 1] = setInterval(game.fixLeak(i), 10000)
                     ok = true;
                 }
 
@@ -817,33 +827,44 @@ class Game {
                 document.getElementById("retour2").style.visibility = "visible";
             }
             for (let i = 0; i < game.vaisseau.oxygenRepair.length; i++) {
-                game.thread[this.thread.length - 1] = setInterval(game.fixLeak(i), 500);
+                game.thread[game.thread.length - 1] = setInterval(game.fixLeak(i), 500);
             }
         }
     }
 
-    clearInterface(titre) {
-        for (let i = 0; i < game.thread.length; i++) {
-            clearInterval(game.thread[i]);
-        }
-        this.thread = [];
-
-        let audio = new Audio('./audio/clic.mp3');
-        audio.play();
-        let titremenuOxygene = document.getElementById("oxygeneTitre")
-        titremenuOxygene.innerText = titre;
-        let menuOxygene = document.getElementById("items")
+    clearInterface(id,titre) {
+        let menuOxygene = document.getElementById(id)
+        let titremenuOxygene = document.getElementById("titre")
         while (menuOxygene.lastChild) {
             menuOxygene.removeChild(menuOxygene.lastChild);
         }
+        for (let i = 0; i < game.thread.length; i++) {
+            clearInterval(game.thread[i]);
+        }
+        game.thread = [];
+
+        let audio = new Audio('./audio/clic.mp3');
+        audio.play();
+
+
+        titremenuOxygene.innerText = titre;
+
+        menuOxygene.appendChild(titremenuOxygene);
         return menuOxygene;
     }
 
+
+
     updateHeat() {
+
         for (let i = 0; i < 60; i++) {
             if (i % game.vaisseau.heatAugment === 0) game.vaisseau.heatAnimation++;
         }
-
+        if(game.vaisseau.direction != ""){
+            game.vaisseau.carburant --;
+        }
+        game.carburantConsommation();
+        // document.getElementById("temperature-vaiseaux").innerText = game.vaisseau.heat + " °C";
 
     }
 
@@ -938,6 +959,7 @@ class Game {
 
         for (let i = 6; i < 10; i++) {
             if (game.vaisseau.updates[i].progress > 0) {
+                alert("OK3")
                 game.updateUpdatesOxygen2(i);
                 game.updateUpdatesOxygen(i);
             }
@@ -979,7 +1001,8 @@ class Game {
         game.viewModule(libelle, i)
     }
     viewModule(libelleModule, i) {
-        let menu = game.clearInterface(libelleModule)
+        let menu = game.clearInterface(("pdaModule"+i),libelleModule)
+
         let item = document.createElement("div");
         item.setAttribute("class", "miseAJourPDA1")
         let itemA = document.createElement("div");
@@ -1007,7 +1030,7 @@ class Game {
         if (libelleModule === "Bouclier") {
             let item0 = document.createElement("div");
             item0.setAttribute("class", "itemClicablePDA");
-            item0.setAttribute("onclick", "game.reloadShieldMenu()");
+            item0.setAttribute("onclick", "game.manageEnergy(true)");
             item0.innerText = "Recharger le bouclier";
             menu.innerHTML += " <br><br>";
             menu.appendChild(item0);
@@ -1018,7 +1041,7 @@ class Game {
             item1.setAttribute("id", "iconeTemperature");
             let item2 = document.createElement("span")
             item2.setAttribute("id", "valTemperature");
-            game.thread[this.thread.length - 1] = setInterval(function () {
+            game.thread[game.thread.length - 1] = setInterval(function () {
                 if (document.getElementById("iconeTemperature")) {
                     if (game.vaisseau.heat >= 35) {
                         document.getElementById("iconeTemperature").setAttribute("class", "fas fa-thermometer-full");
@@ -1223,7 +1246,7 @@ class Game {
             let itemA = document.createElement("div");
             itemA.setAttribute("class", "itemClicablePDA")
             itemA.innerText = libelleModules[i];
-            if (game.vaisseau.modules[i] && i !== 2) itemA.innerText += ": 10%";
+            if (game.vaisseau.modules[i] && i !== 2) itemA.innerText += ": 30%";
             if (game.vaisseau.modules[i] && i === 2) itemA.innerText += ": Batterie individuelle";
 
             itemA.style.float = "left";
@@ -1329,7 +1352,7 @@ class Game {
 
         let item3 = document.createElement("div");
         item3.setAttribute("class", "itemClicablePDA");
-        item3.setAttribute("onclick", "game.reloadShieldMenu()");
+        item3.setAttribute("onclick", "game.manageEnergy(false)");
         item3.innerText = "Transferer de l'energie";
 
 
@@ -1343,93 +1366,100 @@ class Game {
         menu.appendChild(boutonRetour)
     }
 
-    reloadShieldMenu() {
-        let menu = game.clearInterface("Transferer \n de l'energie");
+    manageEnergy(shieldMode) {
+        let menu = game.clearInterface("pdaModule2","Transferer \n de l'energie");
         let selection = -1;
         menu.style.display = "grid";
 
-        for (let i = 0; i < game.vaisseau.batteries.length; i++) {
-            if (i !== game.vaisseau.batteryActive) {
-                let item1 = document.createElement("div");
-                item1.setAttribute("id", "indicateurBatterie" + i);
-                item1.setAttribute("class", "indicateurBatterie");
-                item1.onclick = function () {
-                    selection = i;
-                    for (let j = 0; j < game.vaisseau.batteries.length; j++) {
-                        if (j !== game.vaisseau.batteryActive) {
-                            if (j === selection) {
-                                document.getElementById("indicateurBatterie" + j).style.border = "2px blue solid";
-                            } else {
-                                document.getElementById("indicateurBatterie" + j).style.border = "";
+        if(!shieldMode){
+            for (let i = 0; i < game.vaisseau.batteries.length; i++) {
+                if (i !== game.vaisseau.batteryActive) {
+                    let item1 = document.createElement("div");
+                    item1.setAttribute("id", "indicateurBatterie" + i);
+                    item1.setAttribute("class", "indicateurBatterie");
+                    item1.onclick = function () {
+                        selection = i;
+                        for (let j = 0; j < game.vaisseau.batteries.length; j++) {
+                            if (j !== game.vaisseau.batteryActive) {
+                                if (j === selection) {
+                                    document.getElementById("indicateurBatterie" + j).style.border = "2px blue solid";
+                                } else {
+                                    document.getElementById("indicateurBatterie" + j).style.border = "";
+                                }
                             }
                         }
+                    };
+                    item1.style.float = "left";
+                    let item1A = document.createElement("div");
+                    item1A.setAttribute("id", "indicateurBatterieA" + i);
+                    item1A.setAttribute("class", "indicateurBatterieA");
+                    item1A.innerText = "(";
+                    let item1B = document.createElement("div");
+                    item1B.setAttribute("id", "indicateurBatterieB" + i);
+                    item1B.setAttribute("class", "indicateurBatterieB");
+                    item1B.innerText = "";
+                    item1B.style.color = "yellow";
+                    let item1C = document.createElement("div");
+                    item1C.setAttribute("id", "indicateurBatterieC" + i);
+                    item1C.setAttribute("class", "indicateurBatterieC");
+                    let item1D = document.createElement("div");
+                    item1D.setAttribute("id", "indicateurBatterieA" + i);
+                    item1D.setAttribute("class", "indicateurBatterieA");
+                    item1D.innerText = ")";
+                    item1.appendChild(item1A);
+                    item1.appendChild(item1B);
+                    item1.appendChild(item1C);
+                    item1.appendChild(item1D);
+                    menu.appendChild(item1);
+                }
+            }
+
+
+            for (let i = 0; i < game.vaisseau.batteries.length; i++) {
+                if (i !== game.vaisseau.batteryActive) {
+                    let res = game.updateJaugeEnergie(i)
+                    let texte = res[0];
+                    let texte2 = res[1];
+
+                    document.getElementById("indicateurBatterieB" + i).innerText = texte;
+                    document.getElementById("indicateurBatterieC" + i).innerText = texte2;
+
+                    if (game.vaisseau.batteries[i] > 0) {
+                        document.getElementById("indicateurBatterieB" + i).style.color = "red";
                     }
-                };
-                item1.style.float = "left";
-                let item1A = document.createElement("div");
-                item1A.setAttribute("id", "indicateurBatterieA" + i);
-                item1A.setAttribute("class", "indicateurBatterieA");
-                item1A.innerText = "(";
-                let item1B = document.createElement("div");
-                item1B.setAttribute("id", "indicateurBatterieB" + i);
-                item1B.setAttribute("class", "indicateurBatterieB");
-                item1B.innerText = "";
-                item1B.style.color = "yellow";
-                let item1C = document.createElement("div");
-                item1C.setAttribute("id", "indicateurBatterieC" + i);
-                item1C.setAttribute("class", "indicateurBatterieC");
-                let item1D = document.createElement("div");
-                item1D.setAttribute("id", "indicateurBatterieA" + i);
-                item1D.setAttribute("class", "indicateurBatterieA");
-                item1D.innerText = ")";
-                item1.appendChild(item1A);
-                item1.appendChild(item1B);
-                item1.appendChild(item1C);
-                item1.appendChild(item1D);
-                menu.appendChild(item1);
-            }
-        }
-
-
-        for (let i = 0; i < game.vaisseau.batteries.length; i++) {
-            if (i !== game.vaisseau.batteryActive) {
-                let res = game.updateJaugeEnergie(i)
-                let texte = res[0];
-                let texte2 = res[1];
-
-                document.getElementById("indicateurBatterieB" + i).innerText = texte;
-                document.getElementById("indicateurBatterieC" + i).innerText = texte2;
-
-                if (game.vaisseau.batteries[i] > 0) {
-                    document.getElementById("indicateurBatterieB" + i).style.color = "red";
-                }
-                if (game.vaisseau.batteries[i] > (0.2 * game.vaisseau.batteriesMax[i])) {
-                    document.getElementById("indicateurBatterieB" + i).style.color = "orange";
-                }
-                if (game.vaisseau.batteries[i] > (0.4 * game.vaisseau.batteriesMax[i])) {
-                    document.getElementById("indicateurBatterieB" + i).style.color = "yellow";
-                }
-                if (game.vaisseau.batteries[i] > (0.6 * game.vaisseau.batteriesMax[i])) {
-                    document.getElementById("indicateurBatterieB" + i).style.color = "greenyellow";
-                }
-                if (game.vaisseau.batteries[i] > (0.8 * game.vaisseau.batteriesMax[i])) {
-                    document.getElementById("indicateurBatterieB" + i).style.color = "green";
+                    if (game.vaisseau.batteries[i] > (0.2 * game.vaisseau.batteriesMax[i])) {
+                        document.getElementById("indicateurBatterieB" + i).style.color = "orange";
+                    }
+                    if (game.vaisseau.batteries[i] > (0.4 * game.vaisseau.batteriesMax[i])) {
+                        document.getElementById("indicateurBatterieB" + i).style.color = "yellow";
+                    }
+                    if (game.vaisseau.batteries[i] > (0.6 * game.vaisseau.batteriesMax[i])) {
+                        document.getElementById("indicateurBatterieB" + i).style.color = "greenyellow";
+                    }
+                    if (game.vaisseau.batteries[i] > (0.8 * game.vaisseau.batteriesMax[i])) {
+                        document.getElementById("indicateurBatterieB" + i).style.color = "green";
+                    }
                 }
             }
+
         }
 
         let item1 = document.createElement("div");
         item1.setAttribute("id", "valeurBatterie3");
-        game.thread[this.thread.length - 1] = setInterval(function () { item1.innerText = game.vaisseau.batteries[game.vaisseau.batteryActive] }, 100);
+        game.thread[game.thread.length - 1] = setInterval(function () { item1.innerText = game.vaisseau.batteries[game.vaisseau.batteryActive] }, 100);
         let item2 = document.createElement("div");
         item2.setAttribute("id", "operationPuissanceBouclier");
         let item2A = document.createElement("div");
         item2A.setAttribute("id", "valeurEnergieDediee");
-        game.thread[this.thread.length - 1] = setInterval(function () {
+        game.thread[game.thread.length - 1] = setInterval(function () {
             if (selection > -1 && document.getElementById("ajoutBatterieBouclierSpan33")) {
                 item2A.innerText = game.vaisseau.batteries[selection];
-                document.getElementById("ajoutBatterieBouclierSpan33").setAttribute("onclick", "game.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ")");
-            } else item2A.innerText = "Choisir une batterie";
+                document.getElementById("ajoutBatterieBouclierSpan33").setAttribute("onclick", "game.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ","+ shieldMode +")");
+            } else if(shieldMode) {
+                item2A.innerText = game.vaisseau.shieldLife;
+            } else{
+                item2A.innerText = "Choisir une batterie";
+            }
         }, 100);
 
         let item2B = document.createElement("div");
@@ -1443,13 +1473,17 @@ class Game {
         let item2D = document.createElement("div");
         item2D.setAttribute("id", "ajoutBatterieBouclierSpan33");
         item2D.setAttribute("class", "fas fa-check-circle");
-        item2D.setAttribute("onclick", "Game.prototype.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ")");
+        item2D.setAttribute("onclick", "Game.prototype.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ","+ shieldMode +")");
         let item2E = document.createElement("div");
         item2E.setAttribute("id", "valBatterieAAjouter");
         item2E.innerText = "0";
         let boutonRetour = document.createElement("div");
         boutonRetour.setAttribute("id", "retour");
-        boutonRetour.setAttribute("onclick", "Game.prototype.manageBatteries()");
+        if(shieldMode){
+            boutonRetour.setAttribute("onclick", "game.viewModule('Bouclier',2)");
+        }else{
+            boutonRetour.setAttribute("onclick", "game.manageBatteries()");
+        }
         boutonRetour.innerText = "Retour";
         item2.appendChild(item2B);
         item2.appendChild(item2A);
@@ -1458,7 +1492,7 @@ class Game {
         item2.appendChild(item2D);
         menu.appendChild(item1);
         menu.appendChild(item2);
-        document.getElementById("oxygeneTitre").appendChild(boutonRetour);
+        menu.appendChild(boutonRetour);
     }
     lessBatteryShield() {
         let valBatterieAAjouter = parseInt(document.getElementById("valBatterieAAjouter").innerText)
@@ -1477,7 +1511,7 @@ class Game {
         document.getElementById("valBatterieAAjouter").innerText = valBatterieAAjouter;
     }
 
-    transferEnergyInSheild() { game.thread[this.thread.length - 1] = setInterval(game.animJaugeShield(), 100) }
+    transferEnergyInSheild() { game.thread[game.thread.length - 1] = setInterval(game.animJaugeShield(), 100) }
 
     animJaugeShield() {
         let valBatterieATransferer = -1;
@@ -1489,7 +1523,7 @@ class Game {
         let chaine = "";
         let chaine2 = "";
         let msg = false;
-        game.thread[this.thread.length - 1] = setInterval(function () {
+        game.thread[game.thread.length - 1] = setInterval(function () {
             msg = false;
             if (game.vaisseau.shieldLife > game.vaisseau.shieldMax) {
                 document.getElementById("msgBouclier").style.color = "red";
@@ -1540,13 +1574,19 @@ class Game {
         }, 50);
     }
 
-    improveShieldCapacity(boucle, i, j) {
-        game.thread[this.thread.length - 1] = setInterval(function () {
+    improveShieldCapacity(boucle, i, j,mode) {
+        game.thread[game.thread.length - 1] = setInterval(function () {
             if (boucle) {
-                if (parseInt(document.getElementById("valBatterieAAjouter").innerText) > 0 && game.vaisseau.batteries[j] < game.vaisseau.batteriesMax[j] && game.vaisseau.batteries[i] > 0) {
+                if (parseInt(document.getElementById("valBatterieAAjouter").innerText) > 0  && game.vaisseau.batteries[i] > 0) {
                     Game.prototype.lessBatteryShield();
-                    game.vaisseau.batteries[i] = game.vaisseau.batteries[i] - 20;
-                    game.vaisseau.batteries[j] = game.vaisseau.batteries[j] + 20;
+                    if(mode){
+                        game.vaisseau.batteries[i] = game.vaisseau.batteries[i] - 20;
+                        game.vaisseau.shieldLife = game.vaisseau.shieldLife +20;
+                    }else if(game.vaisseau.batteries[j] < game.vaisseau.batteriesMax[j]){
+                        game.vaisseau.batteries[i] = game.vaisseau.batteries[i] - 20;
+                        game.vaisseau.batteries[j] = game.vaisseau.batteries[j] + 20;
+                    }
+
                 } else {
                     document.getElementById("valBatterieAAjouter").innerHTML = "0";
                     boucle = false;
@@ -1567,7 +1607,7 @@ class Game {
     }
 
     updateDirections() {
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        let vitesseVaisseau = game.vaisseau.speed;
         document.getElementById("msgPDA").style.animationName = "none";
         document.getElementById("msgPDA").style.color = "cyan";
         if (game.gps.x < game.vaisseau.x && (game.vaisseau.x - game.gps.x) > parseInt(vitesseVaisseau) / 3.6) {
@@ -1594,7 +1634,7 @@ class Game {
             document.getElementById("imgPDA2").setAttribute("height", "100px");
             document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : " + (game.gps.distance / 1000).toFixed(1) + " KILOMETRES \n TOUT DROIT SUR " + (game.gps.y - game.vaisseau.y) + " METRES  \n PARTIE " + game.gps.idInstruction + " / " + parseInt(game.gps.nbInstructions)
         }
-        game.vaisseau.speed = parseInt(document.getElementById("vitesse-vaiseaux").innerText);
+        // game.vaisseau.speed = parseInt(document.getElementById("vitesse-vaiseaux").innerText);
     }
 
     updatePDA() {
@@ -1695,7 +1735,7 @@ class Game {
 
     verifInstruction() {
         let distanceRestante = Math.sqrt(((game.vaisseau.x - game.gps.x) * (game.vaisseau.x - game.gps.x)) + ((game.vaisseau.y - game.gps.y) * (game.vaisseau.y - game.gps.y)))
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        let vitesseVaisseau = game.vaisseau.speed;
         game.updatePDA();
         if (distanceRestante < parseInt(vitesseVaisseau / 3.6 + 5)) {
             document.getElementById("imgPDA2").setAttribute("src", "img/valider.png");
@@ -1730,7 +1770,7 @@ class Game {
         game.verifInstruction();
 
         if (game.vaisseau.direction !== "") {
-            // game.carburantConsommation();
+            console.log("CARBURANT")
         }
         if (game.gps.countAsteroide === 0) {
             game.gps.champAsteroide = false;
@@ -1746,37 +1786,39 @@ class Game {
             document.getElementById("mapAsteroide").appendChild(vaisseauMap);
         }
         if (!game.gps.champAsteroide) game.hasAsteroides();
-        else game.thread[this.thread.length - 1] = setInterval(game.verifAsteroide.bind(this), 1000);
+        else game.thread[game.thread.length - 1] = setInterval(game.verifAsteroide.bind(this), 1000);
     }
-
+    carburantConsommation(){
+        document.getElementById("jaugeCarburant").style.width = (game.vaisseau.carburant / 2.5)+"%";
+    }
     shipUp() {
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
-        game.vaisseau.y = game.vaisseau.y + parseInt(vitesseVaisseau / 3.6);
+        // let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        game.vaisseau.y = game.vaisseau.y + parseInt(game.vaisseau.speed / 3.6);
         game.vaisseau.direction = "haut";
     }
     shipDown() {
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
-        game.vaisseau.y = game.vaisseau.y - parseInt(vitesseVaisseau / 3.6);
+        // let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        game.vaisseau.y = game.vaisseau.y - parseInt(game.vaisseau.speed / 3.6);
         game.vaisseau.direction = "bas";
     }
     shipRight() {
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
-        game.vaisseau.x = game.vaisseau.x - parseInt(vitesseVaisseau / 3.6);
+        // let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        game.vaisseau.x = game.vaisseau.x - parseInt(game.vaisseau.speed / 3.6);
         game.vaisseau.direction = "droite";
     }
     shipLeft() {
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
-        game.vaisseau.x = game.vaisseau.x + parseInt(vitesseVaisseau / 3.6);
+        // let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        game.vaisseau.x = game.vaisseau.x + parseInt(game.vaisseau.speed / 3.6);
         game.vaisseau.direction = "gauche";
     }
     shipElevation() {
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
-        game.vaisseau.z = game.vaisseau.z + parseInt(vitesseVaisseau / 3.6);
+        // let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        game.vaisseau.z = game.vaisseau.z + parseInt(game.vaisseau.speed / 3.6);
         game.vaisseau.direction = "elevation";
     }
     shipAtterir() {
-        let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
-        game.vaisseau.z = game.vaisseau.z - parseInt(vitesseVaisseau / 3.6);
+        // let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
+        game.vaisseau.z = game.vaisseau.z - parseInt(game.vaisseau.speed / 3.6);
         if (game.vaisseau.z < 0) game.vaisseau.z = 0;
         game.vaisseau.direction = "atterrissage";
     }
@@ -1846,17 +1888,17 @@ class Game {
     }
 
     waterDesc() {
-        let water = document.getElementById('jaugeWater');
-        let lastWater = water.offsetHeight;
-
-        if (lastWater > 2) {
-            water.style.top = (Number((water.style.top).split("px")[0]) + 2) + "px";
-            water.style.height = (lastWater - 2) + "px";
-            game.player.water -= 2;
-            game.numberWater();
-        } else {
-            document.getElementById('jaugeWater').style.visibility = "hidden";
-        }
+        // let water = document.getElementById('jaugeWater');
+        // let lastWater = water.offsetHeight;
+        //
+        // if (lastWater > 2) {
+        //     water.style.top = (Number((water.style.top).split("px")[0]) + 2) + "px";
+        //     water.style.height = (lastWater - 2) + "px";
+        //     game.player.water -= 2;
+        //     game.numberWater();
+        // } else {
+        //     document.getElementById('jaugeWater').style.visibility = "hidden";
+        // }
 
     }
 
@@ -1867,14 +1909,14 @@ class Game {
     }
 
     foodDesc() {
-        let food = document.getElementById('jaugeFood');
-        let lastFood = food.offsetHeight;
-        let newFood = (lastFood - 2) + "px";
-        let hauteur = (Number((food.style.top).split("px")[0]) + 2) + "px";
-        game.player.water -= 2;
-        food.style.top = hauteur;
-        food.style.height = newFood;
-        game.numberFood();
+        // let food = document.getElementById('jaugeFood');
+        // let lastFood = food.offsetHeight;
+        // let newFood = (lastFood - 2) + "px";
+        // let hauteur = (Number((food.style.top).split("px")[0]) + 2) + "px";
+        // game.player.water -= 2;
+        // food.style.top = hauteur;
+        // food.style.height = newFood;
+        // game.numberFood();
     }
 
     numberFood() {
@@ -1940,13 +1982,16 @@ class Game {
         let index = -1;
 
         for (let i = 0; i < game.gps.nbAsteroides; i++) {
-            let dist = Math.sqrt(((game.vaisseau.x - game.gps.asteroides[i].x) * (game.vaisseau.x - game.gps.asteroides[i].x)) + ((game.vaisseau.y - game.gps.asteroides[i].y) * (game.vaisseau.y - game.gps.asteroides[i].y)))
-            if ((distanceRestanteAsteroide == -1 || dist < distanceRestanteAsteroide)) {
-                distanceRestanteAsteroide = dist;
-                x = game.gps.asteroides[i].x;
-                y = game.gps.asteroides[i].y;
-                index = i;
+            if (game.gps.asteroides[i] != null) {
+                let dist = Math.sqrt(((game.vaisseau.x - game.gps.asteroides[i].x) * (game.vaisseau.x - game.gps.asteroides[i].x)) + ((game.vaisseau.y - game.gps.asteroides[i].y) * (game.vaisseau.y - game.gps.asteroides[i].y)))
+                if ((distanceRestanteAsteroide == -1 || dist < distanceRestanteAsteroide)) {
+                    distanceRestanteAsteroide = dist;
+                    x = game.gps.asteroides[i].x;
+                    y = game.gps.asteroides[i].y;
+                    index = i;
+                }
             }
+
 
         }
 
@@ -1965,20 +2010,20 @@ class Game {
                 audio.play();
             }
             game.gps.countAsteroide--;
-            game.gps.key = true;
-            asteroides[index] = false;
-            switch (direction) {
+            game.vaisseau.key = true;
+            game.gps.asteroides[index] = null;
+            switch (game.vaisseau.direction) {
                 case "haut":
-                    vieVaisseauHaut = vieVaisseauHaut - (20 - puissanceBouclier);
+                    game.vaisseau.life[0] = game.vaisseau.life[0] - (20 - game.vaisseau.shieldPower);
                     break;
                 case "bas":
-                    vieVaisseauBas = vieVaisseauBas - (20 - puissanceBouclier);
+                    game.vaisseau.life[1] = game.vaisseau.life[1] - (20 - game.vaisseau.shieldPower);
                     break;
                 case "gauche":
-                    vieVaisseauGauche = vieVaisseauGauche - (20 - puissanceBouclier);
+                    game.vaisseau.life[2] = game.vaisseau.life[2] - (20 - game.vaisseau.shieldPower);
                     break;
                 case "droite":
-                    vieVaisseauDroite = vieVaisseauDroite - (20 - puissanceBouclier);
+                    game.vaisseau.life[3] = game.vaisseau.life[3] - (20 - game.vaisseau.shieldPower);
                     break;
             }
 
@@ -1989,33 +2034,32 @@ class Game {
             game.gps.champAsteroide = false;
             game.gps.countAsteroide = 0;
         }
-        console.log(distanceRestanteAsteroide);
-        if (distanceRestanteAsteroide < 1500 && !game.gps.key && distanceRestanteAsteroide != -1) {
+        if (distanceRestanteAsteroide < 1500 && !game.vaisseau.key && distanceRestanteAsteroide != -1) {
             document.getElementById("msgPDA3").style.color = "yellow";
             document.getElementById("msgPDA3").style.animationName = "none";
-            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(distanceRestanteAsteroide) + " METRES " + game.gps.idAsteroide + " / " + game.gps.nbAsteroides;
-            if (x < game.vaisseau.x && (Math.abs(game.vaisseau.y - y)) < tailleVaisseau) {
+            document.getElementById("msgPDA3").innerText = "ASTEROIDE A " + parseInt(distanceRestanteAsteroide) + " METRES ";
+            if (x < game.vaisseau.x && (Math.abs(game.vaisseau.y - y)) < game.vaisseau.size) {
                 document.getElementById("msgPDA3").style.color = "orange";
                 document.getElementById("msgPDA3").style.animationDuration = "1s";
                 document.getElementById("msgPDA3").style.animationName = "clignoter";
                 document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE A DROITE A " + (Math.abs(game.vaisseau.x - x)) + " METRES !!";
             }
-            if (game.vaisseau.x < x && (Math.abs(game.vaisseau.y - y)) < tailleVaisseau) {
+            if (game.vaisseau.x < x && (Math.abs(game.vaisseau.y - y)) < game.vaisseau.size) {
                 document.getElementById("msgPDA3").style.color = "orange";
                 document.getElementById("msgPDA3").style.animationDuration = "1s";
                 document.getElementById("msgPDA3").style.animationName = "clignoter";
                 document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE A GAUCHE A " + (Math.abs(x - game.vaisseau.x)) + " METRES !!";
             }
-            if (game.vaisseau.y < y && (Math.abs(game.vaisseau.x - x)) < tailleVaisseau) {
+            if (game.vaisseau.y < y && (Math.abs(game.vaisseau.x - x)) < game.vaisseau.size) {
                 document.getElementById("msgPDA3").style.color = "orange";
                 document.getElementById("msgPDA3").style.animationDuration = "1s";
                 document.getElementById("msgPDA3").style.animationName = "clignoter";
                 document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE EN FACE A " + (Math.abs(game.vaisseau.y - y)) + " METRES !!";
             }
-            if (y < game.vaisseau.y && (Math.abs(game.vaisseau.x - x)) < tailleVaisseau) {
+            if (y < game.vaisseau.y && (Math.abs(game.vaisseau.x - x)) < game.vaisseau.sizeu) {
                 document.getElementById("msgPDA3").style.color = "orange";
                 document.getElementById("msgPDA3").style.animationDuration = "1s";
                 document.getElementById("msgPDA3").style.animationName = "clignoter";

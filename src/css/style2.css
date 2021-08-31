@@ -1,0 +1,33 @@
+/*
+    DEMO STYLE
+*/
+
+
+body {
+    background: #fafafa;
+}
+
+#content {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content:center;
+}
+
+#accordionVaisseau{
+    width: 100%;
+}
+
+#accordionPlayer{
+    width: 100%;
+}
+
+.card {
+    border: solid 7px lawngreen;
+}
+
+.card-body {
+    background-color:#0b283e;
+}

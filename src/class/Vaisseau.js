@@ -22,7 +22,7 @@ class Vaisseau {
         this.batteriesMax = [100000, 10000, 60000];
         this.batteryActive = 0;
         this.batteryUse = 0;
-        this.pdaConso = 35;
+        this.pdaConso = 40;
 
         this.x = 0;
         this.y = 0;

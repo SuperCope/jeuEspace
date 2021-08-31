@@ -30,28 +30,17 @@ class Player {
     displayLife(d,o) {
         this.life -= ((60 - d) / 10);
         if (o === 0) this.life -= 10;
+        if(this.life > 100){
+            this.life = 100;
+        }
+        if(this.life < 0){
+            this.life = 0;
+        }
+        document.getElementById("vieJoueur").style.width = this.life+"%";
+        if (this.life <= 0){
+            document.getElementById("vieJoueur").style.backgroundColor = "white";
+            alert("VOUS ETES MORT, PAUVRE CON");
+        }
 
-        if (this.life <= 0) alert("VOUS ETES MORT, PAUVRE CON");
-
-        if (this.life > 0) {
-            document.getElementById("santeJoueur").style.color = "red";
-            document.getElementById("santeJoueur").innerText = "catastrophique";
-        }
-        if (this.life > 20) {
-            document.getElementById("santeJoueur").style.color = "orange";
-            document.getElementById("santeJoueur").innerText = "critique";
-        }
-        if (this.life > 40) {
-            document.getElementById("santeJoueur").style.color = "yellow";
-            document.getElementById("santeJoueur").innerText = "moyenne";
-        }
-        if (this.life > 60) {
-            document.getElementById("santeJoueur").style.color = "greenyellow";
-            document.getElementById("santeJoueur").innerText = "bonne";
-        }
-        if (this.life > 80) {
-            document.getElementById("santeJoueur").style.color = "green";
-            document.getElementById("santeJoueur").innerText = "tres bonne";
-        }
     }
 }
