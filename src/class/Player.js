@@ -6,6 +6,7 @@ class Player {
         this.waterMax = 100;
         this.foodMax = 100;
         this.food = 100;
+        this.inventaire = [{}];
     }
 
     getLife() { return this.life }
@@ -27,18 +28,34 @@ class Player {
         else this.food = this.foodMax;
     }
 
-    displayLife(d,o) {
+    displayLife(d, o) {
         this.life -= ((60 - d) / 10);
         if (o === 0) this.life -= 10;
-        if(this.life > 100){
+        if (this.life > 100) {
             this.life = 100;
         }
-        if(this.life < 0){
+        if (this.life < 0) {
             this.life = 0;
         }
-        document.getElementById("vieJoueur").style.width = this.life+"%";
-        if (this.life <= 0){
+        document.getElementById("vieJoueur").style.width = this.life + "%";
+        if (this.life <= 0) {
             document.getElementById("vieJoueur").style.backgroundColor = "white";
+            alert("VOUS ETES MORT, PAUVRE CON");
+        }
+
+    }
+    displayFood(d, o) {
+        this.food -= ((60 - d) / 10);
+        if (o === 0) this.food -= 10;
+        if (this.life > 100) {
+            this.life = 100;
+        }
+        if (this.food < 0) {
+            this.food = 0;
+        }
+        document.getElementById("foodJoueur").style.width = this.food + "%";
+        if (this.food <= 0) {
+            document.getElementById("foodJoueur").style.backgroundColor = "white";
             alert("VOUS ETES MORT, PAUVRE CON");
         }
 

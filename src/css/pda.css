@@ -68,16 +68,20 @@
     border: 1px solid blue;
     cursor: pointer;
 }
-
+#pdaEnergy{
+    display: grid;
+}
 .miseAJourPDA2{
     background-color: aqua;
-    width: 100px;
+    width: 300px;
     border-radius: 2em;
+    font-size: 40px;
 }
 .miseAJourPDA2:hover{
     background-color: blue;
     cursor: pointer;
-    width: 100px;
+    width: 300px;
+    font-size: 40px;
     border-radius: 2em;
 }
 #pertes{
@@ -231,20 +235,11 @@
     height: 100px;
 }
 #pda{
-    overflow-y: auto;
-    width: 400px;
-    height: 700px;
     background-color: black;
-    margin: auto;
-    text-align: center;
 }
 .pda{
     width: 100%;
-    overflow-y: auto;
-    height: 700px;
     background-color: black;
-    margin: auto;
-    text-align: center;
 }
 #imgPDA{
     border: blue 1px solid;
@@ -307,10 +302,9 @@
     right: 40px;
 }
 #ajoutBatterieBouclierSpan11{
-    top: 191px;
     position: relative;
     color: blue;
-    right: 60px;
+    right: 45px;
 }
 #ajoutBatterieBouclierSpan2{
     top: 31px;
@@ -319,10 +313,9 @@
     left: 40px;
 }
 #ajoutBatterieBouclierSpan22{
-    top: 50px;
     position: relative;
     color: red;
-    left: 60px;
+    left: 45px;
 }
 #ajoutBatterieBouclierSpan3{
     top: 21px;

@@ -147,8 +147,8 @@ body{
 #cleUSB{
     background-image: url('../../img/cleUSB.png');
     background-size: 100%;
-    width: 10px;
-    height: 31px;
+    width: 100px;
+    height: 290px;
     margin: auto;
 }
 #dossier{
@@ -209,8 +209,8 @@ body{
     color: cyan;
     position: relative;
     top: 45px;
-    width: 35px;
-    height: 100px;
+    width: 100px;
+    height: 300px;
     margin: auto;
     border: 1px dashed cyan;
 }
@@ -317,7 +317,9 @@ body{
     padding: 15px;
     background-color: rgb(200, 208, 214);
 }
-
+.progress{
+    margin: auto;
+}
 .pression{
     border: solid black 2px;
     padding: 15px;

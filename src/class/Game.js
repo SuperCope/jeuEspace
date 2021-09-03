@@ -4,7 +4,7 @@ class Game {
         this.player = new Player();
         this.gps = new GPS();
         this.thread = [];
-        // game.intervalId = null;
+        this.jardin = new Jardin();
     }
 
     init() {
@@ -30,14 +30,14 @@ class Game {
                 game.vaisseau.heatAnimation2++;
             }
         }, 1000);
-        this.initPDA()
+        this.initPDA();
+        this.initJardin();
     }
 
     displayLife() { game.player.displayLife(game.vaisseau.oxygenDebit, game.vaisseau.oxygen) }
+    displayFood() { game.player.displayFood(game.vaisseau.oxygenDebit, game.vaisseau.oxygen) }
 
     menuOxygen() {
-        let menuOxygene = game.clearInterface("");
-
         let item1 = document.createElement("div");
         item1.setAttribute("class", "itemClicablePDA");
         item1.setAttribute("onclick", "game.menuReloadOxygen()");
@@ -63,12 +63,10 @@ class Game {
 
     }
     closeUSB() {
-        document.getElementById("cadreFichiers").remove();
-        document.getElementById("operationsPanel").style.visibility = "visible"
+        game.USBKeyMenu();
     }
     showFiles() {
-        document.getElementById("operationsPanel").style.visibility = "hidden"
-        let menuOxygene = document.getElementById("items")
+        let menuOxygene = game.clearInterface("pdaCleUSB", "Fichiers")
         let cadre = document.createElement("div");
         let quitterSpan = document.createElement("span");
         quitterSpan.setAttribute("id", "quitterSpan");
@@ -108,9 +106,9 @@ class Game {
     }
     ejectUSBKey() {
         document.body.appendChild(document.getElementById("cleUSB"))
-        document.getElementById("cleUSB").remove();
         document.getElementById("msgCle1").style.visibility = "hidden";
         document.getElementById("ejecter").style.visibility = "hidden";
+        document.getElementById("lecteur").innerText = "Cle";
         document.getElementById("operationsPanel").style.visibility = "hidden";
     }
     insertCleUSB() {
@@ -125,7 +123,7 @@ class Game {
         document.getElementById("operationsPanel").style.visibility = "visible";
     }
     USBKeyMenu() {
-        let menuOxygene = this.clearInterface("Lire une cle USB")
+        let menuOxygene = this.clearInterface("pdaCleUSB", "Lire une cle USB")
         let lecteur = document.createElement("div");
         lecteur.setAttribute("id", "lecteur");
         lecteur.setAttribute("ondrop", "drop_handler(event)")
@@ -171,8 +169,8 @@ class Game {
         item4A1.setAttribute("class", "far fa-folder-open")
         let item4A2 = document.createElement("div");
         item4A2.setAttribute("id", "consulterFichier")
-        item4A2.setAttribute("onclick", "Game.prototype.showFiles()")
-        item4A2.innerText = "Consulter les fichiers";
+        item4A2.setAttribute("onclick", "Game.prototype.ejectUSBKey()")
+        item4A2.innerText = "Ejecter la cle USB";
         let item4B1 = document.createElement("span");
         item4B1.setAttribute("id", "dossier")
         item4B1.setAttribute("class", "far fa-folder-open")
@@ -197,43 +195,27 @@ class Game {
         item40.appendChild(item4)
         item34.appendChild(item3);
         item34.appendChild(item4);
-        let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour");
-        boutonRetour.setAttribute("onclick", "game.menuOxygen()");
-        boutonRetour.innerText = "Retour";
-        menuOxygene.appendChild(boutonRetour);
         menuOxygene.appendChild(item34);
     }
 
     menuReloadOxygen() {
-        let menuOxygene = game.clearInterface("Actions");
+        let menuOxygene = game.clearInterface("pdaOxygen", "Gerer les bouteilles d'oxygene");
 
         let item1 = document.createElement("div");
         item1.setAttribute("class", "itemClicablePDA");
         item1.setAttribute("onclick", "game.menuInsertBottleOxygen()");
         item1.innerText = "Inserer une bouteille d'oxygene";
+        menuOxygene.innerHTML += "<br><br>"
         menuOxygene.appendChild(item1);
 
         let item2 = document.createElement("div");
         item2.setAttribute("class", "itemClicablePDA");
         item2.setAttribute("onclick", "game.menuLoadOxygen()");
         item2.innerText = "Charger une bouteille d'oxygene";
-        menuOxygene.innerHTML += "<br>";
+        menuOxygene.innerHTML += "<br><br><br><br>";
         menuOxygene.appendChild(item2);
 
-        let item3 = document.createElement("div");
-        item3.setAttribute("class", "itemClicablePDA");
-        item3.setAttribute("onclick", "game.showCanalisations()");
-        item3.innerText = "Consulter les canalisations";
-        menuOxygene.innerHTML += "<br>";
-        menuOxygene.appendChild(item3);
 
-        let item4 = document.createElement("div");
-        item4.setAttribute("class", "itemClicablePDA");
-        item4.setAttribute("onclick", "game.configDebitDiffuseur()");
-        item4.innerText = "Regler le debit du diffuseur";
-        menuOxygene.innerHTML += "<br>";
-        menuOxygene.appendChild(item4);
 
 
 
@@ -245,7 +227,7 @@ class Game {
     }
 
     menuLoadOxygen() {
-        let menuOxygene = this.clearInterface("Charger une bouteille d'oxygene")
+        let menuOxygene = game.clearInterface("pdaOxygen", "Charger le contenu d'une bouteille d'oxygene dans le diffuseur");
         let msgLoading = document.createElement("div");
         msgLoading.setAttribute("id", "msgChargementOxygene")
         msgLoading.innerText = "Choisissez une bouteille a charger";
@@ -319,7 +301,7 @@ class Game {
     }
 
     menuInsertBottleOxygen() {
-        let menuOxygene = game.clearInterface("AJOUTER UNE BOUTEILLE");
+        let menuOxygene = game.clearInterface("pdaOxygen", "Ajouter une bouteille d'oxygene");
         let msgLoading = document.createElement("div");
         msgLoading.setAttribute("id", "msgLoading");
         msgLoading.setAttribute("onclick", "game.addBottleOxygen()");
@@ -417,16 +399,16 @@ class Game {
     updateOxygen() {
         // let barre = document.getElementById('barre-oxygen');
         // if (game.vaisseau.oxygen !== 0) {
-            // if (game.vaisseau.oxygen < game.vaisseau.oxygenMax) {
-                // barre.style.width = (game.vaisseau.oxygen / 20) + "px";
-            // } else {
-                // barre.style.width = document.getElementById("barre-vide").offsetWidth + "px";
-            // }
+        // if (game.vaisseau.oxygen < game.vaisseau.oxygenMax) {
+        // barre.style.width = (game.vaisseau.oxygen / 20) + "px";
+        // } else {
+        // barre.style.width = document.getElementById("barre-vide").offsetWidth + "px";
+        // }
 
-            // document.getElementById('oxygen-nb').innerText = game.vaisseau.oxygen;
-            // if (game.vaisseau.oxygen >= 0) barre.style.backgroundColor = "red";
-            // if (game.vaisseau.oxygen >= 3000) barre.style.backgroundColor = "orange";
-            // if (game.vaisseau.oxygen >= 6000) barre.style.backgroundColor = "cyan";
+        // document.getElementById('oxygen-nb').innerText = game.vaisseau.oxygen;
+        // if (game.vaisseau.oxygen >= 0) barre.style.backgroundColor = "red";
+        // if (game.vaisseau.oxygen >= 3000) barre.style.backgroundColor = "orange";
+        // if (game.vaisseau.oxygen >= 6000) barre.style.backgroundColor = "cyan";
 
 
         // }
@@ -470,7 +452,7 @@ class Game {
         game.updatePDA();
     }
     configDebitDiffuseur() {
-        let menuOxygene = game.clearInterface("pdaDebit","Gerer le debit d'oxygene");
+        let menuOxygene = game.clearInterface("pdaDebit", "Gerer le debit d'oxygene");
         let item1 = document.createElement("input");
         item1.setAttribute("class", "form-range");
         item1.setAttribute("id", "jaugeDiffuseur");
@@ -563,7 +545,7 @@ class Game {
     }
 
     showCanalisations() {
-        let menuOxygene = game.clearInterface("pdaCanalisation","Consulter les canalisation");
+        let menuOxygene = game.clearInterface("pdaCanalisation", "Consulter les canalisation");
         let map = document.createElement("div");
         map.setAttribute("id", "mapCanalisations");
         let divFuite1 = document.createElement("div");
@@ -673,7 +655,6 @@ class Game {
 
         for (let i = 6; i < 10; i++) {
             if (game.vaisseau.updates[i].progress > 0) {
-                alert("OK2")
                 game.updateUpdatesOxygen2(i);
                 game.updateUpdatesOxygen(i);
             }
@@ -770,7 +751,7 @@ class Game {
             game.vaisseau.batteries[game.vaisseau.batteryActive] -= 10;
         }
         game.vaisseau.heatAugment = (100 - game.vaisseau.usage) + 10;
-        document.getElementById("jaugeEnergie").style.width = ((game.vaisseau.batteries[game.vaisseau.batteryActive] / game.vaisseau.batteriesMax[game.vaisseau.batteryActive]) * 100)+"%";
+        document.getElementById("jaugeEnergie").style.width = ((game.vaisseau.batteries[game.vaisseau.batteryActive] / game.vaisseau.batteriesMax[game.vaisseau.batteryActive]) * 100) + "%";
         if (game.vaisseau.batteries[game.vaisseau.batteryActive] < 0) {
             game.vaisseau.batteries[game.vaisseau.batteryActive] = 0;
         }
@@ -790,7 +771,7 @@ class Game {
         }
 
         game.vaisseau.oxygen -= Math.round((game.vaisseau.oxygenDebit) / 40);
-        document.getElementById("jaugeOxygene").style.width = ((game.vaisseau.oxygen / game.vaisseau.oxygenMax) * 100)+"%";
+        document.getElementById("jaugeOxygene").style.width = ((game.vaisseau.oxygen / game.vaisseau.oxygenMax) * 100) + "%";
         if (game.vaisseau.oxygen % 1 === 0) {
             game.thread[game.thread.length - 1] = setInterval(game.updateOxygen(), 3000)
             game.thread[game.thread.length - 1] = setInterval(game.updateJaugeOxygen(), 3000)
@@ -832,7 +813,7 @@ class Game {
         }
     }
 
-    clearInterface(id,titre) {
+    clearInterface(id, titre) {
         let menuOxygene = document.getElementById(id)
         let titremenuOxygene = document.getElementById("titre")
         while (menuOxygene.lastChild) {
@@ -860,8 +841,8 @@ class Game {
         for (let i = 0; i < 60; i++) {
             if (i % game.vaisseau.heatAugment === 0) game.vaisseau.heatAnimation++;
         }
-        if(game.vaisseau.direction != ""){
-            game.vaisseau.carburant --;
+        if (game.vaisseau.direction != "") {
+            game.vaisseau.carburant--;
         }
         game.carburantConsommation();
         // document.getElementById("temperature-vaiseaux").innerText = game.vaisseau.heat + " °C";
@@ -959,7 +940,6 @@ class Game {
 
         for (let i = 6; i < 10; i++) {
             if (game.vaisseau.updates[i].progress > 0) {
-                alert("OK3")
                 game.updateUpdatesOxygen2(i);
                 game.updateUpdatesOxygen(i);
             }
@@ -1001,7 +981,7 @@ class Game {
         game.viewModule(libelle, i)
     }
     viewModule(libelleModule, i) {
-        let menu = game.clearInterface(("pdaModule"+i),libelleModule)
+        let menu = game.clearInterface(("pdaModule" + i), libelleModule)
 
         let item = document.createElement("div");
         item.setAttribute("class", "miseAJourPDA1")
@@ -1024,6 +1004,8 @@ class Game {
         item.appendChild(itemB);
         item.appendChild(itemA);
         menu.appendChild(item);
+        menu.innerHTML += "<br><br>";
+
 
 
 
@@ -1096,11 +1078,6 @@ class Game {
             menu.appendChild(item3);
         }
 
-        let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour")
-        boutonRetour.setAttribute("onclick", "game.menuManageEnergy()")
-        boutonRetour.innerText = "Retour"
-        document.getElementById("oxygeneTitre").appendChild(boutonRetour);
     }
     morePowerClim() {
         game.vaisseau.climPower += 50;
@@ -1122,16 +1099,21 @@ class Game {
     }
 
     updateCurrentBattery() {
+        let ok = false;
         for (let i = 0; i < game.vaisseau.batteries.length; i++) {
             let res = game.updateJaugeEnergie(i)
             let texte = res[0];
             let texte2 = res[1];
 
-            if (game.vaisseau.batteryActive === i && document.getElementById("indicateurBatterie" + i)) {
+            if ((game.vaisseau.batteryActive === i || (document.getElementById("svg") && document.getElementById("svg").value != i)) && document.getElementById("indicateurBatterie" + i)) {
                 document.getElementById("indicateurBatterie" + i).style.border = "blue 2px solid";
-            } else if (document.getElementById("indicateurBatterie" + i)) {
-                document.getElementById("indicateurBatterie" + i).style.border = "";
+                for (let j = 0; j < game.vaisseau.batteries.length; j++) {
+                    if (i != j && document.getElementById("indicateurBatterie" + j)) {
+                        document.getElementById("indicateurBatterie" + j).style.border = "";
+                    }
+                }
             }
+
 
             if (document.getElementById("indicateurBatterieB" + i) && document.getElementById("indicateurBatterieC" + i)) {
                 document.getElementById("indicateurBatterieB" + i).innerText = texte;
@@ -1161,7 +1143,6 @@ class Game {
     }
 
     menuManageEnergy() {
-        let menu = game.clearInterface("Gerer l'energie")
         menu.style.display = "";
 
         let item7 = document.createElement("div");
@@ -1198,11 +1179,12 @@ class Game {
         menu.appendChild(boutonRetour);
     }
     manageModules() {
-        let menu = this.clearInterface("Modules")
+        let menu = game.clearInterface("pdaEnergy", "Gerer l'energie")
         let item1 = document.createElement("div");
         item1.setAttribute("id", "indicateurBatterie" + game.vaisseau.batteryActive);
         item1.setAttribute("class", "indicateurBatterie2");
         item1.setAttribute("onclick", "game.vaisseau.batteryActive = 0");
+        item1.style.margin = "auto";
         let item1A = document.createElement("div");
         item1A.setAttribute("id", "indicateurBatterieA" + game.vaisseau.batteryActive);
         item1A.setAttribute("class", "indicateurBatterieA");
@@ -1257,32 +1239,35 @@ class Game {
             itemB.innerText = "consulter";
             itemB.style.float = "right";
             item.appendChild(itemA);
-            item.appendChild(itemB);
+            item.innerHTML += "<br><br>"
             menu.appendChild(item);
             if (i < libelleModules.length - 1) item.innerHTML += "<br><br>";
         }
         item.innerHTML += "<br>"
-        let res = game.updateJaugeEnergie(game.vaisseau.batteryActive);
-        let texte = res[0];
-        let texte2 = res[1];
+        setInterval(function () {
+            let res = game.updateJaugeEnergie(game.vaisseau.batteryActive);
+            let texte = res[0];
+            let texte2 = res[1];
 
-        document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).innerText = texte;
-        document.getElementById("indicateurBatterieC" + game.vaisseau.batteryActive).innerText = texte2;
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > 0) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "red";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.2 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "orange";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.4 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "yellow";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.6 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "greenyellow";
-        }
-        if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.8 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
-            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "green";
-        }
+            document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).innerText = texte;
+            document.getElementById("indicateurBatterieC" + game.vaisseau.batteryActive).innerText = texte2;
+            if (game.vaisseau.batteries[game.vaisseau.batteryActive] > 0) {
+                document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "red";
+            }
+            if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.2 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+                document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "orange";
+            }
+            if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.4 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+                document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "yellow";
+            }
+            if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.6 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+                document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "greenyellow";
+            }
+            if (game.vaisseau.batteries[game.vaisseau.batteryActive] > (0.8 * game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+                document.getElementById("indicateurBatterieB" + game.vaisseau.batteryActive).style.color = "green";
+            }
+        }, 300)
+
 
         let item3 = document.createElement("div");
         item3.setAttribute("id", "jaugeVieBouclierDiv2");
@@ -1302,18 +1287,14 @@ class Game {
         item3.appendChild(item3B)
         item3.appendChild(item3C)
         item3.appendChild(item3D)
+        item.innerHTML += "<br><br>";
         item.appendChild(item3)
-        let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour")
-        boutonRetour.setAttribute("onclick", "game.menuManageEnergy()")
-        boutonRetour.innerText = "Retour"
         item.innerHTML += "<br><br>"
-        item.appendChild(boutonRetour)
         this.animJaugeShield();
 
     }
     manageBatteries() {
-        let menu = game.clearInterface("Gerer les batteries")
+        let menu = game.clearInterface("pdaBattery", "Gerer les batteries")
         let item0 = document.createElement("div");
         item0.setAttribute("class", "itemClicablePDA");
         item0.innerText = "Choix de la batterie";
@@ -1356,37 +1337,45 @@ class Game {
         item3.innerText = "Transferer de l'energie";
 
 
-        setInterval(this.updateCurrentBattery.bind(this), 300)
+        game.thread.push(setInterval(this.updateCurrentBattery.bind(this), 300));
 
         menu.appendChild(item3)
-        let boutonRetour = document.createElement("div");
-        boutonRetour.setAttribute("id", "retour")
-        boutonRetour.setAttribute("onclick", "game.menuManageEnergy()")
-        boutonRetour.innerText = "Retour"
-        menu.appendChild(boutonRetour)
+
     }
 
     manageEnergy(shieldMode) {
-        let menu = game.clearInterface("pdaModule2","Transferer \n de l'energie");
-        let selection = -1;
-        menu.style.display = "grid";
+        let menu = null;
+        let id = "";
+        if (shieldMode) {
+            id = "valBatterieAAjouter";
+            menu = game.clearInterface("pdaModule2", "Transferer \n de l'energie");
+        } else {
+            id = "valBatterieAAjouter2";
+            menu = game.clearInterface("pdaBattery", "Transferer \n de l'energie");
+        }
 
-        if(!shieldMode){
+        let selection = -1;
+        let svg = document.createElement("div")
+        svg.setAttribute("id", "selection")
+        document.body.appendChild(svg)
+        menu.style.display = "grid";
+        if (!shieldMode) {
             for (let i = 0; i < game.vaisseau.batteries.length; i++) {
                 if (i !== game.vaisseau.batteryActive) {
                     let item1 = document.createElement("div");
-                    item1.setAttribute("id", "indicateurBatterie" + i);
+                    item1.setAttribute("id", "indicateurBatterieE" + i);
                     item1.setAttribute("class", "indicateurBatterie");
                     item1.onclick = function () {
                         selection = i;
+                        svg.setAttribute("value", selection);
                         for (let j = 0; j < game.vaisseau.batteries.length; j++) {
-                            if (j !== game.vaisseau.batteryActive) {
-                                if (j === selection) {
-                                    document.getElementById("indicateurBatterie" + j).style.border = "2px blue solid";
-                                } else {
-                                    document.getElementById("indicateurBatterie" + j).style.border = "";
-                                }
+
+                            if (j === selection) {
+                                document.getElementById("indicateurBatterieE" + j).style.border = "2px blue solid";
+                            } else if (document.getElementById("indicateurBatterieE" + j)) {
+                                document.getElementById("indicateurBatterieE" + j).style.border = "";
                             }
+
                         }
                     };
                     item1.style.float = "left";
@@ -1449,15 +1438,17 @@ class Game {
         game.thread[game.thread.length - 1] = setInterval(function () { item1.innerText = game.vaisseau.batteries[game.vaisseau.batteryActive] }, 100);
         let item2 = document.createElement("div");
         item2.setAttribute("id", "operationPuissanceBouclier");
+        item2.style.display = "block ruby"
         let item2A = document.createElement("div");
         item2A.setAttribute("id", "valeurEnergieDediee");
+        item2A.setAttribute("onclick", "game.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + "," + shieldMode + ")");
+
         game.thread[game.thread.length - 1] = setInterval(function () {
             if (selection > -1 && document.getElementById("ajoutBatterieBouclierSpan33")) {
                 item2A.innerText = game.vaisseau.batteries[selection];
-                document.getElementById("ajoutBatterieBouclierSpan33").setAttribute("onclick", "game.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ","+ shieldMode +")");
-            } else if(shieldMode) {
+            } else if (shieldMode) {
                 item2A.innerText = game.vaisseau.shieldLife;
-            } else{
+            } else {
                 item2A.innerText = "Choisir une batterie";
             }
         }, 100);
@@ -1465,50 +1456,70 @@ class Game {
         let item2B = document.createElement("div");
         item2B.setAttribute("id", "ajoutBatterieBouclierSpan11");
         item2B.setAttribute("class", "fas fa-plus");
-        item2B.setAttribute("onclick", "Game.prototype.moreBatteryShield()");
+        item2B.setAttribute("onclick", "Game.prototype.moreBatteryShield(" + shieldMode + ")");
         let item2C = document.createElement("div");
         item2C.setAttribute("id", "ajoutBatterieBouclierSpan22");
         item2C.setAttribute("class", "fas fa-minus");
-        item2C.setAttribute("onclick", "Game.prototype.lessBatteryShield()");
+        item2C.setAttribute("onclick", "Game.prototype.lessBatteryShield(" + shieldMode + ")");
         let item2D = document.createElement("div");
         item2D.setAttribute("id", "ajoutBatterieBouclierSpan33");
         item2D.setAttribute("class", "fas fa-check-circle");
-        item2D.setAttribute("onclick", "Game.prototype.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + ","+ shieldMode +")");
+        item2D.setAttribute("onclick", "Game.prototype.improveShieldCapacity(true," + game.vaisseau.batteryActive + "," + selection + "," + shieldMode + ")");
         let item2E = document.createElement("div");
-        item2E.setAttribute("id", "valBatterieAAjouter");
+        item2E.setAttribute("id", id);
         item2E.innerText = "0";
         let boutonRetour = document.createElement("div");
         boutonRetour.setAttribute("id", "retour");
-        if(shieldMode){
+        if (shieldMode) {
             boutonRetour.setAttribute("onclick", "game.viewModule('Bouclier',2)");
-        }else{
+        } else {
             boutonRetour.setAttribute("onclick", "game.manageBatteries()");
         }
         boutonRetour.innerText = "Retour";
         item2.appendChild(item2B);
-        item2.appendChild(item2A);
-        item2.appendChild(item2C);
         item2.appendChild(item2E);
-        item2.appendChild(item2D);
+        item2.appendChild(item2C);
         menu.appendChild(item1);
+        menu.appendChild(item2A);
         menu.appendChild(item2);
+        menu.appendChild(item2D);
         menu.appendChild(boutonRetour);
     }
-    lessBatteryShield() {
-        let valBatterieAAjouter = parseInt(document.getElementById("valBatterieAAjouter").innerText)
+    lessBatteryShield(shieldMode) {
+        let id = "";
+        if (shieldMode) {
+            id = "valBatterieAAjouter";
+        } else {
+            id = "valBatterieAAjouter2";
+        }
+        let valBatterieAAjouter = parseInt(document.getElementById(id).innerText)
         valBatterieAAjouter = valBatterieAAjouter - 20;
         if (valBatterieAAjouter < 0) {
             valBatterieAAjouter = 0;
         }
-        document.getElementById("valBatterieAAjouter").innerText = valBatterieAAjouter
+
+        document.getElementById(id).innerText = valBatterieAAjouter
+
+
     }
-    moreBatteryShield() {
-        let valBatterieAAjouter = parseInt(document.getElementById("valBatterieAAjouter").innerText)
+    moreBatteryShield(shieldMode) {
+        let id = "";
+
+        let menu = null;
+        if (shieldMode) {
+            id = "valBatterieAAjouter";
+        } else {
+            id = "valBatterieAAjouter2";
+        }
+
+        let valBatterieAAjouter = parseInt(document.getElementById(id).innerText)
         valBatterieAAjouter = valBatterieAAjouter + 20;
         if (valBatterieAAjouter > game.vaisseau.batteries[game.vaisseau.batteryActive]) {
             valBatterieAAjouter = game.vaisseau.batteries[game.vaisseau.batteryActive];
         }
-        document.getElementById("valBatterieAAjouter").innerText = valBatterieAAjouter;
+
+        document.getElementById(id).innerText = valBatterieAAjouter
+
     }
 
     transferEnergyInSheild() { game.thread[game.thread.length - 1] = setInterval(game.animJaugeShield(), 100) }
@@ -1574,21 +1585,27 @@ class Game {
         }, 50);
     }
 
-    improveShieldCapacity(boucle, i, j,mode) {
+    improveShieldCapacity(boucle, i, j, mode) {
+        let id = "";
+        if (mode) {
+            id = "valBatterieAAjouter"
+        } else {
+            id = "valBatterieAAjouter2"
+        }
         game.thread[game.thread.length - 1] = setInterval(function () {
             if (boucle) {
-                if (parseInt(document.getElementById("valBatterieAAjouter").innerText) > 0  && game.vaisseau.batteries[i] > 0) {
-                    Game.prototype.lessBatteryShield();
-                    if(mode){
+                if (parseInt(document.getElementById(id).innerText) > 0 && game.vaisseau.batteries[i] > 0) {
+                    Game.prototype.lessBatteryShield(mode);
+                    if (mode) {
                         game.vaisseau.batteries[i] = game.vaisseau.batteries[i] - 20;
-                        game.vaisseau.shieldLife = game.vaisseau.shieldLife +20;
-                    }else if(game.vaisseau.batteries[j] < game.vaisseau.batteriesMax[j]){
+                        game.vaisseau.shieldLife = game.vaisseau.shieldLife + 20;
+                    } else if (game.vaisseau.batteries[j] < game.vaisseau.batteriesMax[j]) {
                         game.vaisseau.batteries[i] = game.vaisseau.batteries[i] - 20;
                         game.vaisseau.batteries[j] = game.vaisseau.batteries[j] + 20;
                     }
 
                 } else {
-                    document.getElementById("valBatterieAAjouter").innerHTML = "0";
+                    document.getElementById(id).innerHTML = "0";
                     boucle = false;
                 }
             }
@@ -1788,8 +1805,8 @@ class Game {
         if (!game.gps.champAsteroide) game.hasAsteroides();
         else game.thread[game.thread.length - 1] = setInterval(game.verifAsteroide.bind(this), 1000);
     }
-    carburantConsommation(){
-        document.getElementById("jaugeCarburant").style.width = (game.vaisseau.carburant / 2.5)+"%";
+    carburantConsommation() {
+        document.getElementById("jaugeCarburant").style.width = (game.vaisseau.carburant / 2.5) + "%";
     }
     shipUp() {
         // let vitesseVaisseau = document.getElementById("vitesse-vaiseaux").innerText;
@@ -1928,7 +1945,7 @@ class Game {
         document.getElementById("operationsPanel").style.visibility = "hidden"
         let cadre = document.createElement("div");
         cadre.setAttribute("id", "cadreFichiers");
-        let menuOxygene = document.getElementById("items")
+        let menuOxygene = game.clearInterface("pdaCleUSB", "Fichiers")
         let downloadSpan = document.createElement("span");
         downloadSpan.setAttribute("id", "downloadSpan");
         downloadSpan.setAttribute("class", "fas fa-download");
@@ -1971,8 +1988,7 @@ class Game {
         }
         game.vaisseau.dlMod = false;
         setTimeout(function () {
-            document.getElementById("operationsPanel").style.visibility = "visible"
-            document.getElementById("cadreFichiers").style.visibility = "hidden"
+            game.showFiles();
         }, ((game.vaisseau.fileTemp.length * duree)))
     }
     verifAsteroide() {
@@ -2066,10 +2082,63 @@ class Game {
                 document.getElementById("msgPDA3").style.animationIterationCount = "infinite";
                 document.getElementById("msgPDA3").innerText = "ASTEROIDE EN ARRIERE A " + (Math.abs(y - game.vaisseau.y)) + " METRES !!";
             }
+        }
+    }
+    initJardin() {
+        $('#jardinSerre1')[0].innerHTML = `<div class="row"><div class="col"><span id="typeSerre1" style="font-size:2vw">Type de plantation : ${game.jardin.plant[0].type}</span><br><span style="font-size:2vw" id="percentSerre1">Pourcentage : ${game.jardin.plant[0].percent}</span></div></div>`
+        $('#jardinSerre1')[0].innerHTML += `<div class="row"><div class="col btn-group">
+            <div id='legume' onclick="game.jardin.planter('patate','0')"><img src='./img/patate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('tomate','0')"><img src='./img/tomate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('radis','0')"><img src='./img/radis.png' width = '50px'></div>
+        </div></div>`
+        $('#jardinSerre2')[0].innerHTML = `<div class="row"><div class="col"><span id="typeSerre2" style="font-size:2vw">Type de plantation : ${game.jardin.plant[1].type}</span><br><span style="font-size:2vw" id="percentSerre2">Pourcentage : ${game.jardin.plant[1].percent}</span></div></div>`
+        $('#jardinSerre2')[0].innerHTML += `<div class="row"><div class="col btn-group">
+            <div id='legume' onclick="game.jardin.planter('patate','1')"><img src='./img/patate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('tomate','1')"><img src='./img/tomate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('radis','1')"><img src='./img/radis.png' width = '50px'></div>
+        </div></div>`
+        $('#jardinSerre3')[0].innerHTML = `<div class="row"><div class="col"><span id="typeSerre3" style="font-size:2vw">Type de plantation : ${game.jardin.plant[2].type}</span><br><span style="font-size:2vw" id="percentSerre3">Pourcentage : ${game.jardin.plant[2].percent}</span></div></div>`
+        $('#jardinSerre3')[0].innerHTML += `<div class="row"><div class="col btn-group">
+            <div id='legume' onclick="game.jardin.planter('patate','2')"><img src='./img/patate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('tomate','2')"><img src='./img/tomate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('radis','2')"><img src='./img/radis.png' width = '50px'></div>
+        </div></div>`
+    }
+    loadInventaryPlayer() {
+        let itemsCarrousel = document.getElementById("inventaryPlayer");
+        let types = ["tomate", "patate", "radis"]
+        let div = document.getElementById("inventaryPlayer");
+        var paras = document.getElementsByClassName('essai');
+
+        while (paras[0]) {
+            paras[0].parentNode.removeChild(paras[0]);
+        }
+        for (let i = 0; i < types.length; i++) {
+            if (game.player.inventaire[types[i]] > 0) {
+                let itemDiv = document.createElement("div");
+                if (itemsCarrousel.childElementCount == 2) {
+                    itemDiv.setAttribute("class", "carousel-item active essai")
+                } else {
+                    itemDiv.setAttribute("class", "carousel-item essai")
+                }
+                let itemImg = document.createElement("img");
+                itemImg.setAttribute("src", "./img/" + types[i] + ".png")
+                itemImg.setAttribute("type",""+types[i]+"");
+                itemImg.setAttribute("width", "100px")
+                itemImg.setAttribute("height", "100px")
+                itemImg.addEventListener("contextmenu", function(){return useItemMenu(this,event,types[i])})
+
+                itemDiv.appendChild(itemImg);
+                if (game.player.inventaire[types[i]] > 1) {
+                    let qte = document.createElement("div");
+                    qte.setAttribute("id", "qte")
+                    qte.innerText = game.player.inventaire[types[i]];
+                    itemDiv.appendChild(qte);
+                }
+                itemsCarrousel.appendChild(itemDiv)
+            }
 
 
         }
     }
-
-
 }
