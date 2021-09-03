@@ -11,18 +11,54 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="src/css/pda.css">
-    <link rel="stylesheet" href="src/css/style2.css">
+    <link rel="stylesheet" href="src/css/style.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 </head>
 
 <body style="background-color: #0b283e">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      </li>
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+  </div>
+</nav>
 <div class="row align-items-center justify-content-center">
     <!-- LeftMenuPrimary  -->
     <div class="col-2" style="background-color: #0b283e" id="leftMenuPrimary">
         <div class="d-flex align-items-center justify-content-center flex-column">
             <button id="buttonMenuOrdinateur" onclick="displayMenuOrdinateur();" class="btn btn-danger" style="font-size:2vw;height:75px;width:auto;margin-bottom: 50px">Ordinateur</button>
             <button id="buttonMenuPlayer" onclick="switchMenuPrimary(this);" class="btn btn-info" style="font-size:2vw;height:75px;width:auto;margin-bottom:50px">Player</button>
+            <button id="buttonMenu" onclick="switchMenuPrimary(this);" class="btn btn-info" style="font-size:2vw;height:75px;width:auto;margin-bottom:50px">Accueil</button>
             <button id="buttonMenuVaisseau" onclick="switchMenuPrimary(this);" class="btn btn-info" style="font-size:2vw;height:75px;width:auto;margin-bottom:25px">Vaisseau</button>
             <button id="buttonMenuNavigation" onclick="switchMenuPrimary(this);" class="btn btn-info" style="font-size:2vw;height:75px;width:auto;margin-top:25px">Navigation</button>
             <button id="buttonMenuJardin" onclick="switchMenuPrimary(this);" class="btn btn-info" style="font-size:2vw;height:75px;width:auto;margin-top:50px">Jardin</button>
@@ -30,7 +66,7 @@
         </div>
     </div>
     <!-- RightMenuPrimary  -->
-    <div class="col" style="background-color: black" id="rightMenuPrimary">
+    <div class="col" style="background-color: gray" id="rightMenuPrimary">
         <div id="content">
 
             <!-- PLAYER -->
@@ -43,7 +79,7 @@
                                     <div class="card-header" id="headingOnePlayer">
                                         <h5 class="mb-0">
                                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOnePlayer" aria-expanded="true" aria-controls="collapseOnePlayer">
-                                                <div class="row justify-content-center align-items-center">
+                                                <div class="row justify-content-center align-items-center" style="left: 0px;position: relative;">
                                                     <div class="col">
                                                         <img src="src/img/heart.png" alt="">
                                                     </div>
@@ -66,7 +102,7 @@
                                     <div class="card-header" id="headingTwoPlayer">
                                         <h5 class="mb-0">
                                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseTwoPlayer" aria-expanded="true" aria-controls="collapseTwoPlayer">
-                                                <div class="row justify-content-center align-items-center">
+                                                <div class="row justify-content-center align-items-center" style="left: 0px;position: relative;">
                                                     <div class="col">
                                                         <img src="src/img/food.png" alt="">
                                                     </div>
@@ -89,13 +125,13 @@
                                     <div class="card-header" id="headingThreePlayer">
                                         <h5 class="mb-0">
                                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseThreePlayer" aria-expanded="true" aria-controls="collapseThreePlayer">
-                                                <div class="row justify-content-center align-items-center">
+                                                <div class="row justify-content-center align-items-center" style="left: 0px;position: relative;">
                                                     <div class="col">
                                                         <img src="src/img/water.png" alt="">
                                                     </div>
                                                     <div class="col">
                                                         <div class="progress">
-                                                            <span id="weterJoueur" class="" style="width: 100%;background: #06c3ee"></span>
+                                                            <span id="waterJoueur" class="" style="width: 100%;background: #06c3ee"></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -111,19 +147,21 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div id="carouselPlayer" class="carousel slide" data-ride="carousel show" data-touch="false" data-interval="false">
-                                <div class="carousel-inner" id="inventaryShip">
+                            <div id="carouselExampleControls" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
+                                <div class="carousel-inner" id="inventaryPlayer">
+                                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
                                 </div>
-                                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
+                                
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -138,7 +176,7 @@
                                     <div class="card-header" id="headingOneVaisseau">
                                         <h5 class="mb-0">
                                             <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOneVaisseau" aria-expanded="true" aria-controls="collapseOneVaisseau">
-                                                <div class="row justify-content-center align-items-center">
+                                                <div class="row justify-content-center align-items-center"  style="left: 0px;position: relative;">
                                                     <div class="col">
                                                         <img src="src/img/carburant.png" alt="">
                                                     </div>
@@ -161,7 +199,7 @@
                                     <div class="card-header" id="headingTwoVaisseau">
                                         <h5 class="mb-0">
                                             <button onclick="game.manageModules()" class="btn btn-link" data-toggle="collapse" data-target="#collapseTwoVaisseau" aria-expanded="true" aria-controls="collapseTwoVaisseau">
-                                                <div class="row justify-content-center align-items-center">
+                                                <div class="row justify-content-center align-items-center" style="left: 0px;position: relative;">
                                                     <div class="col">
                                                         <img src="src/img/energy.png" alt="">
                                                     </div>
@@ -186,7 +224,7 @@
                                     <div class="card-header" id="headingThreeVaisseau">
                                         <h5 class="mb-0">
                                             <button class="btn btn-link" data-toggle="collapse" onclick="game.menuReloadOxygen()" data-target="#collapseThreeVaisseau" aria-expanded="true" aria-controls="collapseThreeVaisseau">
-                                                <div class="row justify-content-center align-items-center">
+                                                <div class="row justify-content-center align-items-center" style="left: 0px;position: relative;">
                                                     <div class="col">
                                                         <img src="src/img/o2.png" alt="">
                                                     </div>
@@ -227,6 +265,112 @@
                 </div>
             </div>
 
+            <!-- ACCUEIL -->
+            <div class="card text-center" style="width: 80%;height: 80%;" id="displayMenu" hidden>
+                <div class="card-body d-flex align-items-center justify-content-center flex-column">
+                    <div style="text-align: center;font-size: 2.5vw;color: white">Accueil</div>
+                    <div class="row justify-content-center align-items-center text-white pda" style="width:100%;height: 100%">
+                        <div class="col" style="font-size: 2.5vw">
+                                <div>
+                                    <div id="titre" class="titre"></div>
+                                    <div id="accordionVoyants">
+                                        <div>
+                                            <div class="card-header" id="heading0">
+                                                <button class="btn"  data-toggle="collapse" data-target="#collapse0" aria-expanded="true" aria-controls="collapse0">
+                                                    <div style="font-size: 2.5vw;color: white">Afficher les voyants</div>
+                                                </button>
+                                            </div>
+                                            <div id="collapse0" class="collapse" aria-labelledby="heading0" data-parent="#accordionJardin">
+                                                <div class="form-check">
+                                                    <input  checked class="form-check-input"  onclick="game.vaisseau.voyantsActives[0] = !game.vaisseau.voyantsActives[0];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant1">
+                                                    <label class="form-check-label" for="checkVoyant1"  id="labelVoyant">
+                                                        <img src="src/img/carburant0.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant carburant orange</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input  checked class="form-check-input" onclick="game.vaisseau.voyantsActives[1] = !game.vaisseau.voyantsActives[1];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant2">
+                                                    <label class="form-check-label" for="checkVoyant2"  id="labelVoyant">
+                                                        <img src="src/img/carburant1.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant carburant rouge</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input checked class="form-check-input" onclick="game.vaisseau.voyantsActives[2] = !game.vaisseau.voyantsActives[2];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant3">
+                                                    <label class="form-check-label" for="checkVoyant3"  id="labelVoyant">
+                                                        <img src="src/img/temp0.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant thermometre</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input checked class="form-check-input" onclick="game.vaisseau.voyantsActives[3] = !game.vaisseau.voyantsActives[3];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant4">
+                                                    <label class="form-check-label" for="checkVoyant4"  id="labelVoyant">
+                                                        <img src="src/img/temp1.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant flocon</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input checked class="form-check-input" onclick="game.vaisseau.voyantsActives[4] = !game.vaisseau.voyantsActives[4];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant5">
+                                                    <label class="form-check-label" for="checkVoyant5"  id="labelVoyant">
+                                                        <img src="src/img/batterie.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant batterie</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input checked  class="form-check-input" onclick="game.vaisseau.voyantsActives[5] = !game.vaisseau.voyantsActives[5];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant6">
+                                                    <label class="form-check-label" for="checkVoyant6"  id="labelVoyant">
+                                                        <img src="src/img/molette0.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant fuite 1</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input checked  class="form-check-input" onclick="game.vaisseau.voyantsActives[6] = !game.vaisseau.voyantsActives[6];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant6">
+                                                    <label class="form-check-label" for="checkVoyant7"  id="labelVoyant">
+                                                        <img src="src/img/molette0.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant fuite 2</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input checked class="form-check-input" onclick="game.vaisseau.voyantsActives[7] = !game.vaisseau.voyantsActives[7];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant7">
+                                                    <label class="form-check-label" for="checkVoyant8"  id="labelVoyant">
+                                                        <img src="src/img/warning0.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Warning orange</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input checked class="form-check-input" onclick="game.vaisseau.voyantsActives[8] = !game.vaisseau.voyantsActives[8];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant8">
+                                                    <label class="form-check-label" for="checkVoyant9"  id="labelVoyant">
+                                                        <img src="src/img/warning1.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Warning rouge</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input  checked class="form-check-input"  onclick="game.vaisseau.voyantsActives[9] = !game.vaisseau.voyantsActives[9];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant1">
+                                                    <label class="form-check-label" for="checkVoyant10"  id="labelVoyant">
+                                                        <img src="src/img/o2.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant oxygene</div>
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input  checked class="form-check-input"  onclick="game.vaisseau.voyantsActives[10] = !game.vaisseau.voyantsActives[10];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant1">
+                                                    <label class="form-check-label" for="checkVoyant11"  id="labelVoyant">
+                                                        <img src="src/img/batterieBouclier.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant oxygene</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <div class="col" style="font-size: 2.5vw">Hep</div>
+                        <div class="w-100" style="font-size: 2.5vw"></div>
+                        <div class="col" style="font-size: 2.5vw">Hep</div>
+                        <div class="col" style="font-size: 2.5vw">Sortir du vaisseau</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- NAVIGATION -->
             <div class="card text-center" style="width: 80%;height: 80%;" id="displayMenuNavigation" hidden>
                 <div class="card-body d-flex align-items-center justify-content-center flex-column">
@@ -237,7 +381,7 @@
 
                                 <div id="imgPDA">
                                     <div id="msgPDA">Loading data...</div>
-                                    <img id="imgPDA2" width="250px" height="150px" src="img/loading.gif" alt="">
+                                    <img id="imgPDA2" width="250px" height="150px" src="src/img/loading.gif" alt="">
                                 </div>
                                 <div id="msgPDA2">HAUTEUR : ANALYSE EN COURS...</div>
                                 <div id="mapAsteroide"></div>
@@ -349,7 +493,7 @@
                             <img src="src/img/water.png" alt="">
                         </div>
                         <div class="col">
-                            <div class="progress">
+                            <div class="progress" style="position:relative;left:26px">
                                 <span class="" style="width: 0%;background: #06c3ee"></span>
                             </div>
                         </div>
@@ -503,6 +647,45 @@
         </div>
     </div>
 </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navBarBottom">
+    <div class="collapse navbar-collapse" id="tableauBordVoyant">
+        <ul class="voyantsTableauBord" >
+            <li class="nav-item active">
+                <img src="./src/img/carburant0.png" width="50px" class="voyant" id="voyantCarburant0">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/carburant1.png" width="50px" class="voyant" id="voyantCarburant1">
+            </li>
+            <li class="nav-item active">
+                <img src="./src/img/temp0.png" width="50px" class="voyant" id="voyantTemp0">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/temp1.png" width="50px" class="voyant" id="voyantTemp1">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/batterie.png" width="50px" class="voyant" id="voyantBatterie">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/molette0.png" width="50px" class="voyant" id="voyantFuite0">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/molette0.png" width="50px" class="voyant" id="voyantFuite1">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/warning0.png" width="50px" class="voyant" id="voyantAsteroide0">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/warning1.png" width="50px" class="voyant" id="voyantAsteroide1">
+            </li>
+            <li class="nav-item active">
+                <img src="./src/img/o2.png" width="50px" class="voyant" id="voyantOxygene">
+            </li>
+            <li class="nav-item active">
+                <img src="./src/img/batterieBouclier.png" width="50px" class="voyant" id="voyantBatterieBouclier">
+            </li>
+        </ul>
+    </div>
+</nav>
 </body>
 <script>
     function switchMenuPrimary(e) {
@@ -614,7 +797,6 @@
     }
 
     function dragstart_handler(ev) {
-        console.log(ev.target)
         // On ajoute l'identifiant de l'élément cible à l'objet de transfert
         ev.dataTransfer.setData("application/my-app", ev.target.id);
         ev.dataTransfer.dropEffect = "move";
@@ -632,7 +814,6 @@
         // au DOM de la cible
         let data = ev.dataTransfer.getData("application/my-app");
         ev.target.appendChild(document.getElementById(data));
-        console.log(ev.target)
         if (ev.target.getAttribute("id") === "lecteur") {
             game.insertCleUSB()
         }
@@ -649,11 +830,12 @@
         menu.style.display = "block";
         menu.style.top = event.y+"px";
         menu.style.left = event.x+"px";
-        console.log(menu)
+
         let menuItem1 = document.createElement("p")
         menuItem1.setAttribute("class","ctxline")
         menuItem1.onclick = function(){
             menu.style.display = "none";
+            game.player.manger();
         }
         if(type == "tomate" || type == "patate" || type == "radis"){
             menuItem1.innerText = "Manger";

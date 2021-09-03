@@ -31,6 +31,12 @@ class Player {
     displayLife(d, o) {
         this.life -= ((60 - d) / 10);
         if (o === 0) this.life -= 10;
+        if (this.food <= 0) {
+            this.life -= 10;
+        }
+        if (this.water <= 0) {
+            this.life -= 10;
+        }
         if (this.life > 100) {
             this.life = 100;
         }
@@ -44,20 +50,40 @@ class Player {
         }
 
     }
-    displayFood(d, o) {
-        this.food -= ((60 - d) / 10);
-        if (o === 0) this.food -= 10;
-        if (this.life > 100) {
-            this.life = 100;
-        }
+    displayFood() {
+        this.food -= 1;
         if (this.food < 0) {
             this.food = 0;
         }
         document.getElementById("foodJoueur").style.width = this.food + "%";
         if (this.food <= 0) {
             document.getElementById("foodJoueur").style.backgroundColor = "white";
-            alert("VOUS ETES MORT, PAUVRE CON");
         }
 
+    }
+    displayWater() {
+        this.water -= 1;
+        if (this.water < 0) {
+            this.water = 0;
+        }
+        document.getElementById("waterJoueur").style.width = this.water + "%";
+        if (this.water <= 0) {
+            document.getElementById("waterJoueur").style.backgroundColor = "white";
+        }
+
+    }
+    manger() {
+        this.food += 15;
+        if (this.food > 100) {
+            this.food = 100;
+        }
+        this.displayFood();
+    }
+    boire() {
+        this.water += 15;
+        if (this.water > 100) {
+            this.water = 100;
+        }
+        this.displayWater();
     }
 }

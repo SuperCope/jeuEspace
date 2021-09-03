@@ -15,6 +15,8 @@ class Vaisseau {
         this.climPower = 0;
         this.climUpgrade = 0;
 
+        this.voyants = [];
+        this.voyantsActives = [];
 
         this.life = [0, 0, 0, 0];
 
@@ -60,8 +62,6 @@ class Vaisseau {
     }
 
     getBottleOxygen(index) {
-        console.log("INDEX" + index)
-        console.log(this.oxygens[0])
         if (this.oxygens.length - 1 < index) return null;
         if (index < 0) return null;
         return this.oxygens[index];
@@ -98,6 +98,18 @@ class Vaisseau {
             }
         }
         return this.oxygenLoses;
+    }
+    updateDisplayVoyants(){
+        for(let i = 0;i<this.voyantsActives.length;i++){
+            if(document.getElementsByClassName("voyant")[i]){
+                if(this.voyantsActives[i] === true ){
+                    document.getElementsByClassName("voyant")[i].style.display = "block";
+                }else{
+                    document.getElementsByClassName("voyant")[i].style.display = "none";
+                }
+            }
+
+        }
     }
 
 }

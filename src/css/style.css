@@ -1,199 +1,92 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap');
-
-body{
-    background-color: darkgray;
-    border: solid black 3px;
-
+@font-face {
+    font-family: "Digital";
+    src: url("../font/digital-7.ttf")
+}
+body {
+    font-family: 'Digital', sans-serif;
+    background: #fafafa;
 }
 
-#menu{
-    position: fixed;
-    background-color: azure;
-    border: solid black 2px;
-    width: 350px;
-    height: 400px;
-    padding: 10px;
-    font-size: 22px;
-
-}
-
-.main{
+#content {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content:center;
 }
 
+.card {
+    border: solid 7px lawngreen;
+}
 
-.oxygen{
-    order: 1;
-    padding: 40px;
+.card-body {
+    background-color:#0b283e;
+}
+#legume{
     margin: auto;
+    border-radius: 2em;
+    background-color:lightseagreen;
+    width: 70px;
+    height: 70px;
+    padding-top: 10px;
 }
-
-.vide{
-    width: 500px;
-}
-
-.oxygen h3{
-    text-align: center;
-}
-
-#oxygen-nb{
-    margin-left: 235px;
-    margin-top: 20px;
-}
-#vie-nb{
-    text-align: center;
-}
-
-#barre-vide{
-    position: absolute;
-    z-index:0;
-    width: 500px;
-    height: 80px;
-    background-color: cornsilk;
-    border: solid black 1px;
-}
-#barre-vide2{
+#legume:hover{
     margin: auto;
-    position: absolute;
-    z-index:0;
-    width: 50px;
-    height: 20px;
-    background-color: cornsilk;
-    border: solid black 1px;
+    border-radius: 2em;
+    background-color:lightcyan;
+    width: 70px;
+    height: 70px;
+    padding-top: 10px;
 }
-
-#barre-oxygen{
-    width:500px;
-    z-index: 1;
-    height: 80px;
-    background-color: rgb(48, 162, 207);
-    border: solid black 0.5px;
+#qte{
+    color: green;
+    font-size: 24px;
+    bottom: 60px;
+    left: 40px;
+    font-size: 48px;
     position: relative;
 }
-#barre-vie{
-    width:50px;
-    z-index: 1;
-    height: 20px;
-    background-color: green;
-    border: solid black 0.5px;
-    position: relative;
+#navBarBottom{
+    background-color: black !important;
+}
+.progress {
+    width: 400px;
+    height: 35px;
+    background: #e1e4e8;
+    border-radius: 20px;
 }
 
-.btn{
-    color: white;
-    font-size: 18px;
-    width: 250px;
-    font-family: Arial, Helvetica, sans-serif;
-}
-
-.btn-jardin{
-    float: right;
-    background-color: rgb(39, 54, 39);
-}
-
-.btn-oxygen{
-    float: left;
-    background-color: rgb(5, 23, 105);
-    color: white;
-    font-size: 18px;
-    width: 250px;
-    font-family: Arial, Helvetica, sans-serif   ;
-}
-
-.vie{
-    order: 2;
-}
-
-.vie h3{
-    text-align: center;
-}
-
-.vaisseaux{
-    margin: auto;
-    width: 250px;
-    height: 320px;
-}
-#msgCle1{
-    text-align: center;
-    color: cyan;
-    font-size: 24px;
-    visibility: hidden;
-}
-#consulterFichier{
-    text-align: center;
-    color: cyan;
-    font-size: 12px;
-}
-#activationDetectionAsteroide{
-    border: 1px dashed cyan;
-}
-#activationDetectionAsteroideSpan{
-    color: cyan;
-}
-#activationDetectionAsteroideTexte{
-    color: cyan;
-}
-#operations{
-    border: 1px solid cyan;
-    color: cyan;
-    font-size: 24px;
-}
-#ejecter{
-    text-align: center;
-    color: cyan;
-    cursor: pointer;
-}
 #cleUSB{
-    background-image: url('../../img/cleUSB.png');
-    background-size: 100%;
-    width: 100px;
-    height: 290px;
+    background-image: url('../../src/img/cleUSB.png');
+    background-size:100%;
+    width: 50px;
+    height: 150px;
     margin: auto;
 }
-#dossier{
-    color: cyan;
+.voyant{
+    opacity: 25%;
+    margin-left: 50px;
 }
-#quitterSpan{
-    float: right;
+.voyantsTableauBord{
+    margin: auto;
+    display: contents;
 }
-#downloadSpan{
-    color: cyan;
-    margin-top: 12px;
-}
-#download{
-    color: cyan;
-}
-#installationSpan{
-    width: 40px;
-    color: orange;
+#divVoyant{
     position: relative;
-    top: 4px;
+    left: 7px;
+    top: -15px;
 }
-#installation{
-    display: flex;
-    border: 1px solid cyan;
-}
-#installationFichier{
-    color: white;
-}
-#texteFichier{
-    color: white;
-}
-#texteSpan{
+#labelVoyant{
+    display: inline-flex;
     position: relative;
-    top: 4px;
-    width: 40px;
-    color: gray;
+    bottom: 14px;
+    width: 600px;
 }
-#texte{
-    display: flex;
-    border: 1px solid cyan;
-}
-#cadreFichiers{
-    color: cyan;
-    border: 3px cyan solid;
-    display: grid;
+.recolterBtn{
+    margin:auto;
+    font-size: 25px;
+    color: green;
 }
 #usbGauche{
     float: left;
@@ -205,261 +98,54 @@ body{
     right: 50px;
     position: relative;
 }
+
 #lecteur{
     color: cyan;
-    position: relative;
-    top: 45px;
-    width: 100px;
-    height: 300px;
+    width: 50px;
+    height: 150px;
     margin: auto;
     border: 1px dashed cyan;
 }
-#haut{
-    background-color: rgb(98, 139, 192);
-    margin: auto;
-    border: solid black 1px;
-    border-bottom: transparent;
-    width: 60px;
-    height: 50px;
+.ctxmenu
+{
+    position:absolute;
+    min-width: 128px;
+    height:auto;
+    padding: 8px;
+    margin:0;
+    margin-left:32px;
+    margin-top:-16px;
+    border: 1px solid #999;
+    background: #F8F8F8;
+    box-shadow: 2px 2px 2px #AAA;
+    z-index:11;
+    overflow: visible;
 }
-
-#centre{
-    background-color: rgb(98, 139, 192);
-    margin: auto;
-    border: solid black 1px;
-    width: 80px;
-    height: 50px;
+.ctxline
+{
+    display:block;
+    margin:0px;
+    padding:2px 2px 2px 8px;
+    border:1px solid #F8F8F8;
+    border-radius:3px;
+    font-size:13px;
+    font-family:Arial, Helvetica, sans-serif;
+    overflow:visible;
 }
-
-#gauche{
-    margin: auto;
-    width: 86px;
-    height: 80px;
-    border-top: 18px solid rgb(61, 57, 57);
-    border-bottom: 18px solid rgb(61, 57, 57);
-    border-left: 30px solid rgb(98, 139, 192);;
-    float: left;
-}
-
-#droite{
-    margin: auto;
-    border-top: 18px solid rgb(61, 57, 57);
-    border-bottom: 18px solid rgb(61, 57, 57);
-    border-right: 30px solid rgb(98, 139, 192);;
-    width: 86px;
-    height: 80px;
-    float: right;
-}
-
-#bas{
-    background-color: rgb(98, 139, 192);
-    margin: auto;
-    border: solid black 1px;
-    width: 80px;
-    height: 100px;
-}
-
-#bas-bas{
-    background-color: rgb(98, 139, 192);
-    margin: auto;
-    border: solid black 1px;
-    width: 60px;
-    height: 50px;
-}
-
-
-.control{
-    order: 3;
-    display: flex;
-    flex-direction: row;
-    margin: auto;
-}
-
-.tableaux-bord{
-    flex: row;
-    justify-content: space-evenly;
-    
-    width: 1000px;
-    height: 280px;
-   
-    text-align: center;
-    padding: 20px 80px;
-
-    border: rgb(39, 27, 27) solid 2px;
-    background-color: rgb(121, 131, 139);
-    border-radius: 30px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-}
-
-.tableaux-bord h3{
-    margin: auto;
-    padding-bottom: 20px;
-}
-
-.affichage{
-    display: flex;
-    justify-content: space-evenly;
-}
-
-.vitesse{
-    border: solid black 2px;
-    padding: 15px;
-    background-color: rgb(200, 208, 214);
-}
-
-.vitesse-atterissage{
-    border: solid black 2px;
-    padding: 15px;
-    background-color: rgb(200, 208, 214);
-}
-.gravite{
-    border: solid black 2px;
-    padding: 15px;
-    background-color: rgb(200, 208, 214);
-}
-.progress{
-    margin: auto;
-}
-.pression{
-    border: solid black 2px;
-    padding: 15px;
-    background-color: rgb(200, 208, 214);
-}
-
-.temperature{
-    border: solid black 2px;
-    padding: 15px;
-    background-color: rgb(200, 208, 214);
-}
-
-.carburant{
-    margin-left: 40px;
-}
-
-.carburant-vide{
-    position: absolute;
-    z-index:0;
-    width: 250px;
-    height: 30px;
-    border-radius: 30px;
-    background-color: rgb(223, 219, 213);
-    border: black solid 2px;
-    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-}
-
-#carburant-plein{
-    position: relative;
-    z-index:1;
-
-    width: 250px;
-    height: 30px;
-
-    border-radius: 30px;
-    background-color: orange;
-    box-shadow: rgba(0, 0, 0, 0.17) 0px -23px 25px 0px inset, rgba(0, 0, 0, 0.15) 0px -36px 30px 0px inset, rgba(0, 0, 0, 0.1) 0px -79px 40px 0px inset, rgba(0, 0, 0, 0.06) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
-}
-
-#btn-carburant{
-    width: 100px;
-    margin-top: 10px;
-    border: 2px solid black;
-    border-radius: 10px;
-    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
-}
-
-.jerrycan{
-    width: 50px;;
-    height: 30px;
-}
-
-
-@font-face{
-    font-family: 'digital-7';
-    src: url('../../polices/digital-7.ttf');
-}
-
-body{
-    font-family: 'digital-7';
-}
-#vitesse-vaiseaux{
-    color: red;
-    font-size: 48px;
-}
-
-
-.puissance{
-    order:4;
-    margin: auto;
-    width: 150px;
-    height: 100px;
-    background-color: black;
-    text-align: center;
-}
-
-.btn-reacteur{
-    background-color: red;
-    margin-left: 10px;
-    float: left;
-    margin-top: 20px;
-    width: 50px;
-    height: 50px;
-}
-.btn-accelerateur{
-    background-color: green;
-    margin-right: 10px;
-    float: right;
-    margin-top: 20px;
-    width: 50px;
-    height: 50px;
-}
-
-
-.info-joueur{
-    order: 5;
-    padding: 60px;
-    margin: auto;
-}
-
-.besoin{
-    margin-bottom: 20px;
-    border: rgb(39, 27, 27) solid 2px;
-    border-radius: 30px;
-    box-shadow: rgba(42, 42, 42, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
-    rotate: "180deg";
-    margin-right: 5px;
-}
-
-.water{
-    position: relative;
-    background-color: rgb(49, 118, 165);
-}
-
-.food{
-    position: relative;
-    background-color: rgb(184, 120, 91);
-}
-
-.primary-info{
-    display: flex;
-}
-
-#text-etat{
-    padding: 20px;
-}
-
-.image{
-    width: 40px;
-    height: 40px;
-    margin: 20px;
-}
-
-#barre-fatigue{
-    z-index: 1;
-    width: 300px;
-    height: 80px;
-    background-color: brown;
-    border: solid black 0.5px;
-    position: relative;
+.ctxline:hover
+{
+    border:1px solid #BBB;
+    background-color: #F0F0F0;
+    background-image: -moz-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -ms-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%,
+    from(#ffffff), to(#e6e6e6));
+    background-image: -webkit-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: -o-linear-gradient(top, #ffffff, #e6e6e6);
+    background-image: linear-gradient(top, #ffffff, #e6e6e6);
+    background-repeat: repeat-x;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',
+    endColorstr='#e6e6e6', GradientType=0);
 }
 @keyframes clignoter {
   0%   { opacity:1; }

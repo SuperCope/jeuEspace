@@ -47,7 +47,7 @@ class Jardin {
             p.style.width = 1 + "%";
             let i = 0;
             let type = this.plant[index].type;
-            document.getElementById("iconePlante" + int).setAttribute("src", "./img/" + (type) + ".png")
+            document.getElementById("iconePlante" + int).setAttribute("src", "src/img/" + (type) + ".png")
             let interval = setInterval(frame, 250, p, type);
             function frame(p, type) {
                 if (i < 100) {
@@ -76,7 +76,7 @@ class Jardin {
         let p = document.getElementById("progressPlant" + int);
         p.style.width = "0%";
         btnRecolter.innerText = "";
-        document.getElementById("iconePlante" + int).setAttribute("src", "./img/leaves.png")
+        document.getElementById("iconePlante" + int).setAttribute("src", "src/img/leaves.png")
         btnRecolter.onclick = null;
     }
 }

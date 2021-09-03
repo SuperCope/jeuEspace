@@ -8,15 +8,18 @@ class Game {
     }
 
     init() {
-        this.initUpdates()
-        setInterval(this.waterDesc.bind(this), 1000);
-        setInterval(this.foodDesc.bind(this), 1000);
+        this.initUpdates();
+        this.initVoyants();
+        setInterval(this.displayWater.bind(this), 25000);
+        setInterval(this.displayFood.bind(this), 30000);
+        setInterval(this.updateTableauVoyants.bind(this), 1000);
         setInterval(this.moveShip.bind(this), 1000);
         setInterval(this.analysePDA.bind(this), 300);
         setInterval(this.displayLife.bind(this), 2000)
         setInterval(this.updateLeaks.bind(this), 30000)
-        setInterval(this.verifClim.bind(this), 8000)
-        setInterval(this.updateHeat.bind(this), 8000)
+        setInterval(this.verifClim.bind(this), 40000)
+        setInterval(this.carburantConsommation.bind(this), 8000)
+        setInterval(this.updateHeat.bind(this), 40000)
         setInterval(function () {
             if (game.vaisseau.heatAnimation > 0) {
                 game.vaisseau.heat++;
@@ -33,9 +36,14 @@ class Game {
         this.initPDA();
         this.initJardin();
     }
-
+    initVoyants(){
+        for(let i =0;i<20;i++){
+            this.vaisseau.voyantsActives[i] = true;
+        }
+    }
     displayLife() { game.player.displayLife(game.vaisseau.oxygenDebit, game.vaisseau.oxygen) }
-    displayFood() { game.player.displayFood(game.vaisseau.oxygenDebit, game.vaisseau.oxygen) }
+    displayFood() { game.player.displayFood() }
+    displayWater() { game.player.displayWater() }
 
     menuOxygen() {
         let item1 = document.createElement("div");
@@ -245,9 +253,9 @@ class Game {
             }
             bouteille.setAttribute("idBouteille", "" + i + "");
             if (i == game.vaisseau.oxygens.length - 1 && game.vaisseau.oxygenFrame > 0 && game.vaisseau.oxygenFrame < 8) {
-                bouteille.setAttribute("src", "img/oxy" + oxy + ".png");
+                bouteille.setAttribute("src", "src/img/oxy" + oxy + ".png");
             } else {
-                bouteille.setAttribute("src", "img/oxy9.png");
+                bouteille.setAttribute("src", "src/img/oxy9.png");
             }
             menuOxygene.appendChild(bouteille)
         }
@@ -264,39 +272,27 @@ class Game {
 
         if (!document.getElementById("bouteille")) {
             event.target.onclick = null;
-            console.log(game.vaisseau.updates)
-            console.log("OK")
             game.vaisseau.leaks[1] -= parseInt(Math.random() * (12 - 4) + 4);
             if (game.vaisseau.leaks[1] < 0) game.vaisseau.leaks[1] = 0;
             let retour = document.getElementById("retour");
             retour.style.visibility = "hidden";
-            console.log(game.vaisseau.updates)
-            console.log("OK")
             let msgLoading = document.getElementById("msgChargementOxygene");
             msgLoading.style.color = "orange";
             msgLoading.style.animationName = "clignoter";
             msgLoading.style.animationDuration = "1s";
-            console.log(game.vaisseau.updates)
-            console.log("OK")
             msgLoading.style.animationIterationCount = "infinite";
             msgLoading.innerText = "Vidage du contenu de la bouteille dans le reservoir";
             event.target.setAttribute("id", "bouteille");
             if (event.target.getAttribute("oxy")) game.vaisseau.oxygenFrame = event.target.getAttribute("oxy");
             else game.vaisseau.oxygenFrame = 8;
-            console.log(game.vaisseau.updates)
-            console.log("OK")
 
-            let audio = new Audio('./audio/air.mp3');
+            let audio = new Audio('./src/audio/air.mp3');
             audio.play();
-            console.log(game.vaisseau.updates)
-            console.log("OK")
             // audio = null;
-            audio = new Audio('./audio/verin.wav');
+            audio = new Audio('./src/audio/verin.wav');
             audio.play();
 
             setTimeout(function () { retour.style.visibility = "visible"; }, 3000)
-            console.log(game.vaisseau.updates)
-            console.log("OK")
         }
     }
 
@@ -329,13 +325,13 @@ class Game {
         setTimeout(function () {
             loadingIcone.style.color = "yellow";
             loadingIcone.innerText = "Ajout de la bouteille au stock...";
-            let audio = new Audio('./audio/lecture.mp3');
+            let audio = new Audio('./src/audio/lecture.mp3');
             audio.play();
         }, 1000);
 
         setTimeout(function () {
             if (game.vaisseau.leaks[0] > 0) {
-                let audio = new Audio('./audio/bip6.wav');
+                let audio = new Audio('./src/audio/bip6.wav');
                 audio.play();
                 loadingIcone.style.color = "green";
                 loadingIcone.innerText = "Succes !";
@@ -343,7 +339,7 @@ class Game {
 
                 game.vaisseau.setLeaks(0, parseInt(Math.random() * (12 - 4) + 4));
             } else {
-                let audio = new Audio('./audio/bip9.wav');
+                let audio = new Audio('./src/audio/bip9.wav');
                 audio.play();
                 loadingIcone.style.color = "red";
                 loadingIcone.innerText = "Erreur, conduit endommage";
@@ -378,14 +374,15 @@ class Game {
                 game.vaisseau.useBottleOxygen(bouteille.getAttribute("idBouteille"));
                 return;
             }
-            bouteille.setAttribute("src", "img/oxy" + game.vaisseau.oxygenFrame + ".png");
+            bouteille.setAttribute("src", "src/img/oxy" + game.vaisseau.oxygenFrame + ".png");
             if (game.vaisseau.oxygenFrame <= 0 && game.vaisseau.oxygen < game.vaisseau.oxygenMax) {
                 game.vaisseau.useBottleOxygen(bouteille.getAttribute("idBouteille"));
                 bouteille.remove();
                 msgLoading.style.color = "green";
                 msgLoading.style.animationName = "none";
                 msgLoading.innerText = "TERMINE";
-                let audio = new Audio('./audio/bip7.wav');
+                game.vaisseau.oxygen -= 1000;
+                let audio = new Audio('./src/audio/bip7.wav');
                 audio.play();
                 game.vaisseau.oxygenFrame = -1;
             } else if (game.vaisseau.oxygenFrame != -1) {
@@ -441,7 +438,7 @@ class Game {
 
     }
     nextInstruction() {
-        document.getElementById("imgPDA2").setAttribute("src", "img/loading.gif");
+        document.getElementById("imgPDA2").setAttribute("src", "src/img/loading.gif");
         document.getElementById("imgPDA2").setAttribute("width", "250px");
         document.getElementById("imgPDA2").setAttribute("height", "150px");
         game.gps.x = parseInt(Math.random() * (19500 - 1500) + 1500);
@@ -562,7 +559,7 @@ class Game {
         }
         if (game.vaisseau.leaks[0] === 0) {
             divFuite1.innerText = "";
-            divFuite1.style.backgroundImage = "url(./img/croix.png)";
+            divFuite1.style.backgroundImage = "url(./src/img/croix.png)";
             divFuite1.style.opacity = "100%";
         }
         if (game.vaisseau.leaks[1] < game.vaisseau.lifeLeak) {
@@ -572,7 +569,7 @@ class Game {
         }
         if (game.vaisseau.leaks[1] === 0) {
             divFuite2.innerText = "";
-            divFuite2.style.backgroundImage = "url(./img/croix.png)";
+            divFuite2.style.backgroundImage = "url(./src/img/croix.png)";
             divFuite2.style.opacity = "100%";
         }
 
@@ -824,7 +821,7 @@ class Game {
         }
         game.thread = [];
 
-        let audio = new Audio('./audio/clic.mp3');
+        let audio = new Audio('./src/audio/clic.mp3');
         audio.play();
 
 
@@ -841,10 +838,7 @@ class Game {
         for (let i = 0; i < 60; i++) {
             if (i % game.vaisseau.heatAugment === 0) game.vaisseau.heatAnimation++;
         }
-        if (game.vaisseau.direction != "") {
-            game.vaisseau.carburant--;
-        }
-        game.carburantConsommation();
+
         // document.getElementById("temperature-vaiseaux").innerText = game.vaisseau.heat + " °C";
 
     }
@@ -1628,25 +1622,25 @@ class Game {
         document.getElementById("msgPDA").style.animationName = "none";
         document.getElementById("msgPDA").style.color = "cyan";
         if (game.gps.x < game.vaisseau.x && (game.vaisseau.x - game.gps.x) > parseInt(vitesseVaisseau) / 3.6) {
-            document.getElementById("imgPDA2").setAttribute("src", "img/right.png");
+            document.getElementById("imgPDA2").setAttribute("src", "src/img/right.png");
             document.getElementById("imgPDA2").setAttribute("height", "60px");
             document.getElementById("imgPDA2").setAttribute("width", "100px");
             document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : " + (game.gps.distance / 1000).toFixed(1) + " KILOMETRES \n DROITE SUR " + (game.vaisseau.x - game.gps.x) + " METRES \n PARTIE " + game.gps.idInstruction + " / " + parseInt(game.gps.nbInstructions)
         }
         if (game.gps.y < game.vaisseau.y && (game.vaisseau.y - game.gps.y) > parseInt(vitesseVaisseau) / 3.6) {
-            document.getElementById("imgPDA2").setAttribute("src", "img/bottom.png");
+            document.getElementById("imgPDA2").setAttribute("src", "src/img/bottom.png");
             document.getElementById("imgPDA2").setAttribute("width", "60px");
             document.getElementById("imgPDA2").setAttribute("height", "100px");
             document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : " + (game.gps.distance / 1000).toFixed(1) + " KILOMETRES \n EN ARRIERE SUR " + (game.vaisseau.y - game.gps.y) + " METRES \n PARTIE " + game.gps.idInstruction + " / " + parseInt(game.gps.nbInstructions)
         }
         if (game.gps.x > game.vaisseau.x && (game.gps.x - game.vaisseau.x) > parseInt(vitesseVaisseau) / 3.6) {
-            document.getElementById("imgPDA2").setAttribute("src", "img/left.png");
+            document.getElementById("imgPDA2").setAttribute("src", "src/img/left.png");
             document.getElementById("imgPDA2").setAttribute("height", "60px");
             document.getElementById("imgPDA2").setAttribute("width", "100px");
             document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : " + (game.gps.distance / 1000).toFixed(1) + " KILOMETRES \n GAUCHE SUR " + (game.gps.x - game.vaisseau.x) + " METRES  \n PARTIE " + game.gps.idInstruction + " / " + parseInt(game.gps.nbInstructions)
         }
         if (game.gps.y > game.vaisseau.y && (game.gps.y - game.vaisseau.y) > parseInt(vitesseVaisseau) / 3.6) {
-            document.getElementById("imgPDA2").setAttribute("src", "img/top.png");
+            document.getElementById("imgPDA2").setAttribute("src", "src/img/top.png");
             document.getElementById("imgPDA2").setAttribute("width", "100px");
             document.getElementById("imgPDA2").setAttribute("height", "100px");
             document.getElementById("msgPDA").innerText = "DISTANCE TOTALE : " + (game.gps.distance / 1000).toFixed(1) + " KILOMETRES \n TOUT DROIT SUR " + (game.gps.y - game.vaisseau.y) + " METRES  \n PARTIE " + game.gps.idInstruction + " / " + parseInt(game.gps.nbInstructions)
@@ -1704,14 +1698,13 @@ class Game {
             audio.play();
             document.getElementById("msgPDA").style.color = "red";
             document.getElementById("msgPDA").innerText = "LE VAISSEAU S'EST ECRASE";
-            console.log("PERDU")
             return;
         } else if (game.vaisseau.z <= 0) {
             document.getElementById("msgPDA").style.color = "green";
             document.getElementById("msgPDA").innerText = "LE VAISSEAU EST ATTERI";
         }
         if (game.vaisseau.z < 600 && game.vaisseau.speed > 40 && game.vaisseau.direction === "atterrissage") {
-            let audio = new Audio('./audio/alarme.mp3');
+            let audio = new Audio('./src/audio/alarme.mp3');
             audio.play();
             document.getElementById("msgPDA").style.animationDuration = "1s";
             document.getElementById("msgPDA").style.animationName = "clignoter";
@@ -1755,8 +1748,9 @@ class Game {
         let vitesseVaisseau = game.vaisseau.speed;
         game.updatePDA();
         if (distanceRestante < parseInt(vitesseVaisseau / 3.6 + 5)) {
-            document.getElementById("imgPDA2").setAttribute("src", "img/valider.png");
+            document.getElementById("imgPDA2").setAttribute("src", "./src/img/valider.png");
             document.getElementById("imgPDA2").setAttribute("width", "100px")
+            document.getElementById("imgPDA2").setAttribute("height", "100px")
             document.getElementById("msgPDA3").style.color = "green";
             document.getElementById("msgPDA3").innerText = "VOUS POUVEZ ATTERRIR !";
             game.gps.idInstruction++;
@@ -1786,9 +1780,6 @@ class Game {
         }
         game.verifInstruction();
 
-        if (game.vaisseau.direction !== "") {
-            console.log("CARBURANT")
-        }
         if (game.gps.countAsteroide === 0) {
             game.gps.champAsteroide = false;
             document.getElementById("msgPDA3").style.color = "green";
@@ -1806,6 +1797,9 @@ class Game {
         else game.thread[game.thread.length - 1] = setInterval(game.verifAsteroide.bind(this), 1000);
     }
     carburantConsommation() {
+        if (game.vaisseau.direction != "") {
+            game.vaisseau.carburant--;
+        }
         document.getElementById("jaugeCarburant").style.width = (game.vaisseau.carburant / 2.5) + "%";
     }
     shipUp() {
@@ -2018,11 +2012,13 @@ class Game {
             document.getElementById("msgPDA3").innerText = "TOUCHE !";
             let explosion = parseInt(Math.random() * (3 - 1) + 1);
             if (explosion == 1) {
-                let audio = new Audio('./audio/explode.mp3');
+                let audio = new Audio('./src/audio/explode.mp3');
                 audio.play();
             }
             if (explosion == 2) {
-                let audio = new Audio('./audio/explosion.mp3');
+                let audio = new Audio('./src/audio/bip14.mp3');
+                audio.play();
+                audio = new Audio('./src/audio/explosion.mp3');
                 audio.play();
             }
             game.gps.countAsteroide--;
@@ -2087,21 +2083,21 @@ class Game {
     initJardin() {
         $('#jardinSerre1')[0].innerHTML = `<div class="row"><div class="col"><span id="typeSerre1" style="font-size:2vw">Type de plantation : ${game.jardin.plant[0].type}</span><br><span style="font-size:2vw" id="percentSerre1">Pourcentage : ${game.jardin.plant[0].percent}</span></div></div>`
         $('#jardinSerre1')[0].innerHTML += `<div class="row"><div class="col btn-group">
-            <div id='legume' onclick="game.jardin.planter('patate','0')"><img src='./img/patate.png' width = '50px'></div>
-            <div id='legume' onclick="game.jardin.planter('tomate','0')"><img src='./img/tomate.png' width = '50px'></div>
-            <div id='legume' onclick="game.jardin.planter('radis','0')"><img src='./img/radis.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('patate','0')"><img src='./src/img/patate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('tomate','0')"><img src='./src/img/tomate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('radis','0')"><img src='./src/img/radis.png' width = '50px'></div>
         </div></div>`
         $('#jardinSerre2')[0].innerHTML = `<div class="row"><div class="col"><span id="typeSerre2" style="font-size:2vw">Type de plantation : ${game.jardin.plant[1].type}</span><br><span style="font-size:2vw" id="percentSerre2">Pourcentage : ${game.jardin.plant[1].percent}</span></div></div>`
         $('#jardinSerre2')[0].innerHTML += `<div class="row"><div class="col btn-group">
-            <div id='legume' onclick="game.jardin.planter('patate','1')"><img src='./img/patate.png' width = '50px'></div>
-            <div id='legume' onclick="game.jardin.planter('tomate','1')"><img src='./img/tomate.png' width = '50px'></div>
-            <div id='legume' onclick="game.jardin.planter('radis','1')"><img src='./img/radis.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('patate','1')"><img src='./src/img/patate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('tomate','1')"><img src='./src/img/tomate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('radis','1')"><img src='./src/img/radis.png' width = '50px'></div>
         </div></div>`
         $('#jardinSerre3')[0].innerHTML = `<div class="row"><div class="col"><span id="typeSerre3" style="font-size:2vw">Type de plantation : ${game.jardin.plant[2].type}</span><br><span style="font-size:2vw" id="percentSerre3">Pourcentage : ${game.jardin.plant[2].percent}</span></div></div>`
         $('#jardinSerre3')[0].innerHTML += `<div class="row"><div class="col btn-group">
-            <div id='legume' onclick="game.jardin.planter('patate','2')"><img src='./img/patate.png' width = '50px'></div>
-            <div id='legume' onclick="game.jardin.planter('tomate','2')"><img src='./img/tomate.png' width = '50px'></div>
-            <div id='legume' onclick="game.jardin.planter('radis','2')"><img src='./img/radis.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('patate','2')"><img src='./src/img/patate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('tomate','2')"><img src='./src/img/tomate.png' width = '50px'></div>
+            <div id='legume' onclick="game.jardin.planter('radis','2')"><img src='./src/img/radis.png' width = '50px'></div>
         </div></div>`
     }
     loadInventaryPlayer() {
@@ -2122,11 +2118,11 @@ class Game {
                     itemDiv.setAttribute("class", "carousel-item essai")
                 }
                 let itemImg = document.createElement("img");
-                itemImg.setAttribute("src", "./img/" + types[i] + ".png")
-                itemImg.setAttribute("type",""+types[i]+"");
+                itemImg.setAttribute("src", "./src/img/" + types[i] + ".png")
+                itemImg.setAttribute("type", "" + types[i] + "");
                 itemImg.setAttribute("width", "100px")
                 itemImg.setAttribute("height", "100px")
-                itemImg.addEventListener("contextmenu", function(){return useItemMenu(this,event,types[i])})
+                itemImg.addEventListener("contextmenu", function () { return useItemMenu(this, event, types[i]) })
 
                 itemDiv.appendChild(itemImg);
                 if (game.player.inventaire[types[i]] > 1) {
@@ -2141,4 +2137,85 @@ class Game {
 
         }
     }
+    updateTableauVoyants() {
+        let tableauBordVoyant = document.getElementsByClassName("voyant");
+        if (document.getElementById("msgPDA3").style.color == "red") {
+            game.changeVoyantTableauBord("voyantAsteroide1");
+            document.getElementById("voyantAsteroide1").style.animationDuration = "0.2s";
+            document.getElementById("voyantAsteroide1").style.animationName = "clignoter";
+            document.getElementById("voyantAsteroide1").style.animationIterationCount = "5";
+        }
+        for (let i = 0; i < tableauBordVoyant.length; i++) {
+            let elmt = tableauBordVoyant[i];
+            if (elmt.style.opacity == "1") {
+                game.vaisseau.voyants[i] = true;
+            }else{
+                game.vaisseau.voyants[i] = false;
+            }
+            elmt.style.opacity = "25%";
+        }
+
+
+        if (game.vaisseau.carburant < 50) {
+            game.changeVoyantTableauBord("voyantCarburant1")
+        } else {
+            if (game.vaisseau.carburant < 150) {
+                game.changeVoyantTableauBord("voyantCarburant0")
+            }
+        }
+        
+
+        if (game.vaisseau.heat < 17) {
+            game.changeVoyantTableauBord("voyantTemp1")
+        }
+        if (game.vaisseau.heat > 30) {
+            game.changeVoyantTableauBord("voyantTemp0")
+        }
+        if (game.vaisseau.batteries[game.vaisseau.batteryActive] < 0.2 * (game.vaisseau.batteriesMax[game.vaisseau.batteryActive])) {
+            game.changeVoyantTableauBord("voyantBatterie")
+        }
+        if (game.vaisseau.leaks[0] == 0) {
+            game.changeVoyantTableauBord("voyantFuite0")
+        }
+        if (game.vaisseau.leaks[1] == 0) {
+            game.changeVoyantTableauBord("voyantFuite1")
+        }
+
+        if (document.getElementById("msgPDA3").style.color == "orange") {
+            game.changeVoyantTableauBord("voyantAsteroide1")
+        }
+        if (document.getElementById("msgPDA3").style.color == "yellow") {
+            game.changeVoyantTableauBord("voyantAsteroide0")
+        }
+        if (game.vaisseau.oxygen < 0.2 * (game.vaisseau.oxygenMax)) {
+            game.changeVoyantTableauBord("voyantOxygene");
+        }
+        if (game.vaisseau.shieldLife < 0.2 * (game.vaisseau.shieldMax)) {
+            game.changeVoyantTableauBord("voyantBatterieBouclier");
+        }
+        if ((game.vaisseau.z < 600 && game.vaisseau.speed > 40 && game.vaisseau.direction === "atterrissage") || (game.vaisseau.z < 600 && game.vaisseau.speed > 40 && game.vaisseau.direction === "atterrissage")) {
+            game.changeVoyantTableauBord("voyantAsteroide1");
+            document.getElementById("voyantAsteroide1").style.animationDuration = "0.2s";
+            document.getElementById("voyantAsteroide1").style.animationName = "clignoter";
+            document.getElementById("voyantAsteroide1").style.animationIterationCount = "5";
+        }
+
+        let nb = 0;
+        for (let i = 0; i < tableauBordVoyant.length; i++) {
+            let elmt = tableauBordVoyant[i];
+            if (elmt.style.opacity == "1" && game.vaisseau.voyants[i] == false) {
+                let audio = new Audio('src/audio/bip13.mp3');
+                audio.play();
+                nb++;
+            }
+
+        }
+
+
+
+    }
+    changeVoyantTableauBord(id) {
+        document.getElementById(id).style.opacity = "100%";
+    }
+
 }

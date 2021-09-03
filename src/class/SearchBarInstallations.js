@@ -7,7 +7,6 @@ function updateValSearch() {
     let autocomplete = false;
     let suggestions = [];
     let dejaFait = [];
-    console.log(game.vaisseau.updates)
     for (let i = 0; i < game.vaisseau.updates.length; i++) {
         if ((game.vaisseau.updates[i].category).includes(text)) {
             if (game.vaisseau.updates[i].category != suggestion && suggestion != "") {
@@ -30,7 +29,6 @@ function updateValSearch() {
         document.getElementById("searchIcon").setAttribute("onclick", "redirect('" + suggestion + "')");
         document.getElementById("suggestions").style.visibility = "hidden";
     } else if (text != "") {
-        console.log(suggestions)
         document.getElementById("cancelSearchIcon").style.visibility = "visible";
         document.getElementById("searchIcon").setAttribute("class", "fas fa-search");
         document.getElementById("searchIcon").setAttribute("onclick", "none");
