@@ -358,6 +358,13 @@
                                                         <div id="divVoyant">Voyant oxygene</div>
                                                     </label>
                                                 </div>
+                                                <div class="form-check">
+                                                    <input  checked class="form-check-input"  onclick="game.vaisseau.voyantsActives[11] = !game.vaisseau.voyantsActives[11];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant1">
+                                                    <label class="form-check-label" for="checkVoyant12"  id="labelVoyant">
+                                                        <img src="src/img/leaves.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant plantations</div>
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -493,8 +500,8 @@
                             <img src="src/img/water.png" alt="">
                         </div>
                         <div class="col">
-                            <div class="progress" style="position:relative;left:26px">
-                                <span class="" style="width: 0%;background: #06c3ee"></span>
+                            <div class="progress"  style="position:relative;left:26px">
+                                <span class="" id="jaugeEauJardin" style="width: 0%;background: #06c3ee"></span>
                             </div>
                         </div>
                     </div>
@@ -677,11 +684,14 @@
             <li class="nav-item">
                 <img src="./src/img/warning1.png" width="50px" class="voyant" id="voyantAsteroide1">
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <img src="./src/img/o2.png" width="50px" class="voyant" id="voyantOxygene">
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <img src="./src/img/batterieBouclier.png" width="50px" class="voyant" id="voyantBatterieBouclier">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/leaves.png" width="50px" class="voyant" id="voyantLeaves">
             </li>
         </ul>
     </div>
@@ -698,6 +708,7 @@
         }
         if(index !== undefined) childs[index].hidden = false;
         game.loadInventaryPlayer();
+        game.jardin.displayWater();
     }
     function switchMenuOrdinateur(e) {
         let id = e.id.split("buttonMenu")[1];
@@ -835,7 +846,7 @@
         menuItem1.setAttribute("class","ctxline")
         menuItem1.onclick = function(){
             menu.style.display = "none";
-            game.player.manger();
+            game.player.manger(type);
         }
         if(type == "tomate" || type == "patate" || type == "radis"){
             menuItem1.innerText = "Manger";

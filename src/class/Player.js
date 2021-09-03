@@ -65,6 +65,12 @@ class Player {
         this.water -= 1;
         if (this.water < 0) {
             this.water = 0;
+            for(let j = 0;j<3;j++){
+                if(!game.jardin.recolte[j]){
+                    console.log("LANCONS EN J = "+j)
+                    game.jardin.planter(game.jardin.plant[j],j);
+                }
+            }
         }
         document.getElementById("waterJoueur").style.width = this.water + "%";
         if (this.water <= 0) {
@@ -72,11 +78,13 @@ class Player {
         }
 
     }
-    manger() {
+    manger(index) {
         this.food += 15;
         if (this.food > 100) {
             this.food = 100;
         }
+        game.player.inventaire[index]--;
+        game.loadInventaryPlayer();
         this.displayFood();
     }
     boire() {

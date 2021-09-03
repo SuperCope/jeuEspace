@@ -36,8 +36,8 @@ class Game {
         this.initPDA();
         this.initJardin();
     }
-    initVoyants(){
-        for(let i =0;i<20;i++){
+    initVoyants() {
+        for (let i = 0; i < 20; i++) {
             this.vaisseau.voyantsActives[i] = true;
         }
     }
@@ -1294,7 +1294,6 @@ class Game {
         item0.innerText = "Choix de la batterie";
         menu.innerHTML += "<br>";
         menu.appendChild(item0);
-        menu.innerHTML += "<br><br><br>";
         menu.style.display = "grid";
         for (let i = 0; i < game.vaisseau.batteries.length; i++) {
             let item1 = document.createElement("div");
@@ -2149,7 +2148,7 @@ class Game {
             let elmt = tableauBordVoyant[i];
             if (elmt.style.opacity == "1") {
                 game.vaisseau.voyants[i] = true;
-            }else{
+            } else {
                 game.vaisseau.voyants[i] = false;
             }
             elmt.style.opacity = "25%";
@@ -2163,7 +2162,7 @@ class Game {
                 game.changeVoyantTableauBord("voyantCarburant0")
             }
         }
-        
+
 
         if (game.vaisseau.heat < 17) {
             game.changeVoyantTableauBord("voyantTemp1")
@@ -2193,6 +2192,12 @@ class Game {
         if (game.vaisseau.shieldLife < 0.2 * (game.vaisseau.shieldMax)) {
             game.changeVoyantTableauBord("voyantBatterieBouclier");
         }
+        for (let i = 0;i<3;i++){
+            if (document.getElementById("progressPlant"+i) && document.getElementById("progressPlant"+i).style.width == "100%") {
+                game.changeVoyantTableauBord("voyantLeaves");
+            }
+        }
+
         if ((game.vaisseau.z < 600 && game.vaisseau.speed > 40 && game.vaisseau.direction === "atterrissage") || (game.vaisseau.z < 600 && game.vaisseau.speed > 40 && game.vaisseau.direction === "atterrissage")) {
             game.changeVoyantTableauBord("voyantAsteroide1");
             document.getElementById("voyantAsteroide1").style.animationDuration = "0.2s";
