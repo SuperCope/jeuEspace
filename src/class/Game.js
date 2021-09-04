@@ -15,11 +15,13 @@ class Game {
         setInterval(this.updateTableauVoyants.bind(this), 1000);
         setInterval(this.moveShip.bind(this), 1000);
         setInterval(this.analysePDA.bind(this), 300);
+        setInterval(this.analyseUpdates.bind(this), 8000);
         setInterval(this.displayLife.bind(this), 2000)
         setInterval(this.updateLeaks.bind(this), 30000)
         setInterval(this.verifClim.bind(this), 40000)
         setInterval(this.carburantConsommation.bind(this), 8000)
         setInterval(this.updateHeat.bind(this), 40000)
+        setInterval(this.scanRunningProcessuses.bind(this), 1000)
         setInterval(function () {
             if (game.vaisseau.heatAnimation > 0) {
                 game.vaisseau.heat++;
@@ -733,7 +735,23 @@ class Game {
         }
 
     }
+    analyseUpdates(){
+        if (game.vaisseau.oxygenFrame >= 0) {
+            game.thread[game.thread.length - 1] = setInterval(game.animFrameOxygen(game.vaisseau.oxygenFrame), 300)
+            game.thread[game.thread.length - 1] = setInterval(game.updateUpdatesOxygen(game.vaisseau.oxygenFrame), 15000)
+            game.thread[game.thread.length - 1] = setInterval(game.updateJaugeOxygen(game.vaisseau.oxygenFrame), 300)
+        }
+        if (game.vaisseau.oxygen % 1 === 0) {
+            game.thread[game.thread.length - 1] = setInterval(game.updateOxygen(), 3000)
+            game.thread[game.thread.length - 1] = setInterval(game.updateJaugeOxygen(), 3000)
+        }
+        for (let i = 0; i < game.vaisseau.updates.length; i++) {
+            if (game.vaisseau.updates[i].progress > 0) {
+                game.thread[game.thread.length - 1] = setInterval(game.updateUpdatesOxygen(i), 15000)
+            }
 
+        }
+    }
     analysePDA() {
 
 
@@ -760,32 +778,23 @@ class Game {
             game.vaisseau.shieldLife = 0;
             game.vaisseau.shieldActive = false;
         }
-
-        if (game.vaisseau.oxygenFrame >= 0) {
-            game.thread[game.thread.length - 1] = setInterval(game.animFrameOxygen(game.vaisseau.oxygenFrame), 300)
-            game.thread[game.thread.length - 1] = setInterval(game.updateUpdatesOxygen(game.vaisseau.oxygenFrame), 300)
-            game.thread[game.thread.length - 1] = setInterval(game.updateJaugeOxygen(game.vaisseau.oxygenFrame), 300)
-        }
+        document.getElementById("jaugeBouclier").style.width = ((game.vaisseau.shieldLife / (game.vaisseau.shieldMax)) * 100) + "%";
 
         game.vaisseau.oxygen -= Math.round((game.vaisseau.oxygenDebit) / 40);
-        document.getElementById("jaugeOxygene").style.width = ((game.vaisseau.oxygen / game.vaisseau.oxygenMax) * 100) + "%";
-        if (game.vaisseau.oxygen % 1 === 0) {
-            game.thread[game.thread.length - 1] = setInterval(game.updateOxygen(), 3000)
-            game.thread[game.thread.length - 1] = setInterval(game.updateJaugeOxygen(), 3000)
+        if(game.vaisseau.oxygen < 0){
+            game.vaisseau.oxygen = 0;
         }
+
+        document.getElementById("jaugeOxygene").style.width = ((game.vaisseau.oxygen / game.vaisseau.oxygenMax) * 100) + "%";
+
         if (game.vaisseau.dlMod) {
             this.download2();
         }
-        for (let i = 0; i < game.vaisseau.updates.length; i++) {
-            if (game.vaisseau.updates[i].progress > 0) {
-                game.thread[game.thread.length - 1] = setInterval(game.updateUpdatesOxygen(i), 8000)
-            }
 
-        }
 
         let ok = false;
 
-        if (game.vaisseau.oxygenRepairLongMode) {
+        if (game.vaisseau.oxygenRepairLongMode && document.getElementById("retour2")) {
             document.getElementById("retour2").style.visibility = "hidden";
             for (let i = 0; i < game.vaisseau.leaks.length; i++) {
                 if (game.vaisseau.leaks[i] <= game.vaisseau.lifeLeak) {
@@ -902,7 +911,7 @@ class Game {
         game.viewModule("Dectection asteroides", 0);
     }
     menuInstallUpdates(motCle) {
-        let menuOxygene = game.clearInterface("Faire des mises \n a jour \n \n")
+        let menuOxygene = game.clearInterface("pdaInstallations","Faire des mises \n a jour \n \n")
         let item = null;
         for (let i = 0; i < game.vaisseau.updates.length; i++) {
             if (game.vaisseau.updates[i].category == motCle) {
@@ -1137,7 +1146,7 @@ class Game {
     }
 
     menuManageEnergy() {
-        menu.style.display = "";
+
 
         let item7 = document.createElement("div");
         item7.setAttribute("id", "itemAffichage");
@@ -2204,14 +2213,14 @@ class Game {
             document.getElementById("voyantAsteroide1").style.animationName = "clignoter";
             document.getElementById("voyantAsteroide1").style.animationIterationCount = "5";
         }
-
-        let nb = 0;
+        if (game.jardin.water < 20) {
+            game.changeVoyantTableauBord("voyantWaterGarden");
+        }
         for (let i = 0; i < tableauBordVoyant.length; i++) {
             let elmt = tableauBordVoyant[i];
             if (elmt.style.opacity == "1" && game.vaisseau.voyants[i] == false) {
                 let audio = new Audio('src/audio/bip13.mp3');
                 audio.play();
-                nb++;
             }
 
         }
@@ -2222,5 +2231,45 @@ class Game {
     changeVoyantTableauBord(id) {
         document.getElementById(id).style.opacity = "100%";
     }
+    scanRunningProcessuses(){
+        let processusesDiv = document.getElementById("processuses");
+        while (processusesDiv.lastChild) {
+            processusesDiv.removeChild(processusesDiv.lastChild);
+        }
+        let processus = null;
+        if(game.vaisseau.oxygenRepairLongMode) {
+            processus = document.createElement("div");
+            let processusDiv = document.createElement("div");
+            processusDiv.style.fontSize = "26px";
+            processusDiv.style.top = "10px";
+            processusDiv.innerText = "Reparation des fuites...";
+            processusDiv.style.display = "inline-flex";
+            let processusImg = document.createElement("img");
+            processusImg.src = "./src/img/loading.gif";
+            processusImg.style.width = "130px";
+            processusImg.style.height = "100px";
+            processus.appendChild(processusImg);
+            processus.appendChild(processusDiv);
+            processusesDiv.appendChild(processus);
+        }
+        for(let i = 0;i<game.vaisseau.updates.length;i++){
+            if(game.vaisseau.updates[i].progress > 0 && game.vaisseau.updates[i].progress < 100){
+                console.log("DOWNLOAD RUNNING")
+                processus = document.createElement("div");
+                let processusDiv  = document.createElement("div");
+                processusDiv.style.fontSize = "26px";
+                processusDiv.style.top = "10px";
+                processusDiv.innerText = "Mise a jour en cours...";
+                processusDiv.style.display = "inline-flex";
+                let processusImg  = document.createElement("img");
+                processusImg.src = "./src/img/loading.gif";
+                processusImg.style.width = "130px";
+                processusImg.style.height = "100px";
+                processus.appendChild(processusImg);
+                processus.appendChild(processusDiv);
+                processusesDiv.appendChild(processus);
+            }
+        }
 
+    }
 }

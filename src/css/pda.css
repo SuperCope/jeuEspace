@@ -38,6 +38,7 @@
     position: relative;
     bottom: 3px;
     right: 40px;
+    font-size: 16px;
     transition: 2s;
     cursor: pointer;
 }
@@ -45,7 +46,8 @@
     color: cyan;
     position: relative;
     bottom: 3px;
-    right: 80px;
+    right: 100px;
+    font-size: 16px;
     transition: 2s;
     visibility: hidden;
     cursor: pointer;

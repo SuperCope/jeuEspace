@@ -7,6 +7,7 @@ function updateValSearch() {
     let autocomplete = false;
     let suggestions = [];
     let dejaFait = [];
+    console.log(game)
     for (let i = 0; i < game.vaisseau.updates.length; i++) {
         if ((game.vaisseau.updates[i].category).includes(text)) {
             if (game.vaisseau.updates[i].category != suggestion && suggestion != "") {
@@ -65,9 +66,5 @@ function autocomplete(suggestion) {
     document.getElementById("suggestions").style.visibility = "hidden";
 }
 function redirect(suggestion) {
-    document.getElementById("contact-tab").setAttribute("class", "nav-link");
-    document.getElementById("oxygen-tab").setAttribute("class", "nav-link active");
-    document.getElementById("contact").setAttribute("class", "tab-pane fade");
-    document.getElementById("oxygen").setAttribute("class", "tab-pane fade show active");
     game.menuInstallUpdates(suggestion)
 }

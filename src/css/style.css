@@ -31,6 +31,9 @@ body {
     height: 70px;
     padding-top: 10px;
 }
+#processuses{
+
+}
 #legume:hover{
     margin: auto;
     border-radius: 2em;
@@ -76,6 +79,10 @@ body {
     position: relative;
     left: 7px;
     top: -15px;
+}
+#collapse0{
+    height: 200px !important;
+    overflow-y: auto;
 }
 #labelVoyant{
     display: inline-flex;

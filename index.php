@@ -245,6 +245,31 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div>
+                                    <div class="card-header" id="headingFourVaisseau">
+                                        <h5 class="mb-0">
+                                            <button class="btn btn-link" data-toggle="collapse" onclick="" data-target="#collapseFourVaisseau" aria-expanded="true" aria-controls="collapseFourVaisseau">
+                                                <div class="row justify-content-center align-items-center" style="left: 0px;position: relative;">
+                                                    <div class="col">
+                                                        <img src="src/img/bouclier2.png" width="130px" height="130px" alt="">
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="progress">
+                                                            <span id="jaugeBouclier" style="width: 100%;background-color: crimson"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </button>
+                                        </h5>
+                                    </div>
+                                    <div id="collapseFourVaisseau" class="collapse" aria-labelledby="headingFourVaisseau" data-parent="#accordionVaisseau">
+                                        <div class="card-body">
+             <!--                           <div id="pdaOxygen" class="pda">
+                                                <div id="titre" class="titre"></div>
+                                            </div>-->
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col">
@@ -280,7 +305,7 @@
                                                     <div style="font-size: 2.5vw;color: white">Afficher les voyants</div>
                                                 </button>
                                             </div>
-                                            <div id="collapse0" class="collapse" aria-labelledby="heading0" data-parent="#accordionJardin">
+                                            <div id="collapse0" class="collapse" aria-labelledby="heading0" data-parent="#accordionJardin" style="">
                                                 <div class="form-check">
                                                     <input  checked class="form-check-input"  onclick="game.vaisseau.voyantsActives[0] = !game.vaisseau.voyantsActives[0];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant1">
                                                     <label class="form-check-label" for="checkVoyant1"  id="labelVoyant">
@@ -365,14 +390,60 @@
                                                         <div id="divVoyant">Voyant plantations</div>
                                                     </label>
                                                 </div>
+                                                <div class="form-check">
+                                                    <input  checked class="form-check-input"  onclick="game.vaisseau.voyantsActives[12] = !game.vaisseau.voyantsActives[12];game.vaisseau.updateDisplayVoyants()" type="checkbox" value="" id="checkVoyant1">
+                                                    <label class="form-check-label" for="checkVoyant13"  id="labelVoyant">
+                                                        <img src="src/img/waterGarden.png" width="30px" height="30px">
+                                                        <div id="divVoyant">Voyant eau dans le jardin</div>
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        <div class="col" style="font-size: 2.5vw">Hep</div>
+                        <div class="col" style="font-size: 2.5vw">
+                            <div id="accordionVoyants">
+                                <div>
+                                    <div class="card-header" id="heading1">
+                                        <button class="btn"  data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+                                            <div style="font-size: 2.5vw;color: white">Voir les processus en cours</div>
+                                        </button>
+                                    </div>
+                                    <div id="collapse1" class="collapse" aria-labelledby="heading1" data-parent="#accordionJardin" style="" onclick="">
+                                        <div id="processuses">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
                         <div class="w-100" style="font-size: 2.5vw"></div>
-                        <div class="col" style="font-size: 2.5vw">Hep</div>
+                        <div class="col" style="font-size: 2.5vw">
+                            <div id="accordionInstallations">
+                                <div>
+                                    <div class="card-header" id="heading2">
+                                        <button class="btn"  data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                            <div style="font-size: 2.4vw;color: white">Rechercher une installation</div>
+                                        </button>
+                                    </div>
+                                    <div id="collapse2" class="collapse" aria-labelledby="heading2" data-parent="#accordionJardin" style="" onclick="">
+                                        <div id="pdaInstallations" class="pda">
+                                            <div id="items"><br>
+                                                <input type="text" onkeyup="updateValSearch()" id="searchBarInstallation" size="200" max="200"></input>
+                                                <span class="fas fa-search" id="searchIcon" onclick=""></span>
+                                                <span class="fas fa-times" id="cancelSearchIcon" onclick="cancelSearch()"></span>
+                                                <br><br><div id="suggestions"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
                         <div class="col" style="font-size: 2.5vw">Sortir du vaisseau</div>
                     </div>
                 </div>
@@ -692,6 +763,9 @@
             </li>
             <li class="nav-item">
                 <img src="./src/img/leaves.png" width="50px" class="voyant" id="voyantLeaves">
+            </li>
+            <li class="nav-item">
+                <img src="./src/img/waterGarden.png" width="50px" class="voyant" id="voyantWaterGarden">
             </li>
         </ul>
     </div>

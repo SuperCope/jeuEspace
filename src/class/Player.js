@@ -29,20 +29,32 @@ class Player {
     }
 
     displayLife(d, o) {
-        this.life -= ((60 - d) / 10);
+        if(game.vaisseau.oxygen > 0){
+            this.life -= ((60 - d) / 10);
+        }else{
+            this.life += ((60 - d) / 10);
+        }
+
+
         if (o === 0) this.life -= 10;
         if (this.food <= 0) {
+            this.food = 0;
             this.life -= 10;
+
         }
         if (this.water <= 0) {
+            this.water = 0;
             this.life -= 10;
+
         }
+
         if (this.life > 100) {
             this.life = 100;
         }
         if (this.life < 0) {
             this.life = 0;
         }
+
         document.getElementById("vieJoueur").style.width = this.life + "%";
         if (this.life <= 0) {
             document.getElementById("vieJoueur").style.backgroundColor = "white";
@@ -67,7 +79,6 @@ class Player {
             this.water = 0;
             for(let j = 0;j<3;j++){
                 if(!game.jardin.recolte[j]){
-                    console.log("LANCONS EN J = "+j)
                     game.jardin.planter(game.jardin.plant[j],j);
                 }
             }
